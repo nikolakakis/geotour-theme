@@ -83,15 +83,12 @@
             echo '</div>';
         endif;
 
-        wp_nav_menu(
-            array(
-                'theme_location' => 'primary', // Make sure this menu location is registered
-                'menu_id'        => 'primary-menu-list', // ID for the UL
-                'container'      => false, // No div container around the ul
-                'items_wrap'     => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-                'walker'         => new Geotour_Accordion_Menu_Walker(),
-            )
-        );
+        wp_nav_menu([
+            'theme_location' => 'primary',
+            'menu_class'     => 'menu',
+            'container'      => false,
+            'walker'         => new Geotour_Accordion_Menu_Walker(),
+        ]);
         ?>
     </nav>
     

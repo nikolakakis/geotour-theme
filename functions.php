@@ -42,3 +42,9 @@ require_once GEOTOUR_THEME_DIR . '/includes/navigation.php';
 
 // API endpoints for AJAX and custom functionality (Uncomment when ready)
 // require_once GEOTOUR_THEME_DIR . '/includes/api/api-init.php';
+
+add_action('after_setup_theme', function() {
+    register_nav_menus([
+        'primary' => __('Primary Menu', 'geotour-theme'),
+    ]);
+});
