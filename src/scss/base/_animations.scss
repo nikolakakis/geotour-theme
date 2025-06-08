@@ -1,0 +1,21 @@
+// filepath: e:\visualstudio\geotour-theme\src\scss\base\_animations.scss
+
+// Keyframes for staggered fade-in and slide-up for menu items
+@keyframes fadeInSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Mixin for applying the animation with a delay
+@mixin staggered-animation($delay) {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInSlideUp 0.4s ease forwards;
+  animation-delay: $delay;
+}

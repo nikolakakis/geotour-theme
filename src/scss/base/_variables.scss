@@ -1,0 +1,29 @@
+// filepath: e:\visualstudio\geotour-theme\src\scss\base\_variables.scss
+
+// Google Font Import for Syne - It's better to enqueue fonts via functions.php in WordPress
+// @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700&display=swap');
+
+// Colors
+$main-color: #22a575;
+$primary-color-transparent: rgba($main-color, 0.97); // Added for menu background
+$menu-text-color: #ffffff;
+$menu-text-color-alt: rgba(255, 255, 255, 0.8);
+$text-color: #333; // General text color
+$background-color: #fff;
+$border-color: #e9ecef;
+
+// Icons
+$geotour-trigger-icon-url: 'https://www.geotour.gr/wp-content/uploads/2024/10/geotour-icon.png';
+
+// Typography
+$font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+$font-heading: 'Syne', sans-serif;
+
+// Breakpoints (example)
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Other global variables
+$container-max-width: $breakpoint-xl;

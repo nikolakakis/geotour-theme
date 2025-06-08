@@ -1,0 +1,94 @@
+"_listing_root", "_listing_root","" , "no",
+"heading_location;Location on the map;heading
+ desc
+  To set your location on desired place, simply drag the map pin to the position on the map. Use Google map controls for zooming in and out to move around the map faster.
+location_position;Location;map;widget_location
+ std
+  35.049906,26.233406
+ api_key
+  AIzaSyDDM_OQX_hwM0Zz1sctnTQlsYZCEc2mGNA
+ address_field
+  boldthemes_theme_listing-contact_address
+heading_region;Region of the location;heading
+ desc
+  If you want to associate your listing with a region (which is only used for search) simply choose from a regions shown below.
+region;Region;taxonomy
+ taxonomy
+  listing-region
+heading_vt_exist;Virtual tour panorama;heading
+ desc
+  Use this to indicate that there is a virtual tour panorama for this listing.
+vtour_yes;Is there a panorama in the virtual tour?;checkbox;vtourinfo"
+"Accommodation","accommodation-en","_listing_root","yes",
+"heading_contact;Contact Information;heading
+ desc
+  Use the following fields to show all the contact information about your business on the details page. Note that some of the fields might not be displayed, depending on the subscription you have for your listing.
+contact_address;Address;text;widget_contact_details
+contact_phone;Phone;text;widget_contact_details
+contact_mobile;Mobile phone;text;widget_contact_details
+contact_email;Email address;email;widget_contact_details
+contact_website;Website;url;widget_contact_details
+contact_price;Price description;text;widget_contact_details
+contact_description;Location description;text;widget_contact_details
+heading_social;Social Networks;heading
+ desc
+  Fill out the social network links to your business fan pages and profiles.
+social_facebook;Facebook;social;widget_social_networks
+social_twitter;Twitter URL;social;widget_social_networks
+social_instagram;Instagram URL;social;widget_social_networks
+social_google_plus;Google Plus URL;social;widget_social_networks
+social_pinterest;Pinterest URL;social;widget_social_networks
+social_tripadvisor;TripAdvisor URL;social;widget_social_networks
+social_youtube;Youtube URL;social;widget_social_networks
+heading_faq;FAQ;heading
+ desc
+  If there's something that you'd like to inform your potential clients about, use this section.
+faq;FAQ;wysiwyg;FAQ
+heading_amenities;Amenities;heading
+ desc
+  Use this section to show what your business support and offers to it's clients.
+amenities_free_wifi;Free Wi-Fi;checkbox;Amenities
+amenities_parking;Parking;checkbox;Amenities
+amenities_wheelchair_accessible;Wheelchair Accessible;checkbox;Amenities
+amenities_accepting_credit_cards;Accepting Credit Cards;checkbox;Amenities
+amenities_family_friendly;Family friendly;checkbox;Amenities
+amenities_pets_friendly;Pet friendly;checkbox;Amenities
+amenities_self_check;Option to self check;checkbox;Amenities
+amenities_kitchenette;Kitchenette (fully equipped kitchen area);checkbox;Amenities
+amenities_washing_machine;Washing machine;checkbox;Amenities
+amenities_air_conditioned;Air conditioned;checkbox;Amenities
+amenities_television;Television;checkbox;Amenities
+amenities_safe_box;Safe deposit box;checkbox;Amenities
+amenities_hair_dryer;Hair dryer;checkbox;Amenities
+amenities_mini_bar;Mini Bar;checkbox;Amenities
+amenities_towels_changing;Changing towels;checkbox;Amenities
+amenities_smoke_detector;Smoke detector;checkbox;Amenities
+amenities_coffee_teamaker;Coffee / Tea Maker;checkbox;Amenities
+amenitiess_storage_room;Storage Room;checkbox;Amenities
+amenities_jacuzzi;Jacuzzi;checkbox;Amenities
+heading_photo_gallery;Photo Gallery;heading
+ desc
+  Upload the photos of your business to show it in a more interesting way. One picture is worth more than a thousand of words. Note that some of galleries might not be displayed, depending on the subscription you have for your listing. Please make sure that the image is minimum 2048px width.
+media_images_featured;Featured images;image_advanced;Media
+media_images_exterior;Exterior;image_advanced;Media
+media_images_interior;Interior;image_advanced;Media
+media_images_surrounding_places;Village and surrounding places;image_advanced;Media
+media_images_beach;Beach;image_advanced;Media
+media_images_spa;Spa;image_advanced;Media
+heading_video_gallery;Video Gallery;heading
+ desc
+  If you have some videos that you'd like to show and interact with your potential clients, here's the place for it. Use YouTube sharing link to show up to three videos for your listing. Note that videos might not be displayed, depending on the subscription you have for your listing.
+media_video_1;Video 1;oembed;MediaVideo
+media_video_2;Video 2;oembed;MediaVideo
+media_video_3;Video 3;oembed;MediaVideo
+heading_booking;Booking options;heading
+ desc
+  If you have a booking option at Timekit use these fields to fill them up and allow users to book directly from the website.
+timekit;Time Kit;timekit;widget_timekit
+heading_contact_form;Contact form;heading
+ desc
+  If you want users to contact you directly from the website, via contact form, simply put your email that a form will send you an email to.
+contact_form_email;Contact email;email;widget_contact_form"
+
+
+

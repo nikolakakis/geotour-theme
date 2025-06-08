@@ -1,0 +1,6 @@
+// Import variables and animations using @use, making them available with a namespace
+@use 'base/variables';
+@use 'base/animations';
+
+// Layout specific styles
+@use 'layout/navigation/main'; // This will make styles from _main.scss apply

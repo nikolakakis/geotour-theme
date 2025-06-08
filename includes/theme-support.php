@@ -1,0 +1,71 @@
+<?php
+/**
+ * Theme Setup and Support
+ * 
+ * @package Geotour_Mobile_First
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+/**
+ * Theme setup function
+ */
+function geotour_theme_setup() {
+    // Make theme available for translation
+    load_theme_textdomain('geotour', GEOTOUR_THEME_DIR . '/languages');
+
+    // Add theme support features
+    add_theme_support('post-thumbnails');
+    add_theme_support('html5', array(
+        'search-form',
+        'comment-form',
+        'comment-list',
+        'gallery',
+        'caption',
+        'style',
+        'script'
+    ));
+    add_theme_support('customize-selective-refresh-widgets');
+    add_theme_support('responsive-embeds');
+    
+    // Navigation menus
+    register_nav_menus(array(
+        'primary' => __('Primary Menu', 'geotour'),
+        'mobile'  => __('Mobile Menu', 'geotour'),
+        'footer'  => __('Footer Menu', 'geotour'),
+    ));
+
+    // Custom image sizes for listings
+    add_image_size('listing-thumbnail', 400, 300, true);
+    add_image_size('listing-hero', 1200, 600, true);
+    add_image_size('listing-card', 600, 400, true);
+}
+add_action('after_setup_theme', 'geotour_theme_setup');
+
+/**
+ * Register widget areas
+ */
+function geotour_widgets_init() {
+    register_sidebar(array(
+        'name'          => __('Sidebar', 'geotour'),
+        'id'            => 'sidebar-1',
+        'description'   => __('Add widgets here.', 'geotour'),
+        'before_widget' => '<section id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h2 class="widget-title">',
+        'after_title'   => '</h2>',
+    ));
+
+    register_sidebar(array(
+        'name'          => __('Footer Widgets', 'geotour'),
+        'id'            => 'footer-widgets',
+        'description'   => __('Footer widget area.', 'geotour'),
+        'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="footer-widget-title">',
+        'after_title'   => '</h3>',
+    ));
+}
+add_action('widgets_init', 'geotour_widgets_init');

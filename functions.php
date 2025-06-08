@@ -1,0 +1,44 @@
+<?php
+/**
+ * Geotour Mobile First Theme Functions
+ * 
+ * Main functions file - acts as a loader for organized includes
+ * 
+ * @package Geotour_Mobile_First
+ * @version 1.0.0
+ */
+
+// Prevent direct access
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Define theme constants
+define('GEOTOUR_THEME_VERSION', '1.0.0');
+define('GEOTOUR_THEME_DIR', get_template_directory());
+define('GEOTOUR_THEME_URI', get_template_directory_uri());
+
+// Core theme setup
+require_once GEOTOUR_THEME_DIR . '/includes/theme-support.php';
+
+// Theme utilities and helpers (MUST be included BEFORE scripts-styles.php)
+require_once GEOTOUR_THEME_DIR . '/includes/utils.php';
+
+// Scripts and styles management
+require_once GEOTOUR_THEME_DIR . '/includes/scripts-styles.php';
+
+// Navigation specific helpers (like custom walkers)
+require_once GEOTOUR_THEME_DIR . '/includes/navigation.php';
+
+// Custom post types and taxonomies (Uncomment when ready)
+// require_once GEOTOUR_THEME_DIR . '/includes/custom-post-types/listing.php';
+// require_once GEOTOUR_THEME_DIR . '/includes/taxonomies/listing-taxonomies.php';
+
+// Custom hooks and filters (Uncomment when ready)
+// require_once GEOTOUR_THEME_DIR . '/includes/hooks.php'; // Note: your file is named hook.php, consider renaming to hooks.php for consistency or update here
+
+// Admin customizations (Uncomment when ready)
+// require_once GEOTOUR_THEME_DIR . '/includes/admin/admin-init.php';
+
+// API endpoints for AJAX and custom functionality (Uncomment when ready)
+// require_once GEOTOUR_THEME_DIR . '/includes/api/api-init.php';

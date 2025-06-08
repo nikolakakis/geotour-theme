@@ -1,0 +1,86 @@
+GEOTOUR THEME FILE STRUCTURE
+=============================
+Last Updated: June 7, 2025
+Project: Geotour Crete WordPress Theme Redevelopment
+
+ROOT DIRECTORY: e:\visualstudio\geotour-theme\
+
+COMPILED/GENERATED DIRECTORIES (Git Ignored):
+├── build/                          # Vite build output - compiled assets
+├── node_modules/                   # npm dependencies
+└── vendor/                         # Composer dependencies (if used)
+
+SOURCE DIRECTORIES:
+├── src/                            # Source files for compilation
+│   ├── js/
+│   │   ├── main.js                 # Main JS entry point (imports SCSS)
+│   │   ├── modules/
+│   │   │   └── navigation/
+│   │   │       └── main.js         # Main menu JS logic
+│   │   └── leaflet/                # Leaflet map functionality
+│   └── scss/
+│       ├── main.scss               # Main SCSS entry point
+│       ├── base/                   # Reset, typography, variables
+│       ├── components/             # Reusable UI components
+│       ├── layout/
+│       │   ├── navigation/
+│       │   │   └── _main.scss      # Main menu SCSS
+│       │   └── ...                 # Other layout partials (header, footer, grid)
+│       └── pages/                  # Page-specific styles
+
+WORDPRESS THEME STRUCTURE:
+├── style.css                       # WordPress theme header (required)
+├── index.php                       # Main template fallback
+├── functions.php                   # Main functions (loader only)
+├── header.php                      # Site header template
+├── footer.php                      # Site footer template
+├── single.php                      # Single post template
+├── page.php                        # Static page template
+├── archive.php                     # Archive template
+├── 404.php                         # Error page template
+└── search.php                      # Search results template
+
+CUSTOM TEMPLATES:
+├── templates/                      # Custom template files
+│   ├── parts/                      # Reusable template parts
+│   ├── single-listing.php          # Single listing template
+│   ├── archive-listing.php         # Listing archive template
+│   ├── taxonomy-listing-category.php
+│   ├── taxonomy-listing-region.php
+│   └── taxonomy-listing-tag.php
+
+PHP INCLUDES STRUCTURE:
+├── includes/                       # Organized PHP functionality
+│   ├── theme-support.php           # Theme setup, menus, image sizes
+│   ├── scripts-styles.php          # Asset enqueuing with Vite manifest
+│   ├── utils.php                   # Utility functions (coordinates, GeoJSON)
+│   ├── hooks.php                   # Custom hooks and filters
+│   ├── navigation.php              # Optional: PHP helpers for navigation (walkers, etc.)
+│   ├── custom-post-types/
+│   │   └── listing.php             # Listing CPT registration
+│   ├── taxonomies/
+│   │   └── listing-taxonomies.php  # All listing taxonomies
+│   ├── admin/
+│   │   └── admin-init.php          # Admin customizations loader
+│   ├── api/
+│   │   └── api-init.php            # AJAX/REST API endpoints loader
+│   └── template-parts/             # Reusable PHP template components
+
+BUILD CONFIGURATION:
+├── package.json                    # npm configuration with Vite scripts
+├── vite.config.js                  # Vite bundler configuration
+├── postcss.config.js               # PostCSS configuration (autoprefixer)
+├── .gitignore                      # Git ignore rules
+└── notes.txt                       # Project documentation and plans
+
+KEY ARCHITECTURAL DECISIONS:
+- functions.php acts as loader only, all logic in /includes/
+- Vite handles asset compilation with manifest.json integration
+- Conditional Leaflet.js loading via geotour_is_map_page()
+- GeoJSON generation for map functionality
+- ACF Pro planned for custom fields management
+- Mobile-first responsive design approach
+- Phase-based development following notes.txt plan
+
+CURRENT STATUS: Phase 1.1 - Foundation Setup Complete
+NEXT PHASE: Phase 2 - Legacy System Analysis & Replication Blueprint

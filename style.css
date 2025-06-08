@@ -1,0 +1,23 @@
+/*
+Theme Name: Geotour Mobile First
+Description: Mobile-first custom WordPress theme for Geotour Crete portal with Leaflet.js integration and conditional custom fields management
+Author: Your Name
+Version: 1.0.0
+Text Domain: geotour
+Domain Path: /languages
+Requires at least: 6.0
+Tested up to: 6.5
+Requires PHP: 8.0
+License: GPL v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
+
+This theme is built with Vite for modern asset compilation.
+Main styles are compiled from /src/scss/main.scss
+*/
+
+/* 
+Note: All theme styles are compiled from SCSS sources in /src/scss/
+This file serves only as the WordPress theme identifier.
+The actual styles are enqueued from the compiled build files.
+*/
