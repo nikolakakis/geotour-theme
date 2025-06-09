@@ -5,10 +5,15 @@
 
 // Colors
 $main-color: #22a575;
+$primary-color: #22a575;
+$primary-light: #0f3d2c;
+$primary-dark: #0a2b1f;
 $primary-color-transparent: rgba($main-color, 0.97); // Added for menu background
 $menu-text-color: #ffffff;
 $menu-text-color-alt: rgba(255, 255, 255, 0.8);
 $text-color: #333; // General text color
+$text-color-muted: #666; // Muted text color
+$heading-color: #1a1a1a; // Heading color
 $background-color: #fff;
 $border-color: #e9ecef;
 

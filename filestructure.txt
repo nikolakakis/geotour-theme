@@ -23,12 +23,16 @@ SOURCE DIRECTORIES:
 │   └── scss/
 │       ├── main.scss               # Main SCSS entry point
 │       ├── base/                   # Reset, typography, variables
+│       │   ├── _variables.scss     # SCSS variables and colors
+│       │   ├── _animations.scss    # Animation utilities
+│       │   └── _typography.scss    # Typography styles (Syne font)
 │       ├── components/             # Reusable UI components
+│       │   └── _hero.scss          # Hero section styles
 │       ├── layout/
 │       │   ├── navigation/
 │       │   │   └── _main.scss      # Main menu SCSS
 │       │   ├── header/
-│       │   │   └── _main.scss      # Main header SCSS with curved design
+│       │   │   └── _main.scss      # Main header SCSS with clip-path design
 │       │   └── ...                 # Other layout partials (footer, grid)
 │       └── pages/                  # Page-specific styles
 
@@ -52,6 +56,8 @@ CUSTOM TEMPLATES:
 │   ├── taxonomy-listing-category.php
 │   ├── taxonomy-listing-region.php
 │   └── taxonomy-listing-tag.php
+├── template-parts/                 # WordPress template parts
+│   └── hero.php                    # Hero section template part
 
 PHP INCLUDES STRUCTURE:
 ├── includes/                       # Organized PHP functionality
