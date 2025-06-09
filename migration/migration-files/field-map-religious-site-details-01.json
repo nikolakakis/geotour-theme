@@ -1,0 +1,38 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-religioninfo_settlement",
+        "new_acf_field_name": "religioninfo_settlement"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-religioninfo_venetian",
+        "new_acf_field_name": "religioninfo_venetian"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-religioninfo_byzantine",
+        "new_acf_field_name": "religioninfo_byzantine"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-religioninfo_ottoman",
+        "new_acf_field_name": "religioninfo_ottoman"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-religioninfo_early_christian",
+        "new_acf_field_name": "religioninfo_early_christian"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-religioninfo_contemporary",
+        "new_acf_field_name": "religioninfo_contemporary"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-religioninfo_opentopublic",
+        "new_acf_field_name": "religioninfo_opentopublic"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-religioninfo_monastery",
+        "new_acf_field_name": "religioninfo_monastery"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-religioninfo_populated",
+        "new_acf_field_name": "religioninfo_populated"
+    }
+]

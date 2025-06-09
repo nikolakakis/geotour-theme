@@ -1,0 +1,42 @@
+[
+  {
+    "old_meta_key": "boldthemes_theme_listing-contact_title",
+    "new_acf_field_name": "contact_title"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-contact_address",
+    "new_acf_field_name": "contact_address"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-contact_phone",
+    "new_acf_field_name": "contact_phone"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-contact_mobile",
+    "new_acf_field_name": "contact_mobile"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-contact_whatsapp",
+    "new_acf_field_name": "contact_whatsapp"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-contact_email",
+    "new_acf_field_name": "contact_email"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-contact_website",
+    "new_acf_field_name": "contact_website"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-contact_description",
+    "new_acf_field_name": "contact_description"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-social_facebook",
+    "new_acf_field_name": "social_facebook"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-social_twitter",
+    "new_acf_field_name": "social_twitter"
+  }
+]

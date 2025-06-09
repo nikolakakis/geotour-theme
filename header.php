@@ -26,35 +26,7 @@
 
     <?php /*
     <header id="masthead" class="site-header">
-        <div class="site-branding">
-            <?php
-            if (is_front_page() && is_home()) :
-                ?>
-                <h1 class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home"><?php bloginfo('name'); ?></a></h1>
-                <?php
-            else :
-                ?>
-                <p class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home"><?php bloginfo('name'); ?></a></p>
-                <?php
-            endif;
-            $description = get_bloginfo('description', 'display');
-            if ($description || is_customize_preview()) :
-                ?>
-                <p class="site-description"><?php echo $description; ?></p>
-            <?php endif; ?>
-        </div><!-- .site-branding -->
-
-        <nav id="site-navigation" class="main-navigation">
-            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e('Primary Menu', 'geotour'); ?></button>
-            <?php
-            // wp_nav_menu(
-            //     array(
-            //         'theme_location' => 'primary',
-            //         'menu_id'        => 'primary-menu',
-            //     )
-            // );
-            ?>
-        </nav><!-- #site-navigation -->
+        // ... commented out masthead ...
     </header><!-- #masthead -->
     */ ?>
 
@@ -84,10 +56,10 @@
         endif;
 
         wp_nav_menu([
-            'theme_location' => 'primary',
-            'menu_class'     => 'menu',
+            'theme_location' => 'primary', // Ensure this theme location is registered
+            'menu_class'     => 'menu', // Original class
             'container'      => false,
-            'walker'         => new Geotour_Accordion_Menu_Walker(),
+            'walker'         => new Geotour_Accordion_Menu_Walker(), // Assuming this walker is defined
         ]);
         ?>
     </nav>
@@ -105,6 +77,6 @@
         </a>
     </footer>
 
-    <div id="primary" class="content-area">
+<div id="primary" class="content-area">
         <main id="main" class="site-main">
             <?php // Main page content starts here ?>

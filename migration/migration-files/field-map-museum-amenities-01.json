@@ -1,0 +1,34 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-amenities_museum_souveniers",
+        "new_acf_field_name": "amenities_museum_souveniers"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-amenities_museum_group_visits",
+        "new_acf_field_name": "amenities_museum_group_visits"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-amenities_museum_lost_and_found",
+        "new_acf_field_name": "amenities_museum_lost_and_found"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-amenities_museum_dining",
+        "new_acf_field_name": "amenities_museum_dining"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-amenities_booking_required",
+        "new_acf_field_name": "amenities_booking_required"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-amenities_ticket_reservations",
+        "new_acf_field_name": "amenities_ticket_reservations"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-amenities_open_airing",
+        "new_acf_field_name": "amenities_open_airing"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-amenities_cafe",
+        "new_acf_field_name": "amenities_cafe"
+    }
+]

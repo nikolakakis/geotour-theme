@@ -3,4 +3,20 @@
 @use 'base/animations';
 
 // Layout specific styles
-@use 'layout/navigation/main'; // This will make styles from _main.scss apply
+@use 'layout/navigation/main' as navigation; // This will make styles from _main.scss apply
+
+// Component specific styles
+// @use 'components/buttons';
+// @use 'components/cards';
+
+// Page specific styles
+// @use 'pages/home';
+// @use 'pages/contact';
+
+// Utility classes
+// @use 'utils/helpers';
+
+// Print styles (if any)
+// @media print {
+//   @use 'print/main';
+// }

@@ -1,108 +1,103 @@
-// filepath: e:\visualstudio\geotour-theme\src\scss\layout\navigation\_main.scss
+// filepath: e:\\visualstudio\\geotour-theme\\src\\scss\\layout\\navigation\\_main.scss
 @use '../../base/variables' as variables;
 @use '../../base/animations' as animations;
-@use 'sass:color'; // Added sass:color module
+@use 'sass:color';
 
-// Main styles for the new full-screen navigation
+// Main styles for the WordPress-generated menu within the new full-screen navigation
 
 // Prevent scrolling when menu is open
-body.menu-open {
-  overflow: hidden;
+body.menu-open { // Restored original class, assuming it was 'menu-open'
+  overflow: hidden; 
 }
 
 // --- Hamburger Icon --- 
-.hamburger-button {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: 1001; // Ensure it's above other content
-  position: fixed;
-  top: 2rem;
-  right: 2rem;
-  background-color: rgba(255, 255, 255, 0.1); // Consider a variable if used elsewhere
-  border-radius: 9999px;
-  padding: 8px;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
+.hamburger-button { // Restored original hamburger styles
+    width: 40px; // Example value, adjust as needed
+    height: 40px; // Example value
+    position: fixed; // Or absolute, depending on desired placement
+    top: 20px; // Example value
+    right: 20px; // Example value
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001; // Ensure it's above the menu
 
-  &:hover {
-    transform: scale(1.1);
-  }
-
-  span {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background-color: variables.$text-color; // Use variable with namespace
-    margin: 3px 0;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  }
+    span {
+        display: block;
+        width: 28px; // Example value
+        height: 3px; // Example value
+        background-color: variables.$text-color; // Use a theme variable
+        margin: 5px auto;
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        border-radius: 3px;
+    }
 }
 
 // --- Menu Open State for Hamburger --- 
-.menu-open .hamburger-button span {
-  background-color: variables.$menu-text-color; // Hamburger lines become white when menu is open
+.menu-open .hamburger-button span:nth-child(1) { // Restored original open state
+    transform: translateY(8px) rotate(45deg); // Example transform
 }
-
-.menu-open .hamburger-button span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
+.menu-open .hamburger-button span:nth-child(2) { // Restored original open state
+    opacity: 0;
 }
-
-.menu-open .hamburger-button span:nth-child(2) {
-  opacity: 0;
-  transform: scale(0);
-}
-
-.menu-open .hamburger-button span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
+.menu-open .hamburger-button span:nth-child(3) { // Restored original open state
+    transform: translateY(-8px) rotate(-45deg); // Example transform
 }
 
 // --- Full Screen Menu Overlay --- 
-#fullscreen-menu { // Targeting the ID from your header.php
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: variables.$primary-color-transparent; // Use variable with namespace
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  visibility: hidden;
-  clip-path: circle(1.4% at calc(100% - 3rem) 3rem); // Circle wipe from hamburger position
-  transition: all 0.6s cubic-bezier(0.76, 0, 0.24, 1);
-  overflow-y: auto; // Allow scrolling within the menu if content is too long
-
-  // Container for menu items, usually a UL directly inside the nav
-  > ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: right; // Changed from center to right
-    width: 90%; // Max width for menu content
-    max-width: 600px; // Adjust as needed
-  }
+#fullscreen-menu { // Restored original menu styles
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(variables.$main-color, 0.95); // Corrected: Use variables.$main-color
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    // Styles for WordPress menu items within this will be below
 }
 
-.menu-open #fullscreen-menu {
-  opacity: 1;
-  visibility: visible;
-  clip-path: circle(150% at calc(100% - 3rem) 3rem);
+.menu-open #fullscreen-menu { // Restored original open state
+    opacity: 1;
+    pointer-events: auto;
+}
+
+// Styles for the main UL container of the WordPress menu
+#fullscreen-menu > .menu { // Target the direct UL child of #fullscreen-menu
+  list-style-type: disc; // Ensure top-level UL shows bullets if not already
+  padding-left: 30px;    // Add some padding to the UL itself if markers are outside
+  margin-block-start: 0; // Reset default UL margins if needed
+  margin-block-end: 0;   // Reset default UL margins if needed
+  width: auto; // Or a specific width if you want to constrain it
+  color: white;
 }
 
 // --- Menu Items Animation (WordPress specific selectors) --- 
+// These styles apply to the <li> elements generated by wp_nav_menu
 #fullscreen-menu .menu-item { // General class for WP menu items, most specific styles will be for top-level here
   @include animations.staggered-animation(0.2s);
   margin-bottom: 1.2rem; // Increased spacing for top-level items
+  // list-style-position: inside; // Ensures the marker is inside the li box, might help with alignment
+
+  // Style the ::marker pseudo-element for top-level items
+  // This specifically targets markers of .menu-item directly under #fullscreen-menu > .menu
+  #fullscreen-menu > .menu > &::marker { 
+    color: white !important;      // Made white more forceful for testing
+    font-size: 2em !important;    // Significantly increased size for testing
+  }
+
+  // If the above doesn't work due to specificity or how wp_nav_menu renders,
+  // ensure the direct <li> children of the main menu UL are targeted.
+  // For example, if wp_nav_menu outputs <nav><ul><li class="menu-item">, then:
+  // #fullscreen-menu > ul > .menu-item::marker { ... }
 
   > a { // Top-level links
     font-size: 2.2rem; 
@@ -176,7 +171,7 @@ body.menu-open {
   position: relative;
   display: inline-block; // Ensure it takes space
   cursor: pointer; // Indicate clickable
-
+  padding: 4px;
   &::before, &::after {
     content: '';
     position: absolute;

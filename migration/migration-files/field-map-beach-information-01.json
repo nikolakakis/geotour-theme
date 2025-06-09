@@ -1,0 +1,42 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_sand",
+        "new_acf_field_name": "beachinfo_sand"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_pebbles",
+        "new_acf_field_name": "beachinfo_pebbles"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_rocky_shore",
+        "new_acf_field_name": "beachinfo_rocky_shore"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_accessible",
+        "new_acf_field_name": "beachinfo_accessible"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_secluded",
+        "new_acf_field_name": "beachinfo_secluded"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_notbusy",
+        "new_acf_field_name": "beachinfo_notbusy"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_busy",
+        "new_acf_field_name": "beachinfo_busy"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_shallow_water",
+        "new_acf_field_name": "beachinfo_shallow_water"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_exposed",
+        "new_acf_field_name": "beachinfo_exposed"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_calm",
+        "new_acf_field_name": "beachinfo_calm"
+    }
+]

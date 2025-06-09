@@ -1,0 +1,6 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-location_position",
+        "new_acf_field_name": "position"
+    }
+]

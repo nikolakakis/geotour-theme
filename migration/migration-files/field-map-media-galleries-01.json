@@ -1,0 +1,18 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-media_images",
+        "new_acf_field_name": "media_images"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-media_video_1",
+        "new_acf_field_name": "media_video_1"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-media_video_2",
+        "new_acf_field_name": "media_video_2"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-media_video_3",
+        "new_acf_field_name": "media_video_3"
+    }
+]

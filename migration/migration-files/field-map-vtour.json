@@ -1,0 +1,6 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-vtour_link",
+        "new_acf_field_name": "vtour_link"
+    }
+]

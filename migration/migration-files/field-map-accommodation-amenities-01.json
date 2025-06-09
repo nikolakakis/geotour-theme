@@ -1,0 +1,42 @@
+[
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_free_wifi",
+    "new_acf_field_name": "amenities_free_wifi"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_parking",
+    "new_acf_field_name": "amenities_parking"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_wheelchair_accessible",
+    "new_acf_field_name": "amenities_wheelchair_accessible"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_accepting_credit_cards",
+    "new_acf_field_name": "amenities_accepting_credit_cards"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_family_friendly",
+    "new_acf_field_name": "amenities_family_friendly"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_pets_friendly",
+    "new_acf_field_name": "amenities_pets_friendly"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_self_check",
+    "new_acf_field_name": "amenities_self_check"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_kitchenette",
+    "new_acf_field_name": "amenities_kitchenette"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_washing_machine",
+    "new_acf_field_name": "amenities_washing_machine"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_air_conditioned",
+    "new_acf_field_name": "amenities_air_conditioned"
+  }
+]

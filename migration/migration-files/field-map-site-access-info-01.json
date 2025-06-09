@@ -1,0 +1,22 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_pavedroad",
+        "new_acf_field_name": "siteinfo_pavedroad"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_earthroad",
+        "new_acf_field_name": "siteinfo_earthroad"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_fourwheel",
+        "new_acf_field_name": "siteinfo_fourwheel"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_hike",
+        "new_acf_field_name": "siteinfo_hike"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_notes",
+        "new_acf_field_name": "siteinfo_notes"
+    }
+]

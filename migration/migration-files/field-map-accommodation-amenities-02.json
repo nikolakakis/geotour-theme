@@ -1,0 +1,38 @@
+[
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_television",
+    "new_acf_field_name": "amenities_television"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_safe_box",
+    "new_acf_field_name": "amenities_safe_box"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_hair_dryer",
+    "new_acf_field_name": "amenities_hair_dryer"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_mini_bar",
+    "new_acf_field_name": "amenities_mini_bar"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_towels_changing",
+    "new_acf_field_name": "amenities_towels_changing"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_smoke_detector",
+    "new_acf_field_name": "amenities_smoke_detector"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_coffee_teamaker",
+    "new_acf_field_name": "amenities_coffee_teamaker"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenitiess_storage_room",
+    "new_acf_field_name": "amenitiess_storage_room"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_jacuzzi",
+    "new_acf_field_name": "amenities_jacuzzi"
+  }
+]

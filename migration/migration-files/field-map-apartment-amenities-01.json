@@ -1,0 +1,22 @@
+[
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_apartments_outdoor_pool",
+    "new_acf_field_name": "amenities_apartments_outdoor_pool"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_apartments_indoor_pool",
+    "new_acf_field_name": "amenities_apartments_indoor_pool"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_apartments_coffee_teamaker",
+    "new_acf_field_name": "amenities_apartments_coffee_teamaker"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_apartments_storage_room",
+    "new_acf_field_name": "amenities_apartments_storage_room"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-amenities_apartments_jacuzzi",
+    "new_acf_field_name": "amenities_apartments_jacuzzi"
+  }
+]

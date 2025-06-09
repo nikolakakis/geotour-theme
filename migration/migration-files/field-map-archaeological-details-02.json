@@ -1,0 +1,42 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_hellenistic",
+        "new_acf_field_name": "siteinfo_hellenistic"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_roman",
+        "new_acf_field_name": "siteinfo_roman"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_arab",
+        "new_acf_field_name": "siteinfo_arab"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_byzantine",
+        "new_acf_field_name": "siteinfo_byzantine"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_venetian",
+        "new_acf_field_name": "siteinfo_venetian"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_ottoman",
+        "new_acf_field_name": "siteinfo_ottoman"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_modernera",
+        "new_acf_field_name": "siteinfo_modernera"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_minoan",
+        "new_acf_field_name": "population_minoan"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_darkages",
+        "new_acf_field_name": "population_darkages"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_classical",
+        "new_acf_field_name": "population_classical"
+    }
+]

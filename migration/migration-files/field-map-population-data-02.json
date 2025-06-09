@@ -1,0 +1,42 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_1991",
+        "new_acf_field_name": "population_1991"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_2001",
+        "new_acf_field_name": "population_2001"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_2011",
+        "new_acf_field_name": "population_2011"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_2021",
+        "new_acf_field_name": "population_2021"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_minoan",
+        "new_acf_field_name": "population_minoan"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_darkages",
+        "new_acf_field_name": "population_darkages"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_classical",
+        "new_acf_field_name": "population_classical"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_hellenistic",
+        "new_acf_field_name": "population_hellenistic"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_roman",
+        "new_acf_field_name": "population_roman"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_byzantine",
+        "new_acf_field_name": "population_byzantine"
+    }
+]

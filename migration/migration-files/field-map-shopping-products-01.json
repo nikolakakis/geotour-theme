@@ -1,0 +1,30 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-products_wine",
+        "new_acf_field_name": "products_wine"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-products_dairy",
+        "new_acf_field_name": "products_dairy"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-products_honey",
+        "new_acf_field_name": "products_honey"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-products_agricultural",
+        "new_acf_field_name": "products_agricultural"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-products_oil",
+        "new_acf_field_name": "products_oil"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-products_gifts",
+        "new_acf_field_name": "products_gifts"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-products_various",
+        "new_acf_field_name": "products_various"
+    }
+]

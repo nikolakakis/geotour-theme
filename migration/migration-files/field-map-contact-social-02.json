@@ -1,0 +1,30 @@
+[
+  {
+    "old_meta_key": "boldthemes_theme_listing-social_instagram",
+    "new_acf_field_name": "social_instagram"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-social_tiktok",
+    "new_acf_field_name": "social_tiktok"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-social_pinterest",
+    "new_acf_field_name": "social_pinterest"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-social_tripadvisor",
+    "new_acf_field_name": "social_tripadvisor"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-social_youtube",
+    "new_acf_field_name": "social_youtube"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-social_linkedin",
+    "new_acf_field_name": "social_linkedin"
+  },
+  {
+    "old_meta_key": "boldthemes_theme_listing-social_google_plus",
+    "new_acf_field_name": "social_google_plus"
+  }
+]

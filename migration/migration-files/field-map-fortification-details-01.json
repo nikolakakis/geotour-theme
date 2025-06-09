@@ -1,0 +1,22 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-fortificationsiteinfo_roman",
+        "new_acf_field_name": "fortificationsiteinfo_roman"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-fortificationsiteinfo_arab",
+        "new_acf_field_name": "fortificationsiteinfo_arab"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-fortificationsiteinfo_venetian",
+        "new_acf_field_name": "fortificationsiteinfo_venetian"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-fortificationsiteinfo_byzantine",
+        "new_acf_field_name": "fortificationsiteinfo_byzantine"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-fortificationsiteinfo_ottoman",
+        "new_acf_field_name": "fortificationsiteinfo_ottoman"
+    }
+]

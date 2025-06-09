@@ -1,0 +1,30 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-characteristics_open_fornewmembers",
+        "new_acf_field_name": "characteristics_open_fornewmembers"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-characteristics_open_forvolunteers",
+        "new_acf_field_name": "characteristics_open_forvolunteers"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-characteristics_opentomembersspace",
+        "new_acf_field_name": "characteristics_opentomembersspace"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-characteristics_opentopublicspace",
+        "new_acf_field_name": "characteristics_opentopublicspace"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-characteristics_selling_products",
+        "new_acf_field_name": "characteristics_selling_products"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-characteristics_selling_media",
+        "new_acf_field_name": "characteristics_selling_media"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-characteristics_selling_services",
+        "new_acf_field_name": "characteristics_selling_services"
+    }
+]

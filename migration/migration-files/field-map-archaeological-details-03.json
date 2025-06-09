@@ -1,0 +1,14 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_hellenistic",
+        "new_acf_field_name": "population_hellenistic"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_roman",
+        "new_acf_field_name": "population_roman"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-population_byzantine",
+        "new_acf_field_name": "population_byzantine"
+    }
+]

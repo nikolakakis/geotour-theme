@@ -43,6 +43,14 @@ require_once GEOTOUR_THEME_DIR . '/includes/custom-post-types/listing.php';
 // API endpoints for AJAX and custom functionality (Uncomment when ready)
 // require_once GEOTOUR_THEME_DIR . '/includes/api/api-init.php';
 
+/**
+ * Temporary inclusion of the data migration tools.
+ * REMOVE THIS AND THE /migration FOLDER AFTER MIGRATION IS COMPLETE.
+ */
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+    require_once get_template_directory() . '/migration/cli-command.php';
+}
+
 add_action('after_setup_theme', function() {
     register_nav_menus([
         'primary' => __('Primary Menu', 'geotour-theme'),

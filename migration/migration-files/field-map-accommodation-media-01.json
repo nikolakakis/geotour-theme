@@ -1,0 +1,26 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-media_images_featured",
+        "new_acf_field_name": "media_images_featured"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-media_images_exterior",
+        "new_acf_field_name": "media_images_exterior"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-media_images_interior",
+        "new_acf_field_name": "media_images_interior"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-media_images_surrounding_places",
+        "new_acf_field_name": "media_images_surrounding_places"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-media_images_beach",
+        "new_acf_field_name": "media_images_beach"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-media_images_spa",
+        "new_acf_field_name": "media_images_spa"
+    }
+]

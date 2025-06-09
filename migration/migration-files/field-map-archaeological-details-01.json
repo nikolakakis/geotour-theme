@@ -1,0 +1,42 @@
+[
+    {
+        "old_meta_key": "boldthemes_theme_listing-price",
+        "new_acf_field_name": "price"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-prices_notes",
+        "new_acf_field_name": "prices_notes"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-opening_hours_notes",
+        "new_acf_field_name": "opening_hours_notes"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-working_time",
+        "new_acf_field_name": "working_time"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_accessrestricted",
+        "new_acf_field_name": "siteinfo_accessrestricted"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_admissions",
+        "new_acf_field_name": "siteinfo_admissions"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_prehistoric",
+        "new_acf_field_name": "siteinfo_prehistoric"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_minoan",
+        "new_acf_field_name": "siteinfo_minoan"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_darkages",
+        "new_acf_field_name": "siteinfo_darkages"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-siteinfo_classical",
+        "new_acf_field_name": "siteinfo_classical"
+    }
+]
