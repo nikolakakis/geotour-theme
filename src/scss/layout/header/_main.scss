@@ -162,20 +162,27 @@ body {
             }
         }
     }
-    
-    // Center Section: Logo
+      // Center Section: Logo
     .header-center-section {
         position: absolute;
-        left: 50%;
-        top: 50%;
+        left: 37%;
+        top: 30%;
         transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         a {
-            display: block;
-        }        .logo-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-image {
             height: 4rem;
             width: auto;
             transition: height 0.3s ease;
+            display: block;
             
             @media (min-width: 768px) {
                 height: 5rem;
@@ -233,7 +240,7 @@ body {
 
 @keyframes slowRotate {
     from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
+    to { transform: translate(-50%, -50%) rotate(-360deg); }
 }
 
 /* --- On-Load Animations --- */
@@ -259,7 +266,7 @@ body {
     background: transparent;
     border: none;
     cursor: pointer;
-    z-index: 1001;
+    z-index: 1002; // Higher than fullscreen menu (1000)
 
     span {
         display: block;
