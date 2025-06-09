@@ -15,8 +15,10 @@ SOURCE DIRECTORIES:
 │   ├── js/
 │   │   ├── main.js                 # Main JS entry point (imports SCSS)
 │   │   ├── modules/
-│   │   │   └── navigation/
-│   │   │       └── main.js         # Main menu JS logic
+│   │   │   ├── navigation/
+│   │   │   │   └── main.js         # Main menu JS logic
+│   │   │   └── header/
+│   │   │       └── main.js         # Header functionality and animations
 │   │   └── leaflet/                # Leaflet map functionality
 │   └── scss/
 │       ├── main.scss               # Main SCSS entry point
@@ -25,7 +27,9 @@ SOURCE DIRECTORIES:
 │       ├── layout/
 │       │   ├── navigation/
 │       │   │   └── _main.scss      # Main menu SCSS
-│       │   └── ...                 # Other layout partials (header, footer, grid)
+│       │   ├── header/
+│       │   │   └── _main.scss      # Main header SCSS with curved design
+│       │   └── ...                 # Other layout partials (footer, grid)
 │       └── pages/                  # Page-specific styles
 
 WORDPRESS THEME STRUCTURE:

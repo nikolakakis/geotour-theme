@@ -1,63 +1,58 @@
-@use '../../base/variables' as v; // Assuming you have variables like primary color
-@use '../../base/animations' as a; // Assuming you have animations, or define them here
+@use '../../base/variables' as variables;
 
 // Custom styles for the Syne font and theme
 body {
     font-family: 'Syne', sans-serif;
-    // background-color: #f0f4f8; // Set globally if this is the desired body background
     &.menu-open-no-scroll {
         overflow: hidden;
     }
-}
-
-// Body padding to prevent overlap with fixed header
-// Ensure this is adjusted based on the final header height and curve
-body {
-    padding-top: 100px; 
+    // Body padding to prevent overlap with fixed header
+    padding-top: 120px; 
 }
 
 :root {
     --primary-color: #22a575;
     --primary-light: #28bf86;
     --primary-dark: #1b8a61;
-    --body-bg-color: #f0f4f8; // Define body background color for the curve
+    --body-bg-color: #f0f4f8;
 }
 
-.text-primary { color: var(--primary-color); }
+.text-primary { 
+    color: var(--primary-color); 
+}
 
 /* --- Header Styling --- */
 .main-header {
     background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
-    height: 120px; /* Increased height for the curve */
+    height: 120px;
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
-    z-index: 999; // Ensure it's above content, but below hamburger if it needs to be separate
-    overflow: hidden; /* Important for the curve effect */
+    z-index: 999;
+    overflow: hidden;
 
-    // Container for header content
     .header-container {
         width: 100%;
-        max-width: 1280px; // Corresponds to max-w-screen-xl
+        max-width: 1280px;
         margin-left: auto;
         margin-right: auto;
-        padding-left: 1rem; // 16px
-        padding-right: 1rem; // 16px
+        padding-left: 1rem;
+        padding-right: 1rem;
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        position: relative; // For z-index of children if needed
-        z-index: 1; // Above the ::before and ::after pseudo-elements
+        position: relative;
+        z-index: 1;
 
-        @media (min-width: 640px) { // sm:
-            padding-left: 1.5rem; // 24px
-            padding-right: 1.5rem; // 24px
+        @media (min-width: 640px) {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
         }
-        @media (min-width: 1024px) { // lg:
-            padding-left: 2rem; // 32px
-            padding-right: 2rem; // 32px
+        @media (min-width: 1024px) {
+            padding-left: 2rem;
+            padding-right: 2rem;
         }
     }
 
@@ -65,26 +60,30 @@ body {
     .header-left-section {
         display: flex;
         align-items: center;
-        gap: 1rem; // space-x-4 (can be adjusted)
-        @media (min-width: 640px) { // sm:
-            gap: 1.5rem; // space-x-6
+        gap: 1rem;
+
+        @media (min-width: 640px) {
+            gap: 1.5rem;
         }
     }
 
     .social-icons {
         display: flex;
         align-items: center;
-        gap: 0.75rem; // space-x-3
+        gap: 0.75rem;
+
         a {
             color: rgba(255, 255, 255, 0.8);
             transition: color 0.3s ease, transform 0.3s ease;
+            
             &:hover {
                 color: white;
                 transform: scale(1.10);
             }
+            
             svg {
-                width: 1.5rem; // w-6
-                height: 1.5rem; // h-6
+                width: 1.5rem;
+                height: 1.5rem;
                 fill: currentColor;
             }
         }
@@ -93,18 +92,21 @@ body {
     .language-flags {
         display: flex;
         align-items: center;
-        gap: 0.5rem; // space-x-2
+        gap: 0.5rem;
+
         a {
             display: block;
             transition: transform 0.3s ease;
+            
             &:hover {
                 transform: scale(1.10);
             }
+            
             img {
-                width: 1.75rem; // w-7
+                width: 1.75rem;
                 height: auto;
-                border-radius: 2px; // rounded-sm
-                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); // shadow-md
+                border-radius: 2px;
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             }
         }
     }
@@ -115,16 +117,18 @@ body {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
+
         a {
             display: block;
         }
+
         .logo-image {
-            height: 4rem; // h-16 (64px)
+            height: 4rem;
             width: auto;
         }
     }
 
-    // Right Section: Hamburger Menu Button (styles will be separate for the button itself)
+    // Right Section: Hamburger Menu Button
     .header-right-section {
         display: flex;
         align-items: center;
@@ -135,13 +139,13 @@ body {
 .main-header::after {
     content: '';
     position: absolute;
-    bottom: -80px; /* Controls the depth of the curve */
+    bottom: -80px;
     left: -25%;
     width: 150%;
     height: 120px;
-    background: var(--body-bg-color); /* Use variable for body background */
+    background: var(--body-bg-color);
     border-radius: 50%;
-    z-index: 0; // Behind header content
+    z-index: 0;
 }
 
 /* Subtle animated 'G' in the background */
@@ -156,7 +160,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     animation: slowRotate 30s linear infinite;
-    z-index: 0; // Behind header content
+    z-index: 0;
 }
 
 @keyframes slowRotate {
@@ -171,30 +175,29 @@ body {
 }
 
 .animate-on-load {
-    opacity: 0; /* Initially hidden */
+    opacity: 0;
     animation: fadeInDown 1s ease-out forwards;
 }
+
 .delay-200 { animation-delay: 0.2s; }
 .delay-400 { animation-delay: 0.4s; }
 .delay-600 { animation-delay: 0.6s; }
 
-/* --- Custom Hamburger Button (for the one in the header) --- */
-// This button is now part of .main-header, ensure z-index is appropriate
-// The existing .hamburger-button in navigation/_main.scss might need to be namespaced or this made more specific
-.main-header .hamburger-button { // Increased specificity
+/* --- Custom Hamburger Button --- */
+.main-header .hamburger-button {
     width: 40px;
     height: 40px;
-    position: relative; // Relative to its container in the header
+    position: relative;
     background: transparent;
     border: none;
     cursor: pointer;
-    z-index: 1001; // Above fullscreen menu and header curve
+    z-index: 1001;
 
     span {
         display: block;
         width: 28px;
         height: 3px;
-        background-color: white; // For visibility on dark header
+        background-color: white;
         margin: 5px auto;
         transition: all 0.3s ease-in-out;
         position: relative;
@@ -209,58 +212,5 @@ body {
     }
     &.is-active span:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
-    }
-}
-
-/* --- Fullscreen Menu --- */
-// This ID is used by the new header.
-// The existing #fullscreen-menu in navigation/_main.scss might need to be namespaced or this made more specific
-#fullscreen-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(27, 138, 97, 0.98); // var(--primary-dark) with alpha
-    backdrop-filter: blur(5px);
-    z-index: 1000; // Below hamburger, above other content
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-
-    &.is-visible {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    a {
-        color: white;
-        font-size: 2.5rem; /* 40px */
-        font-weight: 700;
-        margin: 1.5rem 0;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        text-decoration: none;
-
-        &:hover {
-            // Add a subtle hover effect if desired
-            opacity: 0.8;
-        }
-    }
-
-    /* Staggered animation for menu items */
-    &.is-visible a {
-        opacity: 1;
-        transform: translateY(0);
-        &:nth-child(1) { transition-delay: 0.2s; }
-        &:nth-child(2) { transition-delay: 0.3s; }
-        &:nth-child(3) { transition-delay: 0.4s; }
-        &:nth-child(4) { transition-delay: 0.5s; }
-        // Add more if there are more links
     }
 }

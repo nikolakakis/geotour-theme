@@ -4,6 +4,7 @@
 
 // Layout specific styles
 @use 'layout/navigation/main' as navigation; // This will make styles from _main.scss apply
+@use 'layout/header/main' as header; // Include the new header styles
 
 // Component specific styles
 // @use 'components/buttons';
