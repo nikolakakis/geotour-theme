@@ -1,6 +1,6 @@
 <?php
 /**
- * The main template file
+ * The template for displaying all single posts
  *
  * @package Geotour_Mobile_First
  */

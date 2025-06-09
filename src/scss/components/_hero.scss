@@ -77,12 +77,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     background: linear-gradient(
         135deg,
         rgba(0, 0, 0, 0.6) 0%,
@@ -93,7 +87,6 @@
     );
     z-index: 2;
     pointer-events: none; /* Allow clicks to pass through to content below */
-}
 }
 
 .hero-content {
@@ -410,22 +403,4 @@
         rgba(variables.$primary-light, 0.2) 50%,
         rgba(255, 255, 255, 0.2) 100%
     );
-}
-
-// Force overlay visibility - temporary test
-.hero-section {
-    // ...existing code...
-    
-    // Force overlay to be visible
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5) !important;
-        z-index: 5;
-        pointer-events: none;
-    }
 }

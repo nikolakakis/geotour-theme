@@ -16,5 +16,9 @@
     "sass": "^1.77.4",
     "vite": "^5.2.13",
     "vite-plugin-live-reload": "^3.0.2"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3"
   }
 }

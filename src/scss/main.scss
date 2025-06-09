@@ -6,9 +6,12 @@
 // Layout specific styles
 @use 'layout/navigation/main' as navigation; // This will make styles from _main.scss apply
 @use 'layout/header/main' as header; // Include the new header styles
+@use 'layout/content/main' as content-layout; // Main content layout styles
 
 // Component specific styles
 @use 'components/hero'; // Hero section styles
+@use 'components/content'; // Content component styles
+@use 'components/maps'; // Styles for Leaflet maps
 // @use 'components/buttons';
 // @use 'components/cards';
 

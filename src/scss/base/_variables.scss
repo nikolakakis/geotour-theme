@@ -30,5 +30,11 @@ $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
 
+// Border Radius
+$border-radius-sm: 0.2rem;
+$border-radius: 0.25rem;
+$border-radius-lg: 0.5rem;
+$border-radius-pill: 50rem;
+
 // Other global variables
 $container-max-width: $breakpoint-xl;

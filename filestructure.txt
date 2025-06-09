@@ -1,6 +1,6 @@
 GEOTOUR THEME FILE STRUCTURE
 =============================
-Last Updated: June 7, 2025
+Last Updated: June 9, 2025
 Project: Geotour Crete WordPress Theme Redevelopment
 
 ROOT DIRECTORY: e:\visualstudio\geotour-theme\
@@ -13,40 +13,64 @@ COMPILED/GENERATED DIRECTORIES (Git Ignored):
 SOURCE DIRECTORIES:
 ├── src/                            # Source files for compilation
 │   ├── js/
-│   │   ├── main.js                 # Main JS entry point (imports SCSS)
+│   │   ├── main.js                 # Main JS entry point (imports modules)
 │   │   ├── modules/
 │   │   │   ├── navigation/
 │   │   │   │   └── main.js         # Main menu JS logic
-│   │   │   └── header/
-│   │   │       └── main.js         # Header functionality and animations
-│   │   └── leaflet/                # Leaflet map functionality
+│   │   │   ├── header/
+│   │   │   │   └── main.js         # Header functionality and animations
+│   │   │   ├── hero/
+│   │   │   │   └── main.js         # Hero section interactions, scroll effects, parallax
+│   │   │   └── maps/
+│   │   │       └── main.js         # Leaflet map initialization, markers, GeoJSON, styling
+│   │   └── leaflet/                # Leaflet map functionality (if not using modules for everything)
 │   └── scss/
-│       ├── main.scss               # Main SCSS entry point
-│       ├── base/                   # Reset, typography, variables
-│       │   ├── _variables.scss     # SCSS variables and colors
+│       ├── main.scss               # Main SCSS entry point with all imports
+│       ├── base/                   # Foundation styles
+│       │   ├── _variables.scss     # SCSS variables and colors (fixed duplicates)
 │       │   ├── _animations.scss    # Animation utilities
-│       │   └── _typography.scss    # Typography styles (Syne font)
+│       │   └── _typography.scss    # Typography styles (Syne font system)
 │       ├── components/             # Reusable UI components
-│       │   └── _hero.scss          # Hero section styles
+│       │   ├── _hero.scss          # Hero section styles with enhanced overlays
+│       │   ├── _content.scss       # Content components (articles, posts, archive grid)
+│       │   └── _maps.scss          # Styles for Leaflet maps (container, popups, controls)
 │       ├── layout/
 │       │   ├── navigation/
-│       │   │   └── _main.scss      # Main menu SCSS
+│       │   │   └── _main.scss      # Main menu SCSS with language flags
 │       │   ├── header/
 │       │   │   └── _main.scss      # Main header SCSS with clip-path design
-│       │   └── ...                 # Other layout partials (footer, grid)
+│       │   └── content/
+│       │       └── _main.scss      # Main content layout, responsive grid, navigation
 │       └── pages/                  # Page-specific styles
 
 WORDPRESS THEME STRUCTURE:
 ├── style.css                       # WordPress theme header (required)
-├── index.php                       # Main template fallback
+├── index.php                       # Main template fallback using content-main.php
 ├── functions.php                   # Main functions (loader only)
-├── header.php                      # Site header template
+├── header.php                      # Site header with SVG clip-path and hero integration
 ├── footer.php                      # Site footer template
-├── single.php                      # Single post template
-├── page.php                        # Static page template
-├── archive.php                     # Archive template
+├── single.php                      # Single post template using template parts
+├── page.php                        # Static page template using template parts
+├── archive.php                     # Archive template with grid layout
 ├── 404.php                         # Error page template
 └── search.php                      # Search results template
+
+TEMPLATE PARTS:
+├── template-parts/                 # Modular template components
+│   ├── hero.php                    # Hero section with featured images and body class
+│   ├── content-main.php            # Main content wrapper with archive grid support
+│   ├── content-single.php          # Single post/page content (removes duplicate H1)
+│   ├── content.php                 # Archive loop content with card styling
+│   ├── content-none.php            # No content found template with search form
+│   └── listing/                    # Listing CPT specific template parts
+│       ├── content-listing-single.php # Main content for a single listing
+│       ├── content-listing-archive.php # How a listing appears in archive loops (e.g., a card)
+│       ├── map-single.php          # Displays the Leaflet map for a single listing
+│       ├── map-archive.php         # Displays the Leaflet map for archive listing pages
+│       ├── related-listings.php    # Displays nearby or related listings
+│       ├── related-posts.php       # Displays related standard posts
+│       ├── related-old-photos.php  # Displays related "old photos" CPT items
+│       └── related-people.php      # Displays related "people" CPT items
 
 CUSTOM TEMPLATES:
 ├── templates/                      # Custom template files
@@ -56,20 +80,18 @@ CUSTOM TEMPLATES:
 │   ├── taxonomy-listing-category.php
 │   ├── taxonomy-listing-region.php
 │   └── taxonomy-listing-tag.php
-├── template-parts/                 # WordPress template parts
-│   └── hero.php                    # Hero section template part
 
 PHP INCLUDES STRUCTURE:
 ├── includes/                       # Organized PHP functionality
 │   ├── theme-support.php           # Theme setup, menus, image sizes
 │   ├── scripts-styles.php          # Asset enqueuing with Vite manifest
-│   ├── utils.php                   # Utility functions (coordinates, GeoJSON)
+│   ├── utils.php                   # Utility functions (coordinates, GeoJSON, post meta helpers)
 │   ├── hooks.php                   # Custom hooks and filters
-│   ├── navigation.php              # Optional: PHP helpers for navigation (walkers, etc.)
+│   ├── navigation.php              # PHP helpers for navigation (walkers, etc.)
 │   ├── custom-post-types/
 │   │   └── listing.php             # Listing CPT and its core taxonomies registration
 │   ├── taxonomies/
-│   │   └── listing-taxonomies.php  # (Potentially obsolete or for additional/separate taxonomies)
+│   │   └── listing-taxonomies.php  # Additional/separate taxonomies
 │   ├── admin/
 │   │   └── admin-init.php          # Admin customizations loader
 │   ├── api/
@@ -83,10 +105,21 @@ BUILD CONFIGURATION:
 ├── .gitignore                      # Git ignore rules
 └── notes.txt                       # Project documentation and plans
 
+RECENT UPDATES:
+- Fixed SCSS variable imports using @use syntax for proper namespacing
+- Created comprehensive content styling with responsive design
+- Added theme helper functions (geotour_posted_on, geotour_posted_by, geotour_entry_footer)
+- Implemented archive grid layout with two-column responsive design
+- Enhanced template parts with proper WordPress integration
+- Fixed variable declarations to eliminate duplicates
+- All SCSS files now properly reference variables with vars. namespace
+
 KEY ARCHITECTURAL DECISIONS:
 - functions.php acts as loader only, all logic in /includes/
 - Vite handles asset compilation with manifest.json integration
 - Conditional Leaflet.js loading via geotour_is_map_page()
+- Template parts handle all content display with proper WordPress hooks
+- SCSS uses modern @use syntax for better organization and performance
 - GeoJSON generation for map functionality
 - ACF Pro planned for custom fields management
 - Mobile-first responsive design approach

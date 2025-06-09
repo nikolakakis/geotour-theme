@@ -143,6 +143,37 @@ function geotour_enqueue_theme_assets() {
     // Enqueue Google Fonts (Syne)
     wp_enqueue_style('geotour-google-font-syne', 'https://fonts.googleapis.com/css2?family=Syne:wght@400;700&display=swap', array(), null);
 
+    // Enqueue Leaflet CSS (JS is bundled by Vite)
+    wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', array(), '1.9.4');
+    // wp_enqueue_style('leaflet-markercluster-css', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css', array('leaflet-css'), '1.5.3');
+    // wp_enqueue_style('leaflet-markercluster-default-css', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css', array('leaflet-markercluster-css'), '1.5.3');
+
+    // Localize script with data for maps if needed
+    // Example: Pass listing coordinates for a single listing page
+    $map_data = [];
+    if (is_singular('listing')) {
+        $coordinates = geotour_get_listing_coordinates(get_the_ID());
+        if ($coordinates) {
+            $map_data['single'] = [
+                'coordinates' => [$coordinates['lat'], $coordinates['lng']],
+                'popupText' => '<h5>' . get_the_title() . '</h5><p>Location details.</p>',
+                'zoomLevel' => 15
+            ];
+        }
+    }
+    // Example: Pass data for an archive page (you'll need to build the $listings_data array)
+    // elseif (is_post_type_archive('listing') || is_tax('listing_category')) {
+    //     global $wp_query;
+    //     $listings_data = geotour_generate_geojson($wp_query); // Assuming this returns suitable data
+    //     $map_data['archive'] = [
+    //         'listings' => $listings_data 
+    //     ];
+    // }
+
+    if (!empty($map_data)) {
+        wp_localize_script('vite-main-js', 'geotourMapData', $map_data);
+    }
+
     // Localize script with theme data - always use the determined main JS handle
     wp_localize_script($main_js_handle, 'geotour_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),
@@ -175,7 +206,6 @@ function geotour_add_type_module_to_script($tag, $handle, $src) {
             // This case should ideally not be hit if preg_replace works
             // For safety, if a type attribute exists, we might need a more robust replacement
             // but for now, let's assume preg_replace clears it.
-            // If not, one might have to parse the tag attributes more carefully.
         }
     }
     return $tag;

@@ -1,0 +1,85 @@
+// src/scss/components/_maps.scss
+@use '../base/variables' as vars;
+
+// Basic styling for Leaflet map containers
+.geotour-map-container {
+    width: 100%;
+    height: 400px; // Default height, can be overridden
+    margin-bottom: 2rem;
+    border: 1px solid vars.$border-color;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+// Ensure the map itself takes up the full container size
+.leaflet-container {
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0; // Fallback background if tiles are slow to load
+}
+
+// Styling for popups
+.leaflet-popup-content-wrapper {
+    border-radius: vars.$border-radius-sm; // Assuming you have a border-radius variable
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.leaflet-popup-content {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    padding: 10px;
+
+    h5, .h5 {
+        font-size: 1.1rem;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: vars.$primary-color;
+    }
+
+    p {
+        margin-bottom: 0.25rem;
+    }
+
+    a {
+        color: vars.$primary-color;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.leaflet-popup-tip-container {
+    // Optional: customize the popup tip if needed
+}
+
+// Marker Cluster Styling (will be more relevant when leaflet.markercluster is used)
+.marker-cluster-small {
+	background-color: rgba(vars.$primary-color, 0.6);
+}
+.marker-cluster-small div {
+	background-color: rgba(vars.$primary-color, 0.9);
+    color: #fff;
+}
+
+.marker-cluster-medium {
+	background-color: rgba(vars.$primary-color, 0.6);
+}
+.marker-cluster-medium div {
+	background-color: rgba(vars.$primary-color, 0.9);
+    color: #fff;
+}
+
+.marker-cluster-large {
+	background-color: rgba(vars.$primary-color, 0.6);
+}
+.marker-cluster-large div {
+	background-color: rgba(vars.$primary-color, 0.9);
+    color: #fff;
+}
+
+/* You might want to add custom icons later */
+// .leaflet-marker-icon {
+//     // Custom marker icon styles
+// }
