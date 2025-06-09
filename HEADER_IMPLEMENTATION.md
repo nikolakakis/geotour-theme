@@ -1,3 +1,23 @@
+## Recent Updates (Latest - December 2024)
+
+### Responsive Design Refinements:
+- **Language Flags Moved**: Removed language flags from header and moved to bottom of fullscreen menu for cleaner mobile experience
+- **Social Icons Responsive**: Social icons now hidden on screens < 768px to reduce clutter on mobile
+- **Scroll Behavior Enhanced**: Scroll animations now only apply to screens 768px and wider - mobile header stays full height
+- **Header Position**: Mobile header uses `position: relative` (not sticky), larger screens use `position: fixed`
+- **JavaScript Optimization**: Added window resize handling to manage scroll effects properly
+- **Build Verification**: All changes compile successfully with no errors
+
+### Previous Updates:
+- **Header Height Changes**: Updated narrow screens from 120px to 150px, maintained larger screen heights
+- **Body Padding**: Updated from 120px to 150px for narrow screens
+- **Z-Index Fix**: Hamburger button z-index increased to 1002
+- **Animation Direction**: G rotation changed from clockwise to counter-clockwise
+- **Centering Enhancement**: Added flexbox properties for perfect logo alignment
+- **Color Update**: Changed to darker green gradient (#0f3d2c to #0a2b1f)
+
+---
+
 # Header Implementation - Geotour Theme
 
 ## Implementation Complete ✅ - Updated with Enhancements
@@ -17,9 +37,10 @@ Successfully implemented a new responsive header for the Geotour WordPress theme
      - Desktop: 220px → 120px (scrolled)
 
 2. **Header Layout**:
-   - **Left Section**: Social media icons (Facebook, Instagram, TripAdvisor) and language flags (EN/ES)
+   - **Left Section**: Social media icons (Facebook, Instagram, TripAdvisor) - *hidden on mobile < 768px*
    - **Center Section**: Geotour logo - **perfectly centered at all times** with responsive sizing
    - **Right Section**: White hamburger menu button with proper state management
+   - **Language Selection**: Moved to bottom of fullscreen menu for better UX
 
 3. **Scroll Animation**:
    - Header smoothly shrinks when user scrolls down (after 100px scroll)
@@ -49,6 +70,10 @@ Successfully implemented a new responsive header for the Geotour WordPress theme
 
 7. **Mobile Responsive**:
    - Responsive padding and spacing
+   - Scalable elements for different screen sizes
+   - Touch-friendly button sizes
+   - Dynamic body padding adjustment for header height
+   - **Enhanced Mobile Experience**: Social icons hidden, language flags in menu, no sticky behavior on narrow screens
    - Scalable elements for different screen sizes
    - Touch-friendly button sizes
    - Dynamic body padding adjustment for header height

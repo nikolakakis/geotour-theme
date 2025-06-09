@@ -24,8 +24,7 @@
 <div id="page" class="site">
     <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e('Skip to content', 'geotour'); ?></a>    <!-- New Main Header -->
     <header class="main-header">
-        <div class="header-container">
-            <!-- Left Section: Social Icons & Language Flags -->
+        <div class="header-container">            <!-- Left Section: Social Icons -->
             <div class="header-left-section">
                 <div class="social-icons">
                     <a href="#" aria-label="Facebook">
@@ -42,14 +41,6 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm-4.391 7.288c-.825 0-1.491.667-1.491 1.491s.667 1.491 1.491 1.491c.825 0 1.491-.667 1.491-1.491s-.667-1.491-1.491-1.491zm4.353 0c-.825 0-1.491.667-1.491 1.491s.667 1.491 1.491 1.491c.825 0 1.491-.667 1.491-1.491s-.667-1.491-1.491-1.491zm4.429 0c-.825 0-1.491.667-1.491 1.491s.667 1.491 1.491 1.491c.825 0 1.491-.667 1.491-1.491s-.667-1.491-1.491-1.491zm-8.82 5.712c-1.375 2.945-1.375 4.544 0 7.429h3.084c.642-1.267 1.056-2.585 1.056-3.714s-.414-2.448-1.056-3.714h-3.084zm8.857 0c-1.375 2.945-1.375 4.544 0 7.429h3.084c.642-1.267 1.056-2.585 1.056-3.714s-.414-2.448-1.056-3.714h-3.084z"/>
                         </svg>
-                    </a>
-                </div>
-                <div class="language-flags">
-                    <a href="#" aria-label="English">
-                        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/flags/en.png" alt="English" width="28" height="20">
-                    </a>
-                    <a href="#" aria-label="Español">
-                        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/flags/es.png" alt="Español" width="28" height="20">
                     </a>
                 </div>
             </div>
@@ -88,15 +79,25 @@
                 echo '<p class="site-description">'. esc_html($site_description) .'</p>';
             endif;
             echo '</div>';
-        endif;
-
-        wp_nav_menu([
+        endif;        wp_nav_menu([
             'theme_location' => 'primary', // Ensure this theme location is registered
             'menu_class'     => 'menu', // Original class
             'container'      => false,
             'walker'         => new Geotour_Accordion_Menu_Walker(), // Assuming this walker is defined
         ]);
         ?>
+        
+        <!-- Language Selection at Bottom of Menu -->
+        <div class="menu-language-section">
+            <div class="language-flags">
+                <a href="#" aria-label="English">
+                    <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/flags/en.png" alt="English" width="28" height="20">
+                </a>
+                <a href="#" aria-label="Español">
+                    <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/flags/es.png" alt="Español" width="28" height="20">
+                </a>
+            </div>
+        </div>
     </nav>
     
     <!-- Animated Footer for Social Media Icons -->

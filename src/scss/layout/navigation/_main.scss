@@ -10,6 +10,13 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
   overflow: hidden; 
 }
 
+@media (max-width: 1024px) {        
+    .main-header .header-center-section {            
+        left: 27% !important;
+        top: 25% !important;
+    }
+}
+
 // --- Hamburger Icon --- 
 .hamburger-button { // Restored original hamburger styles
     width: 40px; // Example value, adjust as needed
@@ -345,3 +352,52 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
         margin-right: auto;
     }
 }
+
+// Language flags at bottom of menu
+.menu-language-section {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    transition-delay: 0.2s;
+
+    .language-flags {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        justify-content: center;
+
+        a {
+            display: block;
+            transition: transform 0.3s ease;
+            
+            &:hover {
+                transform: scale(1.15);
+            }
+            
+            img {
+                width: 2rem;
+                height: auto;
+                border-radius: 4px;
+                box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+                filter: brightness(0.9);
+                transition: filter 0.3s ease;
+            }
+
+            &:hover img {
+                filter: brightness(1);
+            }
+        }
+    }
+}
+
+.menu-open .menu-language-section {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+    

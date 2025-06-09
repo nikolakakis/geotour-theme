@@ -29,11 +29,14 @@ export function initializeHeader() {
             hamburgerButton.setAttribute('aria-expanded', 'false');
             fullscreenMenu.setAttribute('aria-hidden', 'true');
         }
-    };
-
-    // Scroll functionality for header height animation
+    };    // Scroll functionality for header height animation (only on larger screens)
     let lastScrollTop = 0;
     const handleScroll = () => {
+        // Only apply scroll effects on screens 768px and wider
+        if (window.innerWidth < 768) {
+            return;
+        }
+        
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         
         if (header) {
@@ -79,10 +82,16 @@ export function initializeHeader() {
                 closeMenu();
             }
         });
-    }
-
-    // Add scroll event listener
+    }    // Add scroll event listener
     window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Handle window resize to manage scroll effects
+    window.addEventListener('resize', () => {
+        // Remove scrolled class on smaller screens
+        if (window.innerWidth < 768 && header && header.classList.contains('scrolled')) {
+            header.classList.remove('scrolled');
+        }
+    }, { passive: true });
 
     // Initialize animations for header elements
     const animatedElements = document.querySelectorAll('.animate-on-load');
