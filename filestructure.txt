@@ -75,8 +75,8 @@ TEMPLATE PARTS:
 CUSTOM TEMPLATES:
 ├── templates/                      # Custom template files
 │   ├── parts/                      # Reusable template parts
-│   ├── single-listing.php          # Single listing template
-│   ├── archive-listing.php         # Listing archive template
+│   ├── single-listing.php          # Single listing template (UPDATED - uses new template parts)
+│   ├── archive-listing.php         # Listing archive template (UPDATED - includes map integration)
 │   ├── taxonomy-listing-category.php
 │   ├── taxonomy-listing-region.php
 │   └── taxonomy-listing-tag.php
@@ -106,6 +106,11 @@ BUILD CONFIGURATION:
 └── notes.txt                       # Project documentation and plans
 
 RECENT UPDATES:
+- ✅ LEAFLET INTEGRATION COMPLETE: Full Leaflet map setup with Vite bundling
+- ✅ LISTING TEMPLATE PARTS: Created complete template part structure for listing CPT
+- ✅ MAP FUNCTIONALITY: Single listing maps and archive maps with data localization
+- ✅ VITE CONFIGURATION: Proper build configuration with manifest integration  
+- ✅ JavaScript Modules: Enhanced map initialization with fallback data attributes
 - Fixed SCSS variable imports using @use syntax for proper namespacing
 - Created comprehensive content styling with responsive design
 - Added theme helper functions (geotour_posted_on, geotour_posted_by, geotour_entry_footer)

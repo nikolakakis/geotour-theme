@@ -345,6 +345,117 @@
     }
 }
 
+// Listing-specific styling
+.listing-single,
+.listing-archive {
+    .listing-meta {
+        margin-bottom: 1.5rem;
+        
+        .listing-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            
+            .listing-category {
+                display: inline-block;
+                padding: 0.25rem 0.75rem;
+                background: rgba(vars.$primary-color, 0.1);
+                color: vars.$primary-color;
+                border-radius: 15px;
+                font-size: 0.85rem;
+                font-weight: 500;
+            }
+        }
+        
+        .listing-region {
+            color: vars.$text-color-muted;
+            font-size: 0.9rem;
+        }
+    }
+    
+    .listing-map-section {
+        margin: 3rem 0;
+        
+        h3 {
+            margin-bottom: 1rem;
+            color: vars.$heading-color;
+        }
+        
+        .listing-single-map {
+            height: 300px;
+            
+            @media (min-width: 768px) {
+                height: 400px;
+            }
+        }
+    }
+    
+    .listing-regions,
+    .listing-tags {
+        margin-bottom: 1rem;
+        
+        a {
+            color: vars.$primary-color;
+            text-decoration: none;
+            
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+// Archive-specific styling
+.listing-archive {
+    .read-more-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: vars.$primary-color;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            color: vars.$primary-dark;
+            transform: translateX(3px);
+        }
+        
+        svg {
+            transition: transform 0.3s ease;
+        }
+        
+        &:hover svg {
+            transform: translateX(3px);
+        }
+    }
+}
+
+// Archive map section
+.archive-map-section {
+    margin-bottom: 3rem;
+    
+    h2 {
+        margin-bottom: 1rem;
+        text-align: center;
+        color: vars.$heading-color;
+    }
+    
+    .listing-archive-map {
+        height: 300px;
+        margin-bottom: 2rem;
+        
+        @media (min-width: 768px) {
+            height: 400px;
+        }
+        
+        @media (min-width: 1024px) {
+            height: 500px;
+        }
+    }
+}
+
 // Grid layout for archive pages
 @media (min-width: 768px) {
     .site-main .main-container {

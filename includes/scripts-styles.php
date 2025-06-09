@@ -19,22 +19,22 @@ function geotour_enqueue_leaflet() {
     // You need a reliable way to determine if a map is needed.
     // For now, let's assume a helper function geotour_is_map_page() exists or you'll implement it.
     if (function_exists('geotour_is_map_page') && geotour_is_map_page()) {
-        // Leaflet CSS
-        wp_enqueue_style(
-            'leaflet',
-            'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-            array(),
-            '1.9.4'
-        );
+        // Leaflet CSS - This is now handled in geotour_enqueue_theme_assets()
+        // wp_enqueue_style(
+        //     'leaflet-css',
+        //     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+        //     array(),
+        //     '1.9.4'
+        // );
         
-        // Leaflet JS
-        wp_enqueue_script(
-            'leaflet',
-            'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-            array(),
-            '1.9.4',
-            true
-        );
+        // Leaflet JS - This is now handled by Vite bundling (imported in src/js/modules/maps/main.js)
+        // wp_enqueue_script(
+        //     'leaflet',
+        //     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
+        //     array(),
+        //     '1.9.4',
+        //     true
+        // );
         
         // Custom Leaflet initialization (ensure this file exists and is built by Vite if necessary)
         // If leaflet-init.js is part of your Vite build and has a manifest entry, handle it via geotour_get_vite_assets
@@ -48,7 +48,7 @@ function geotour_enqueue_leaflet() {
         // );
     }
 }
-add_action('wp_enqueue_scripts', 'geotour_enqueue_leaflet');
+// add_action('wp_enqueue_scripts', 'geotour_enqueue_leaflet'); // Commented out as its functionality is handled elsewhere or by Vite
 
 // Function to get the Vite manifest and asset URLs
 function geotour_get_vite_assets() {
@@ -143,23 +143,17 @@ function geotour_enqueue_theme_assets() {
     // Enqueue Google Fonts (Syne)
     wp_enqueue_style('geotour-google-font-syne', 'https://fonts.googleapis.com/css2?family=Syne:wght@400;700&display=swap', array(), null);
 
-    // Enqueue Leaflet CSS (JS is bundled by Vite)
-    wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', array(), '1.9.4');
-    // wp_enqueue_style('leaflet-markercluster-css', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css', array('leaflet-css'), '1.5.3');
-    // wp_enqueue_style('leaflet-markercluster-default-css', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css', array('leaflet-markercluster-css'), '1.5.3');
+    // Enqueue Leaflet CSS (JS is bundled by Vite) - TEMPORARILY DISABLED TO AVOID CONFLICTS
+    // wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', array(), '1.9.4');
 
-    // Localize script with data for maps if needed
-    // Example: Pass listing coordinates for a single listing page
+    // TEMPORARILY SIMPLIFIED - Localize script with basic data
     $map_data = [];
     if (is_singular('listing')) {
-        $coordinates = geotour_get_listing_coordinates(get_the_ID());
-        if ($coordinates) {
-            $map_data['single'] = [
-                'coordinates' => [$coordinates['lat'], $coordinates['lng']],
-                'popupText' => '<h5>' . get_the_title() . '</h5><p>Location details.</p>',
-                'zoomLevel' => 15
-            ];
-        }
+        $map_data['single'] = [
+            'coordinates' => [35.2401, 24.8093], // Default Crete coordinates
+            'popupText' => '<h5>Test Location</h5><p>This is a test marker.</p>',
+            'zoomLevel' => 10
+        ];
     }
     // Example: Pass data for an archive page (you'll need to build the $listings_data array)
     // elseif (is_post_type_archive('listing') || is_tax('listing_category')) {
@@ -171,7 +165,7 @@ function geotour_enqueue_theme_assets() {
     // }
 
     if (!empty($map_data)) {
-        wp_localize_script('vite-main-js', 'geotourMapData', $map_data);
+        wp_localize_script($main_js_handle, 'geotourMapData', $map_data); // Use the dynamic $main_js_handle
     }
 
     // Localize script with theme data - always use the determined main JS handle
@@ -195,17 +189,11 @@ function geotour_add_type_module_to_script($tag, $handle, $src) {
         }
 
         // Remove any existing type="text/javascript" or other type attributes.
-        // Corrected preg_replace pattern
         $tag = preg_replace('/\s+type=(["\'])(?:(?!\1).)*\1/', '', $tag);
 
-        // Add type="module". This assumes the script tag starts with "<script "
-        // Ensure there's a space before adding type attribute
-        if (strpos($tag, 'type=') === false) { // Check again if type was removed or not present
+        // Add type="module"
+        if (strpos($tag, 'type=') === false) {
             $tag = str_replace('<script', '<script type="module"', $tag);
-        } else { // If another type attribute somehow persists or was added, try to replace it or ensure module is there
-            // This case should ideally not be hit if preg_replace works
-            // For safety, if a type attribute exists, we might need a more robust replacement
-            // but for now, let's assume preg_replace clears it.
         }
     }
     return $tag;

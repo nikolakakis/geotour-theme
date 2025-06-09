@@ -5,30 +5,50 @@ import L from 'leaflet';
 // Store initialized maps to prevent re-initialization
 const initializedMaps = new Set();
 
-export function initializeGeotourMap(mapElementId, mapData) {
+// Fix for default markers in Leaflet with Vite
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
+
+export function initializeGeotourMap(mapElementId, mapData = {}) {
     if (!document.getElementById(mapElementId) || initializedMaps.has(mapElementId)) {
-        // console.warn(`Map element with ID '${mapElementId}' not found or already initialized.`);
         return null;
     }
 
     const mapElement = document.getElementById(mapElementId);
     
-    // Basic Leaflet map initialization
-    // Centered on Crete by default, adjust as needed
-    const map = L.map(mapElementId).setView([35.2401, 24.8093], 8);
+    // Default center (Crete, Greece)
+    const defaultCenter = [35.2401, 24.8093];
+    const defaultZoom = 8;
+    
+    // Determine map center and zoom
+    let center = defaultCenter;
+    let zoom = defaultZoom;
+    
+    if (mapData.coordinates) {
+        center = mapData.coordinates;
+        zoom = mapData.zoomLevel || 13;
+    }
+    
+    // Initialize the map
+    const map = L.map(mapElementId).setView(center, zoom);
 
+    // Add tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
     }).addTo(map);
 
-    // Example: Add a marker if coordinates are provided
-    if (mapData && mapData.coordinates) {
-        L.marker(mapData.coordinates).addTo(map)
-            .bindPopup(mapData.popupText || 'A default marker popup.')
-            .openPopup();
-        map.setView(mapData.coordinates, mapData.zoomLevel || 13);
-    } else {
-        // console.log(`No specific coordinates provided for map ${mapElementId}. Displaying default view.`);
+    // Add marker if coordinates are provided
+    if (mapData.coordinates) {
+        const marker = L.marker(mapData.coordinates).addTo(map);
+        
+        if (mapData.popupText) {
+            marker.bindPopup(mapData.popupText).openPopup();
+        }
     }
     
     initializedMaps.add(mapElementId);
@@ -36,23 +56,63 @@ export function initializeGeotourMap(mapElementId, mapData) {
     return map;
 }
 
-// Example of how you might initialize maps globally or specifically
+// Initialize maps based on data attributes (fallback if geotourMapData is not available)
+export function initializeMapFromDataAttributes(mapElementId) {
+    const mapElement = document.getElementById(mapElementId);
+    if (!mapElement) return null;
+    
+    const lat = parseFloat(mapElement.dataset.lat);
+    const lng = parseFloat(mapElement.dataset.lng);
+    const title = mapElement.dataset.title;
+    const permalink = mapElement.dataset.permalink;
+    
+    if (!isNaN(lat) && !isNaN(lng)) {
+        const mapData = {
+            coordinates: [lat, lng],
+            popupText: `<h5>${title}</h5><p><a href="${permalink}">View Details</a></p>`,
+            zoomLevel: 15
+        };
+        
+        return initializeGeotourMap(mapElementId, mapData);
+    }
+    
+    return null;
+}
+
+// Main initialization function
 export function initializeAllMaps() {
-    // For a single listing map (expects a div with id="listing-map" and data in `geotourMapData.single`)
+    console.log('Initializing all maps...');
+    
+    // Initialize single listing map
     const singleMapElement = document.getElementById('listing-map');
-    if (singleMapElement && typeof geotourMapData !== 'undefined' && geotourMapData.single) {
-        initializeGeotourMap('listing-map', geotourMapData.single);
+    if (singleMapElement) {
+        console.log('Found single listing map element');
+        
+        // Try to use geotourMapData first
+        if (typeof geotourMapData !== 'undefined' && geotourMapData.single) {
+            console.log('Using geotourMapData for single map');
+            initializeGeotourMap('listing-map', geotourMapData.single);
+        } else {
+            console.log('Using data attributes for single map');
+            // Fallback to data attributes
+            initializeMapFromDataAttributes('listing-map');
+        }
     }
 
-    // For an archive map (expects a div with id="archive-map" and data in `geotourMapData.archive`)
+    // Initialize archive map
     const archiveMapElement = document.getElementById('archive-map');
-    if (archiveMapElement && typeof geotourMapData !== 'undefined' && geotourMapData.archive) {
-        // Here you would typically pass an array of listings for marker clustering
-        initializeGeotourMap('archive-map', {
-            // center: [35.2401, 24.8093], // Center of Crete
-            // zoom: 8,
-            // listings: geotourMapData.archive.listings // Array of listing data
-        });
-        // Add marker clustering logic here later
+    if (archiveMapElement) {
+        console.log('Found archive map element');
+        
+        if (typeof geotourMapData !== 'undefined' && geotourMapData.archive) {
+            console.log('Using geotourMapData for archive map');
+            initializeGeotourMap('archive-map', geotourMapData.archive);
+        } else {
+            console.log('Initializing default archive map');
+            // Initialize with default view for now
+            initializeGeotourMap('archive-map', {});
+        }
     }
+    
+    console.log('Map initialization complete');
 }
