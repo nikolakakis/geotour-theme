@@ -21,6 +21,15 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<!-- SVG Clip Path Definition for Header -->
+<svg width="0" height="0" class="absolute" style="position: absolute; width: 0; height: 0;">
+    <defs>
+        <clipPath id="header-clip-path" clipPathUnits="objectBoundingBox">
+            <path d="M 0,0 H 1 V 0.75 C 0.75,1 0.25,1 0,0.75 Z"></path>
+        </clipPath>
+    </defs>
+</svg>
+
 <div id="page" class="site">
     <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e('Skip to content', 'geotour'); ?></a>    <!-- New Main Header -->
     <header class="main-header">

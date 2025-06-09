@@ -6,16 +6,15 @@ body {
     &.menu-open-no-scroll {
         overflow: hidden;
     }
-    // Body padding to prevent overlap with header
-    
+    // Reduced body padding since content can now be visible under curved part
+    padding-top: 120px; // Reduced from 150px
     
     @media (min-width: 768px) {
-        padding-top: 180px;
-        
+        padding-top: 140px; // Reduced from 180px
     }
 
     @media (min-width: 1024px) {
-        padding-top: 220px;
+        padding-top: 160px; // Reduced from 220px
     }
 }
 
@@ -39,8 +38,9 @@ body {
     top: 0;
     left: 0;
     z-index: 999;
-    overflow: hidden;
     transition: height 0.3s ease, padding 0.3s ease;
+    /* Using clip-path to create the curved shape */
+    clip-path: url(#header-clip-path);
 
     // Larger height and sticky for bigger screens
     @media (min-width: 768px) {
@@ -182,19 +182,6 @@ body {
         display: flex;
         align-items: center;
     }
-}
-
-/* The curved bottom shape */
-.main-header::after {
-    content: '';
-    position: absolute;
-    bottom: -80px;
-    left: -25%;
-    width: 150%;
-    height: 120px;
-    background: var(--body-bg-color);
-    border-radius: 50%;
-    z-index: 0;
 }
 
 /* Subtle animated 'G' in the background */
