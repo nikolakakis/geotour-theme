@@ -1,6 +1,7 @@
 // filepath: e:\visualstudio\geotour-theme\src\scss\layout\navigation\_main.scss
 @use '../../base/variables' as variables;
 @use '../../base/animations' as animations;
+@use 'sass:color'; // Added sass:color module
 
 // Main styles for the new full-screen navigation
 
@@ -86,7 +87,7 @@ body.menu-open {
     list-style: none;
     padding: 0;
     margin: 0;
-    text-align: center;
+    text-align: right; // Changed from center to right
     width: 90%; // Max width for menu content
     max-width: 600px; // Adjust as needed
   }
@@ -99,38 +100,55 @@ body.menu-open {
 }
 
 // --- Menu Items Animation (WordPress specific selectors) --- 
-#fullscreen-menu .menu-item { // General class for WP menu items
-  @include animations.staggered-animation(0.2s); // Apply base animation with namespace
-  margin-bottom: 1rem; // Spacing between top-level items
+#fullscreen-menu .menu-item { // General class for WP menu items, most specific styles will be for top-level here
+  @include animations.staggered-animation(0.2s);
+  margin-bottom: 1.2rem; // Increased spacing for top-level items
 
-  > a {
-    font-size: 2rem; // text-3xl equivalent
-    font-family: variables.$font-heading; // Use Syne for menu items with namespace
+  > a { // Top-level links
+    font-size: 2.2rem; 
+    font-family: variables.$font-heading; 
     font-weight: 500;
     color: variables.$menu-text-color;
     text-decoration: none;
-    display: inline-block;
-    position: relative;
-    padding: 0.5em 0;
+    position: relative; 
+    transition: opacity 0.3s ease, color 0.3s ease; 
+    padding: 0r; // Increased vertical padding for top-level links
 
-    // Underline effect
     &::after {
       content: '';
       position: absolute;
-      width: 100%;
-      transform: scaleX(0);
-      height: 2px;
-      bottom: 0; // Adjust if padding is different
+      bottom: 0;
       left: 0;
-      background-color: variables.$menu-text-color;
-      transform-origin: bottom right;
-      transition: transform 0.25s ease-out;
+      width: 0;
+      height: 2px;
+      background-color: currentColor;
+      transition: width 0.3s ease-out;
     }
 
-    &:hover::after,
-    &:focus::after {
-      transform: scaleX(1);
-      transform-origin: bottom left;
+    &:not([href="#"]) { // Apply hover only to actual links
+      &:hover,
+      &:focus {
+        opacity: 0.85;
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  // Specific override for parent accordion labels (href="#") that don't navigate
+  &.has-submenu > a[href="#"] {
+    cursor: default; 
+    padding: 0; // Match top-level padding, but no underline logic needed here for ::after
+
+    &:hover,
+    &:focus {
+      opacity: 1; 
+      color: variables.$menu-text-color; 
+      text-decoration: none; 
+      &::after {
+        width: 0; // Ensure no underline for href="#"
+      }
     }
   }
 
@@ -151,17 +169,19 @@ body.menu-open {
 }
 
 .accordion-icon {
+  margin-left: 10px;
   width: 16px;
   height: 16px;
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   position: relative;
   display: inline-block; // Ensure it takes space
+  cursor: pointer; // Indicate clickable
 
   &::before, &::after {
     content: '';
     position: absolute;
     background-color: variables.$menu-text-color;
-    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.3s ease; // Added background-color transition
   }
   &::before { // Horizontal bar
     left: 0;
@@ -177,6 +197,12 @@ body.menu-open {
     width: 2px;
     margin-left: -1px;
   }
+
+  &:hover {
+    &::before, &::after {
+      background-color: color.scale(variables.$menu-text-color, $lightness: -20%); // Corrected darken() to color.scale()
+    }
+  }
 }
 
 .has-submenu.submenu-open > a .accordion-icon {
@@ -188,32 +214,82 @@ body.menu-open {
   }
 }
 
-.sub-menu { // WordPress class for sub-menus
+#fullscreen-menu .sub-menu { // Changed selector to increase specificity
   list-style: none;
-  padding-left: 1rem; // Indent sub-menu items
+  padding-left: 1.5rem; 
+  border-left: 1px solid rgba(variables.$menu-text-color, 0.2); 
+  margin-left: 0.5rem; 
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.5s ease-in-out, margin-top 0.5s ease-in-out;
-  margin-top: 0;
-  margin-bottom: 0; // Reset default WP ul margin
+  transition: max-height 0.5s ease-in-out, margin-top 0.5s ease-in-out, padding-top 0.5s ease-in-out, padding-bottom 0.5s ease-in-out;
+  margin-top: 0.5rem; 
+  margin-bottom: 0; 
+  padding-top: 0; 
+  padding-bottom: 0; 
+  text-align: right; 
 
-  .menu-item a {
-    font-size: 1.25rem; // text-xl equivalent
-    font-weight: 400;
-    font-family: variables.$font-primary; // Use primary font for sub-items with namespace
-    color: variables.$menu-text-color-alt;
-    padding: 0.5em 0;
+  > .menu-item { // Direct LI children of a .sub-menu (these are 2nd level LIs or 3rd level LIs)
+    margin-bottom: 0.8rem; // Spacing between items within a sub-menu
+    margin-top: 0rem;
 
-    &:hover,
-    &:focus {
-      color: variables.$menu-text-color;
+    > a { // Links directly under a .sub-menu > .menu-item (2nd level links)
+      font-size: 1.6rem; // Significantly smaller for 2nd level
+      font-weight: 400;
+      font-family: variables.$font-primary; 
+      color: variables.$menu-text-color-alt; 
+      text-decoration: none;
+      position: relative; 
+      transition: opacity 0.3s ease, color 0.3s ease;
+      display: block; 
+      padding: 0; // Adjusted padding for 2nd level links
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: currentColor;
+        transition: width 0.3s ease-out;
+      }
+
+      &:not([href="#"]) { // Apply hover only to actual links
+        &:hover,
+        &:focus {
+          opacity: 0.85;
+          &::after {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  // Styles for third-level menu items (ul.sub-menu ul.sub-menu)
+  // Targets a .sub-menu that is a child of another .menu-item which is child of .sub-menu
+  > .menu-item > .sub-menu { // This is the 3rd level UL
+    padding-left: 1rem; // Further indent 3rd level
+    margin-left: 0.25rem;
+    border-left-style: dashed; // Slightly different border for 3rd level for more distinction
+
+    > .menu-item { // 3rd level LIs
+      margin-bottom: 0.6rem; // Spacing for 3rd level items
+      > a { // 3rd level links
+        font-size: 1.1rem; // Smallest font size for 3rd level
+        padding: 0rem; // Adjusted padding for 3rd level links
+        // Inherits other properties like color, font-family from 2nd level if not specified
+        // Ensure ::after for underline is also inherited or explicitly defined if needed
+      }
     }
   }
 }
 
-.has-submenu.submenu-open > .sub-menu {
-  max-height: 500px; // Adjust as needed for content
-  margin-top: 0.75rem;
+#fullscreen-menu .has-submenu.submenu-open > .sub-menu { // Changed selector to increase specificity
+  max-height: 500px; 
+  margin-top: 0rem;   // Increased space between parent item and sub-menu block
+  padding-top: 0rem; // Padding within the opened sub-menu block
+  padding-bottom: 0.8rem;
 }
 
 // --- Animated Footer --- 

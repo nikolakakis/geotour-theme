@@ -57,9 +57,9 @@ PHP INCLUDES STRUCTURE:
 │   ├── hooks.php                   # Custom hooks and filters
 │   ├── navigation.php              # Optional: PHP helpers for navigation (walkers, etc.)
 │   ├── custom-post-types/
-│   │   └── listing.php             # Listing CPT registration
+│   │   └── listing.php             # Listing CPT and its core taxonomies registration
 │   ├── taxonomies/
-│   │   └── listing-taxonomies.php  # All listing taxonomies
+│   │   └── listing-taxonomies.php  # (Potentially obsolete or for additional/separate taxonomies)
 │   ├── admin/
 │   │   └── admin-init.php          # Admin customizations loader
 │   ├── api/

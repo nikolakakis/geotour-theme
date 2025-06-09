@@ -30,8 +30,8 @@ require_once GEOTOUR_THEME_DIR . '/includes/scripts-styles.php';
 // Navigation specific helpers (like custom walkers)
 require_once GEOTOUR_THEME_DIR . '/includes/navigation.php';
 
-// Custom post types and taxonomies (Uncomment when ready)
-// require_once GEOTOUR_THEME_DIR . '/includes/custom-post-types/listing.php';
+// Custom post types and taxonomies
+require_once GEOTOUR_THEME_DIR . '/includes/custom-post-types/listing.php';
 // require_once GEOTOUR_THEME_DIR . '/includes/taxonomies/listing-taxonomies.php';
 
 // Custom hooks and filters (Uncomment when ready)
