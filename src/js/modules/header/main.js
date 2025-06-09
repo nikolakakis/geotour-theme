@@ -2,6 +2,7 @@
 export function initializeHeader() {
     const hamburgerButton = document.getElementById('hamburger-icon');
     const fullscreenMenu = document.getElementById('fullscreen-menu');
+    const header = document.querySelector('.main-header');
 
     // Function to toggle menu visibility
     const toggleMenu = () => {
@@ -18,6 +19,34 @@ export function initializeHeader() {
         }
     };
 
+    // Function to close menu and reset hamburger state
+    const closeMenu = () => {
+        if (hamburgerButton && fullscreenMenu) {
+            hamburgerButton.classList.remove('is-active');
+            fullscreenMenu.classList.remove('is-visible');
+            document.body.classList.remove('menu-open-no-scroll');
+            
+            hamburgerButton.setAttribute('aria-expanded', 'false');
+            fullscreenMenu.setAttribute('aria-hidden', 'true');
+        }
+    };
+
+    // Scroll functionality for header height animation
+    let lastScrollTop = 0;
+    const handleScroll = () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (header) {
+            if (scrollTop > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+        
+        lastScrollTop = scrollTop;
+    };
+
     // Event listener for the hamburger button
     if (hamburgerButton) {
         hamburgerButton.addEventListener('click', toggleMenu);
@@ -28,12 +57,32 @@ export function initializeHeader() {
             menuLinks.forEach(link => {
                 link.addEventListener('click', () => {
                     if (fullscreenMenu.classList.contains('is-visible')) {
-                        toggleMenu();
+                        closeMenu();
                     }
                 });
             });
         }
     }
+
+    // Close menu when clicking outside of it
+    if (fullscreenMenu) {
+        fullscreenMenu.addEventListener('click', (e) => {
+            // Close menu if clicking on the overlay (not on menu content)
+            if (e.target === fullscreenMenu) {
+                closeMenu();
+            }
+        });
+
+        // Close menu on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && fullscreenMenu.classList.contains('is-visible')) {
+                closeMenu();
+            }
+        });
+    }
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     // Initialize animations for header elements
     const animatedElements = document.querySelectorAll('.animate-on-load');

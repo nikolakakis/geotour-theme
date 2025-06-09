@@ -7,13 +7,21 @@ body {
         overflow: hidden;
     }
     // Body padding to prevent overlap with fixed header
-    padding-top: 120px; 
+    padding-top: 120px;
+    
+    @media (min-width: 768px) {
+        padding-top: 180px;
+    }
+
+    @media (min-width: 1024px) {
+        padding-top: 220px;
+    }
 }
 
 :root {
     --primary-color: #22a575;
-    --primary-light: #28bf86;
-    --primary-dark: #1b8a61;
+    --primary-light: #0f3d2c;
+    --primary-dark: #0a2b1f;
     --body-bg-color: #f0f4f8;
 }
 
@@ -31,6 +39,50 @@ body {
     left: 0;
     z-index: 999;
     overflow: hidden;
+    transition: height 0.3s ease, padding 0.3s ease;
+
+    // Larger height for bigger screens
+    @media (min-width: 768px) {
+        height: 180px;
+    }
+
+    @media (min-width: 1024px) {
+        height: 220px;
+    }
+
+    // Scrolled state - shorter header
+    &.scrolled {
+        height: 80px;
+        
+        @media (min-width: 768px) {
+            height: 100px;
+        }
+
+        @media (min-width: 1024px) {
+            height: 120px;
+        }
+
+        .header-center-section .logo-image {
+            height: 2.5rem;
+            
+            @media (min-width: 768px) {
+                height: 3rem;
+            }
+        }
+
+        // Adjust animated G size when scrolled
+        &::before {
+            font-size: 15rem;
+            
+            @media (min-width: 768px) {
+                font-size: 18rem;
+            }
+
+            @media (min-width: 1024px) {
+                font-size: 20rem;
+            }
+        }
+    }
 
     .header-container {
         width: 100%;
@@ -120,11 +172,18 @@ body {
 
         a {
             display: block;
-        }
-
-        .logo-image {
+        }        .logo-image {
             height: 4rem;
             width: auto;
+            transition: height 0.3s ease;
+            
+            @media (min-width: 768px) {
+                height: 5rem;
+            }
+
+            @media (min-width: 1024px) {
+                height: 6rem;
+            }
         }
     }
 
@@ -161,6 +220,15 @@ body {
     transform: translate(-50%, -50%);
     animation: slowRotate 30s linear infinite;
     z-index: 0;
+    transition: font-size 0.3s ease;
+
+    @media (min-width: 768px) {
+        font-size: 35rem;
+    }
+
+    @media (min-width: 1024px) {
+        font-size: 45rem;
+    }
 }
 
 @keyframes slowRotate {
