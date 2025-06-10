@@ -51,8 +51,20 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
         maxNativeZoom: 14, // MapTiler vector tiles typically go up to z14
         attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
     };
+    // Log the styles to ensure they are loaded
+    console.log('Vector Tile Styles Loaded:', vectorTileLayerStyles);
 
     const vectorGridLayer = L.vectorGrid.protobuf(MAPTILER_URL, vectorTileOptions);
+    
+    // Add event listeners to debug what's happening with the tiles
+    vectorGridLayer.on('loading', function() {
+        console.log('Vector tiles are loading...');
+    });
+    
+    vectorGridLayer.on('load', function() {
+        console.log('Vector tiles loaded successfully');
+    });
+
     vectorGridLayer.addTo(map);
 
     // Set map background color via CSS on the map container itself

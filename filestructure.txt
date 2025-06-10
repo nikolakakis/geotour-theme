@@ -107,6 +107,9 @@ BUILD CONFIGURATION:
 └── notes.txt                       # Project documentation and plans
 
 RECENT UPDATES:
+- ✅ NAVIGATION DEBUG: Resolved hamburger menu and hero scroll arrow functionality.
+- ✅ JS MODULES: Refined ES6 module imports and initialization in `src/js/main.js`.
+- ✅ BUILD PROCESS: Fixed Vite build errors related to module exports.
 - ✅ VECTOR TILES: Implemented MapTiler vector tiles with Leaflet.VectorGrid.Protobuf.
 - ✅ DARK THEME MAP: Styled vector map for dark theme, including controls and popups.
 - ✅ LEAFLET INTEGRATION COMPLETE: Full Leaflet map setup with Vite bundling
@@ -122,6 +125,7 @@ RECENT UPDATES:
 - Fixed variable declarations to eliminate duplicates
 - All SCSS files now properly reference variables with vars. namespace
 - Fixed SCSS deprecation warnings in _hero.scss.
+- ✅ UI INTERACTIVITY: Corrected JavaScript and SCSS alignment for menu visibility.
 
 KEY ARCHITECTURAL DECISIONS:
 - functions.php acts as loader only, all logic in /includes/
@@ -134,5 +138,5 @@ KEY ARCHITECTURAL DECISIONS:
 - Mobile-first responsive design approach
 - Phase-based development following notes.txt plan
 
-CURRENT STATUS: Phase 1.2 - Vector Map Implementation Complete
+CURRENT STATUS: Phase 1.2 - Vector Map Implementation & Core UI Bugs Resolved
 NEXT PHASE: Phase 2 - Legacy System Analysis & Replication Blueprint
