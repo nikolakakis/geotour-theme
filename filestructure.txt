@@ -1,6 +1,6 @@
 GEOTOUR THEME FILE STRUCTURE
 =============================
-Last Updated: June 9, 2025
+Last Updated: June 10, 2025
 Project: Geotour Crete WordPress Theme Redevelopment
 
 ROOT DIRECTORY: e:\visualstudio\geotour-theme\
@@ -22,7 +22,8 @@ SOURCE DIRECTORIES:
 │   │   │   ├── hero/
 │   │   │   │   └── main.js         # Hero section interactions, scroll effects, parallax
 │   │   │   └── maps/
-│   │   │       └── main.js         # Leaflet map initialization, markers, GeoJSON, styling
+│   │   │       ├── main.js         # Leaflet map initialization, markers, vector tiles, styling (UPDATED)
+│   │   │       └── vector-styles.js # Leaflet vector tile styling rules (NEW)
 │   │   └── leaflet/                # Leaflet map functionality (if not using modules for everything)
 │   └── scss/
 │       ├── main.scss               # Main SCSS entry point with all imports
@@ -33,7 +34,7 @@ SOURCE DIRECTORIES:
 │       ├── components/             # Reusable UI components
 │       │   ├── _hero.scss          # Hero section styles with enhanced overlays
 │       │   ├── _content.scss       # Content components (articles, posts, archive grid)
-│       │   └── _maps.scss          # Styles for Leaflet maps (container, popups, controls)
+│       │   └── _maps.scss          # Styles for Leaflet maps (container, popups, controls, dark theme) (UPDATED)
 │       ├── layout/
 │       │   ├── navigation/
 │       │   │   └── _main.scss      # Main menu SCSS with language flags
@@ -106,6 +107,8 @@ BUILD CONFIGURATION:
 └── notes.txt                       # Project documentation and plans
 
 RECENT UPDATES:
+- ✅ VECTOR TILES: Implemented MapTiler vector tiles with Leaflet.VectorGrid.Protobuf.
+- ✅ DARK THEME MAP: Styled vector map for dark theme, including controls and popups.
 - ✅ LEAFLET INTEGRATION COMPLETE: Full Leaflet map setup with Vite bundling
 - ✅ LISTING TEMPLATE PARTS: Created complete template part structure for listing CPT
 - ✅ MAP FUNCTIONALITY: Single listing maps and archive maps with data localization
@@ -118,6 +121,7 @@ RECENT UPDATES:
 - Enhanced template parts with proper WordPress integration
 - Fixed variable declarations to eliminate duplicates
 - All SCSS files now properly reference variables with vars. namespace
+- Fixed SCSS deprecation warnings in _hero.scss.
 
 KEY ARCHITECTURAL DECISIONS:
 - functions.php acts as loader only, all logic in /includes/
@@ -130,5 +134,5 @@ KEY ARCHITECTURAL DECISIONS:
 - Mobile-first responsive design approach
 - Phase-based development following notes.txt plan
 
-CURRENT STATUS: Phase 1.1 - Foundation Setup Complete
+CURRENT STATUS: Phase 1.2 - Vector Map Implementation Complete
 NEXT PHASE: Phase 2 - Legacy System Analysis & Replication Blueprint

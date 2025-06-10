@@ -17,6 +17,19 @@ $heading-color: #1a1a1a; // Heading color
 $background-color: #fff;
 $border-color: #e9ecef;
 
+// Dark Theme Specific Colors (New)
+$dark-background: #0d1a26; // Very dark blue-grey (used for map background)
+$dark-surface: #172737;    // Darker surface (e.g., cards, sidebars on dark bg)
+$dark-popup: #1e293b;      // Background for popups, modals on dark theme
+$dark-border: #334155;     // Borders in dark theme
+$dark-text-primary: #e2e8f0; // Primary text on dark backgrounds (off-white)
+$dark-text-secondary: #94a3b8; // Secondary/muted text on dark backgrounds
+$dark-text-accent: #5eead4;  // Accent text color for dark theme (e.g., for map labels if needed)
+
+$accent-color: #22a575; // Re-affirming main accent, can be same as $primary-color or different
+$link-color-light: #67e8f9; // Light link color for dark backgrounds
+$link-hover-color-light: #a5f3fc; // Lighter hover for dark backgrounds
+
 // Icons
 $geotour-trigger-icon-url: 'https://www.geotour.gr/wp-content/uploads/2024/10/geotour-icon.png';
 

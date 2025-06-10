@@ -3,6 +3,12 @@ import '../scss/main.scss';
 import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS
 import L from 'leaflet'; // Import Leaflet directly
 
+// Import modules
+import { initializeMainMenu } from './modules/navigation/main.js';
+import { initializeHeader } from './modules/header/main.js';
+import { initializeHero } from './modules/hero/main.js';
+import { initializeAllMaps } from './modules/maps/main.js'; // Corrected import
+
 // Fix Leaflet default icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -15,37 +21,17 @@ L.Icon.Default.mergeOptions({
 console.log('Geotour Mobile First theme loaded.');
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, checking for map container...');
+    console.log('DOM loaded, initializing modules...');
     
-    // Simple direct map initialization
-    const mapContainer = document.getElementById('listing-map');
-    if (mapContainer) {
-        console.log('Found map container, initializing map...');
-        
-        // Initialize map with Crete center
-        const map = L.map('listing-map').setView([35.2401, 24.8093], 10);
-        
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        
-        // Add a marker
-        L.marker([35.2401, 24.8093]).addTo(map)
-            .bindPopup('Crete, Greece')
-            .openPopup();
-            
-        console.log('Map initialized successfully!');
-    } else {
-        console.log('No map container found with ID "listing-map"');
-    }
-    
-    // Initialize other modules if they exist
-    try {
-        if (typeof initializeMainMenu === 'function') initializeMainMenu();
-        if (typeof initializeHeader === 'function') initializeHeader();
-        if (typeof initializeHero === 'function') initializeHero();
-    } catch (error) {
-        console.log('Some modules not available:', error.message);
-    }
+    // Initialize modules
+    initializeMainMenu();
+    initializeHeader();
+    initializeHero();
+    initializeAllMaps(); // Corrected function call
+
+    // The direct map initialization previously here has been moved to initializeMaps in modules/maps/main.js
+    // Ensure that initializeMaps handles the logic for finding 'listing-map' and setting up the map.
+    // If 'listing-map' is not always present, initializeMaps should handle that gracefully.
+
+    console.log('Modules initialized.');
 });

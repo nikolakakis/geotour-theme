@@ -1,6 +1,7 @@
 // src/js/modules/maps/main.js
 import L from 'leaflet';
-// import 'leaflet.markercluster'; // We'll uncomment this when we implement clustering
+import 'leaflet.vectorgrid'; // Import the vectorGrid plugin
+import { vectorTileLayerStyles } from './vector-styles'; // Import the styles
 
 // Store initialized maps to prevent re-initialization
 const initializedMaps = new Set();
@@ -22,7 +23,7 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     
     // Default center (Crete, Greece)
     const defaultCenter = [35.2401, 24.8093];
-    const defaultZoom = 8;
+    const defaultZoom = 9; // Adjusted default zoom for better initial view with vector tiles
     
     // Determine map center and zoom
     let center = defaultCenter;
@@ -36,11 +37,27 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     // Initialize the map
     const map = L.map(mapElementId).setView(center, zoom);
 
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 19
-    }).addTo(map);
+    // MapTiler API Key and URL
+    const MAPTILER_API_KEY = 'VrfcfMogFgrPX2raBcBO'; // Your provided API key
+    const MAPTILER_URL = `https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key=${MAPTILER_API_KEY}`;
+
+    const vectorTileOptions = {
+        vectorTileLayerStyles: vectorTileLayerStyles,
+        interactive: true, // Set to true if you want to interact with features
+        getFeatureId: function(f) {
+            // Attempt to get an ID, MapTiler v3 might use 'id' or '_id' or have none for some layers
+            return f.properties.id || f.properties._id || f.id; 
+        },
+        maxNativeZoom: 14, // MapTiler vector tiles typically go up to z14
+        attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+    };
+
+    const vectorGridLayer = L.vectorGrid.protobuf(MAPTILER_URL, vectorTileOptions);
+    vectorGridLayer.addTo(map);
+
+    // Set map background color via CSS on the map container itself
+    // Ensure your SCSS for .geotour-map-container or specific map ID has:
+    // background-color: #0d1a26; /* Dark blue-grey, or your preferred dark bg */
 
     // Add marker if coordinates are provided
     if (mapData.coordinates) {
@@ -52,7 +69,7 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     }
     
     initializedMaps.add(mapElementId);
-    console.log(`Geotour map initialized on element: ${mapElementId}`);
+    console.log(`Geotour vector map initialized on element: ${mapElementId}`);
     return map;
 }
 

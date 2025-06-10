@@ -9,8 +9,8 @@ export function initializeHeader() {
         if (hamburgerButton && fullscreenMenu) {
             hamburgerButton.classList.toggle('is-active');
             fullscreenMenu.classList.toggle('is-visible');
-            // Toggle body class to prevent scrolling when menu is open
-            document.body.classList.toggle('menu-open-no-scroll');
+            // Toggle body class to prevent scrolling AND control menu visibility via SCSS
+            document.body.classList.toggle('menu-open'); // Changed from menu-open-no-scroll
             
             // Update aria attributes for accessibility
             const isOpen = fullscreenMenu.classList.contains('is-visible');
@@ -24,7 +24,7 @@ export function initializeHeader() {
         if (hamburgerButton && fullscreenMenu) {
             hamburgerButton.classList.remove('is-active');
             fullscreenMenu.classList.remove('is-visible');
-            document.body.classList.remove('menu-open-no-scroll');
+            document.body.classList.remove('menu-open'); // Changed from menu-open-no-scroll
             
             hamburgerButton.setAttribute('aria-expanded', 'false');
             fullscreenMenu.setAttribute('aria-hidden', 'true');

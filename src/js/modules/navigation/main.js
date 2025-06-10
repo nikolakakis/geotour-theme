@@ -1,30 +1,8 @@
 // filepath: e:\visualstudio\geotour-theme\src\js\modules\navigation\main.js
 export function initializeMainMenu() {
-  const hamburgerIcon = document.getElementById('hamburger-icon');
-  const fullscreenMenu = document.getElementById('fullscreen-menu');
-  const body = document.body;
   // Query for all navigation links and accordion icons
   const allNavLinks = document.querySelectorAll('#fullscreen-menu .menu-item a');
   const accordionIcons = document.querySelectorAll('#fullscreen-menu .has-submenu .accordion-icon');
-
-  if (!hamburgerIcon || !fullscreenMenu) {
-    console.warn('Hamburger icon or fullscreen menu element not found.');
-    return;
-  }
-
-  // --- Main Menu Toggle Function ---
-  const toggleMenu = () => {
-    const isMenuOpen = body.classList.contains('menu-open');
-    body.classList.toggle('menu-open');
-    hamburgerIcon.setAttribute('aria-expanded', String(!isMenuOpen));
-    fullscreenMenu.setAttribute('aria-hidden', String(isMenuOpen));
-  };
-
-  // --- Event Listeners ---
-  hamburgerIcon.addEventListener('click', (e) => {
-    e.stopPropagation(); // Prevent event bubbling
-    toggleMenu();
-  });
 
   // --- Accordion (Sub-menu) Functionality via Icon Click ---
   accordionIcons.forEach(icon => {
@@ -71,33 +49,10 @@ export function initializeMainMenu() {
       if (isParentAccordionLink && href === '#') {
         e.preventDefault();
         // The click on the link text itself does nothing for accordion parents with href="#"
-      } else {
-        // For all other links (actual navigation links, links inside submenus,
-        // or an accordion parent with a real URL):
-        // If the main menu is open and the link is a real navigating link, close the menu.
-        if (body.classList.contains('menu-open')) {
-          // Check if it's a link that will cause navigation away from the current view
-          // (i.e., not just a fragment identifier for the current page, though those might also warrant closing)
-          if (href && href !== '#' && !href.startsWith('#_')) { // Basic check, can be refined
-             toggleMenu(); // Close the main menu before navigating
-          }
-        }
-        // Default link behavior (navigation) will proceed.
       }
+      // Menu closing upon navigation is handled by src/js/modules/header/main.js
     });
   });
 
-  // Close menu by clicking outside (on the overlay itself)
-  fullscreenMenu.addEventListener('click', (e) => {
-    if (e.target === fullscreenMenu) {
-      toggleMenu();
-    }
-  });
-
-  // Close menu with the 'Escape' key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && body.classList.contains('menu-open')) {
-      toggleMenu();
-    }
-  });
+  // Main menu toggle, click outside, and Escape key are handled by src/js/modules/header/main.js
 }

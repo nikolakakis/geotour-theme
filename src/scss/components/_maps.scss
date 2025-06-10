@@ -6,9 +6,9 @@
     width: 100%;
     min-height: 300px;
     height: 400px;
-    border: 2px solid #ddd;
+    border: 1px solid #334155; // Darker border for dark theme
     border-radius: vars.$border-radius;
-    background-color: #f5f5f5;
+    background-color: #0d1a26; // Dark blue-grey background for the map area
     display: block;
     position: relative;
     z-index: 1;
@@ -49,22 +49,81 @@
     width: 100%;
     height: 100%;
     border-radius: vars.$border-radius;
+    background-color: #0d1a26; // Ensure Leaflet container itself also has dark background
 }
 
-// Styling for popups
+// Styling for popups - adjust for dark theme
 .leaflet-popup-content-wrapper {
-    background: #fff;
-    border-radius: vars.$border-radius;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #1e293b; // Darker background for popups
+    color: #e2e8f0; // Light text for popups
+    border-radius: vars.$border-radius-sm; // Slightly smaller radius for popups
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid #334155;
 }
 
 .leaflet-popup-content {
     margin: 1rem;
+    font-size: 0.9rem;
 
     h5 {
         margin: 0 0 0.5rem 0;
-        color: vars.$primary-color;
+        color: vars.$accent-color; // Use accent color for popup titles
+        font-size: 1.1rem;
     }
+    a {
+        color: vars.$link-color-light; // Ensure links are visible on dark popup
+        &:hover {
+            color: vars.$link-hover-color-light;
+        }
+    }
+}
+
+.leaflet-popup-tip-container {
+    .leaflet-popup-tip {
+        background: #1e293b; // Match popup background
+        border-left: 1px solid #334155;
+        border-right: 1px solid #334155;
+        border-bottom: 1px solid #334155;
+    }
+}
+
+.leaflet-popup-close-button {
+    color: #94a3b8; // Lighter close button for dark bg
+    &:hover {
+        color: #e2e8f0;
+    }
+}
+
+// Attribution control styling for dark theme
+.leaflet-control-attribution {
+    background: rgba(13, 26, 38, 0.75) !important; // Dark, slightly transparent background
+    color: #cbd5e1 !important; // Light text
+    font-size: 0.7rem;
+    padding: 2px 6px !important;
+
+    a {
+        color: #94a3b8 !important; // Lighter link color for attribution
+        &:hover {
+            color: #e2e8f0 !important;
+            text-decoration: underline;
+        }
+    }
+}
+
+// Zoom controls styling for dark theme
+.leaflet-control-zoom a {
+    background-color: #1e293b; // Dark background for zoom buttons
+    color: #e2e8f0; // Light icons
+    border-bottom: 1px solid #334155;
+
+    &:hover {
+        background-color: #334155; // Slightly lighter on hover
+        color: #ffffff;
+    }
+}
+.leaflet-bar a.leaflet-disabled {
+    background-color: #111827; // Darker for disabled
+    color: #4b5563;
 }
 
 // Marker cluster styles (for future use)
