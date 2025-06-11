@@ -1,7 +1,5 @@
 // src/js/modules/maps/main.js
 import L from 'leaflet';
-import 'leaflet.vectorgrid'; // Import the vectorGrid plugin
-import { vectorTileLayerStyles } from './vector-styles'; // Import the styles
 
 // Store initialized maps to prevent re-initialization
 const initializedMaps = new Set();
@@ -33,39 +31,17 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
         center = mapData.coordinates;
         zoom = mapData.zoomLevel || 13;
     }
-    
-    // Initialize the map
+      // Initialize the map
     const map = L.map(mapElementId).setView(center, zoom);
 
-    // MapTiler API Key and URL
-    const MAPTILER_API_KEY = 'VrfcfMogFgrPX2raBcBO'; // Your provided API key
-    const MAPTILER_URL = `https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key=${MAPTILER_API_KEY}`;
-
-    const vectorTileOptions = {
-        vectorTileLayerStyles: vectorTileLayerStyles,
-        interactive: true, // Set to true if you want to interact with features
-        getFeatureId: function(f) {
-            // Attempt to get an ID, MapTiler v3 might use 'id' or '_id' or have none for some layers
-            return f.properties.id || f.properties._id || f.id; 
-        },
-        maxNativeZoom: 14, // MapTiler vector tiles typically go up to z14
-        attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
-    };
-    // Log the styles to ensure they are loaded
-    console.log('Vector Tile Styles Loaded:', vectorTileLayerStyles);
-
-    const vectorGridLayer = L.vectorGrid.protobuf(MAPTILER_URL, vectorTileOptions);
-    
-    // Add event listeners to debug what's happening with the tiles
-    vectorGridLayer.on('loading', function() {
-        console.log('Vector tiles are loading...');
+    // Add OpenStreetMap raster tile layer
+    const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
+    osmLayer.addTo(map);
     
-    vectorGridLayer.on('load', function() {
-        console.log('Vector tiles loaded successfully');
-    });
-
-    vectorGridLayer.addTo(map);
+    console.log('Raster tile map initialized successfully');
 
     // Set map background color via CSS on the map container itself
     // Ensure your SCSS for .geotour-map-container or specific map ID has:
@@ -79,9 +55,8 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
             marker.bindPopup(mapData.popupText).openPopup();
         }
     }
-    
-    initializedMaps.add(mapElementId);
-    console.log(`Geotour vector map initialized on element: ${mapElementId}`);
+      initializedMaps.add(mapElementId);
+    console.log(`Geotour raster map initialized on element: ${mapElementId}`);
     return map;
 }
 
