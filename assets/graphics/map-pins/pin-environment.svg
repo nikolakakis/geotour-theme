@@ -1,0 +1,23 @@
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mapPinGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+       <stop offset="0%" style="stop-color:hsl(158, 83%, 68%)" /> 
+  <!-- Dark Green -->
+  <stop offset="100%" style="stop-color:hsl(158, 83%, 25%)" />
+    </linearGradient>
+  </defs>
+  <!-- Base map pin shape -->
+  <g id="map-pin">
+    <path d="M14.256 21.744L12 24l-2.256-2.256C5.31 20.72 2 16.744 2 12 2 6.48 6.48 2 12 2s10 4.48 10 10c0 4.744-3.31 8.72-7.744 9.744z" fill="url(#mapPinGradient)" />
+  </g>
+  <!-- Icon Layer -->
+  <g id="icon-beach" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="translate(0, -1)">
+        <path d="M 8 12 A 4 4 0 0 1 16 12" />
+        <path d="M 12 12 V 16" />
+		<g id="wave" transform="translate(0, 0.25)">
+			<path d="M 7 16 C 9 15, 10 15, 12 16 S 15 17, 17 16" stroke-width="0.8" />
+		</g>
+      </g>
+  </g>
+</svg>

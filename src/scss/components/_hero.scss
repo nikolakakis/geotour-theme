@@ -506,4 +506,17 @@
         opacity: 1 !important;
         animation-fill-mode: forwards !important;
     }
+    
+    // Listing-specific scroll arrow positioning
+    .hero-scroll-indicator {
+        bottom: 1rem; // Move further down for listing hero
+        
+        @media (max-width: 767px) {
+            bottom: 0.5rem; // Even lower on mobile
+        }
+        
+        @media (min-width: 768px) {
+            bottom: 1.5rem;
+        }
+    }
 }

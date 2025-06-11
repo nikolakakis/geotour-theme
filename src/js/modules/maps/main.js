@@ -4,6 +4,14 @@ import L from 'leaflet';
 // Store initialized maps to prevent re-initialization
 const initializedMaps = new Set();
 
+// Custom icon for archaeological sites
+const archaeologicalSiteIcon = L.icon({
+    iconUrl: '/wp-content/themes/geotour-theme/assets/graphics/map-pins/pin-archaeological-site.svg',
+    iconSize: [64, 64], // Size of the icon (doubled from 32x32)
+    iconAnchor: [32, 64], // Point of the icon which will correspond to marker's location (adjusted for new size)
+    popupAnchor: [0, -64] // Point from which the popup should open relative to the iconAnchor (adjusted for new size)
+});
+
 // Fix for default markers in Leaflet with Vite
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -55,7 +63,7 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     console.log('Raster tile map initialized successfully');    // Add marker if coordinates are provided
     if (mapData.coordinates) {
         console.log('Adding marker at coordinates:', mapData.coordinates);
-        const marker = L.marker(mapData.coordinates).addTo(map);
+        const marker = L.marker(mapData.coordinates, { icon: archaeologicalSiteIcon }).addTo(map);
         
         // Add popup if available
         if (mapData.popupText) {
@@ -69,7 +77,7 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     } else if (!isNaN(parseFloat(mapElement.dataset.lat)) && !isNaN(parseFloat(mapElement.dataset.lng))) {
         const markerCoords = [parseFloat(mapElement.dataset.lat), parseFloat(mapElement.dataset.lng)];
         console.log('Adding marker from data attributes at:', markerCoords);
-        const marker = L.marker(markerCoords).addTo(map);
+        const marker = L.marker(markerCoords, { icon: archaeologicalSiteIcon }).addTo(map);
         
         const popupText = mapElement.dataset.popup || mapElement.dataset.title;
         if (popupText) {

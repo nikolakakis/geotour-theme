@@ -20,7 +20,7 @@ SOURCE DIRECTORIES:
 │   │   │   ├── header/
 │   │   │   │   └── main.js         # Header functionality and animations
 │   │   │   ├── hero/
-│   │   │   │   └── main.js         # Hero section interactions, scroll effects, parallax
+│   │   │   │   └── main.js         # Hero section interactions, scroll effects, clickable scroll indicator
 │   │   │   └── maps/
 │   │   │       └── main.js         # Leaflet map initialization with raster tiles (UPDATED - Simplified)
 │   │   └── leaflet/                # Leaflet map functionality (if not using modules for everything)
@@ -51,9 +51,12 @@ WORDPRESS THEME STRUCTURE:
 ├── footer.php                      # Site footer template
 ├── single.php                      # Single post template using template parts
 ├── page.php                        # Static page template using template parts
+├── single-listing.php              # Single listing template with dedicated hero and 100vw map (NEW)
 ├── archive.php                     # Archive template with grid layout
 ├── 404.php                         # Error page template
-└── search.php                      # Search results template
+├── search.php                      # Search results template
+└── assets/                         # Static assets directory
+    └── map-pins/                   # Custom SVG map pin icons for different listing types
 
 TEMPLATE PARTS:
 ├── template-parts/                 # Modular template components
