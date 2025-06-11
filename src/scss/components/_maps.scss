@@ -76,6 +76,40 @@
             color: vars.$link-hover-color-light;
         }
     }
+    
+    // Listing map popup specific styles
+    .listing-map-popup {
+        h5 {
+            margin: 0 0 0.5rem 0;
+            color: #e2e8f0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        p {
+            margin: 0 0 0.75rem 0;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .popup-link {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: vars.$accent-color;
+            color: white;
+            text-decoration: none;
+            border-radius: vars.$border-radius-sm;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            
+            &:hover {
+                background: darken(vars.$accent-color, 10%);
+                color: white;
+            }
+        }
+    }
 }
 
 .leaflet-popup-tip-container {
@@ -137,4 +171,66 @@
 
 .marker-cluster-large {
     background-color: vars.$primary-color;
+}
+
+// Map loading placeholder styles
+.map-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+// Map info section below the map
+.map-info {
+    padding: 1rem;
+    background: #1e293b;
+    border-top: 1px solid #334155;
+    border-radius: 0 0 vars.$border-radius vars.$border-radius;
+    
+    .map-location {
+        margin: 0 0 0.5rem 0;
+        color: #e2e8f0;
+        font-size: 0.9rem;
+        
+        .map-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f59e0b"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>') center/contain no-repeat;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+        
+        strong {
+            color: vars.$accent-color;
+        }
+    }
+    
+    .map-address {
+        margin: 0;
+        color: #94a3b8;
+        font-size: 0.8rem;
+        padding-left: 24px; // Align with icon
+    }
+}
+
+// Single listing map specific styling
+.listing-single-map {
+    .map-info {
+        background: rgba(30, 41, 59, 0.95);
+        backdrop-filter: blur(8px);
+    }
+}
+
+// Listing map section wrapper
+.listing-map-section {
+    margin: 2rem 0;
+    width: 100%;
+    
+    @media (min-width: 1024px) {
+        margin: 3rem 0;
+    }
 }

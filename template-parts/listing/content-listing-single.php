@@ -1,6 +1,6 @@
 <?php
 /**
- * Template part for displaying a single listing
+ * Template part for displaying single listing content
  *
  * @package Geotour_Mobile_First
  */
@@ -9,7 +9,9 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class('content-article listing-single'); ?>>
     
     <header class="entry-header">
-        <div class="listing-meta">
+        <h1 class="entry-title"><?php the_title(); ?></h1>
+        
+        <div class="entry-meta">
             <?php
             // Display listing categories
             $categories = get_the_terms(get_the_ID(), 'listing-category');
@@ -20,63 +22,62 @@
                 }
                 echo '</div>';
             }
+            
+            // Display listing regions
+            $regions = get_the_terms(get_the_ID(), 'listing-region');
+            if ($regions && !is_wp_error($regions)) {
+                echo '<div class="listing-regions">';
+                echo '<strong>' . __('Region:', 'geotour') . '</strong> ';
+                $region_names = array();
+                foreach ($regions as $region) {
+                    $region_names[] = esc_html($region->name);
+                }
+                echo implode(', ', $region_names);
+                echo '</div>';
+            }
             ?>
         </div>
     </header>
+
+    <?php if (has_post_thumbnail()) : ?>
+        <div class="post-thumbnail">
+            <?php the_post_thumbnail('listing-hero', array('class' => 'listing-featured-image')); ?>
+        </div>
+    <?php endif; ?>
 
     <div class="entry-content">
         <?php the_content(); ?>
     </div>
 
-    <?php
-    // Display the map for this listing
-    get_template_part('template-parts/listing/map-single');
-    ?>
-
     <footer class="entry-footer">
         <?php
-        // Display listing regions and tags
-        $regions = get_the_terms(get_the_ID(), 'listing-region');
-        if ($regions && !is_wp_error($regions)) {
-            echo '<div class="listing-regions">';
-            echo '<strong>' . __('Regions:', 'geotour') . '</strong> ';
-            $region_names = array();
-            foreach ($regions as $region) {
-                $region_names[] = '<a href="' . get_term_link($region) . '">' . esc_html($region->name) . '</a>';
-            }
-            echo implode(', ', $region_names);
-            echo '</div>';
-        }
-
+        // Display listing tags
         $tags = get_the_terms(get_the_ID(), 'listing-tag');
         if ($tags && !is_wp_error($tags)) {
             echo '<div class="listing-tags">';
             echo '<strong>' . __('Tags:', 'geotour') . '</strong> ';
-            $tag_names = array();
             foreach ($tags as $tag) {
-                $tag_names[] = '<a href="' . get_term_link($tag) . '">' . esc_html($tag->name) . '</a>';
+                echo '<span class="listing-tag">' . esc_html($tag->name) . '</span>';
             }
-            echo implode(', ', $tag_names);
             echo '</div>';
         }
-
-        if (get_edit_post_link()) {
-            edit_post_link(
-                sprintf(
-                    wp_kses(
-                        __('Edit <span class="screen-reader-text">"%s"</span>', 'geotour'),
-                        array(
-                            'span' => array(
-                                'class' => array(),
-                            ),
-                        )
-                    ),
-                    wp_kses_post(get_the_title())
+        
+        // Edit link for authorized users  
+        edit_post_link(
+            sprintf(
+                wp_kses(
+                    __('Edit <span class="screen-reader-text">%s</span>', 'geotour'),
+                    array(
+                        'span' => array(
+                            'class' => array(),
+                        ),
+                    )
                 ),
-                '<span class="edit-link">',
-                '</span>'
-            );
-        }
+                wp_kses_post(get_the_title())
+            ),
+            '<span class="edit-link">',
+            '</span>'
+        );
         ?>
     </footer>
 

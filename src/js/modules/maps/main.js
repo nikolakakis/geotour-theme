@@ -21,7 +21,7 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     
     // Default center (Crete, Greece)
     const defaultCenter = [35.2401, 24.8093];
-    const defaultZoom = 9; // Adjusted default zoom for better initial view with vector tiles
+    const defaultZoom = 9;
     
     // Determine map center and zoom
     let center = defaultCenter;
@@ -30,8 +30,19 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     if (mapData.coordinates) {
         center = mapData.coordinates;
         zoom = mapData.zoomLevel || 13;
+    } else {
+        // Try to get from data attributes
+        const lat = parseFloat(mapElement.dataset.lat);
+        const lng = parseFloat(mapElement.dataset.lng);
+        const zoomAttr = parseInt(mapElement.dataset.zoom);
+        
+        if (!isNaN(lat) && !isNaN(lng)) {
+            center = [lat, lng];
+            zoom = !isNaN(zoomAttr) ? zoomAttr : 13;
+        }
     }
-      // Initialize the map
+
+    // Initialize the map
     const map = L.map(mapElementId).setView(center, zoom);
 
     // Add OpenStreetMap raster tile layer
@@ -41,21 +52,36 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     });
     osmLayer.addTo(map);
     
-    console.log('Raster tile map initialized successfully');
-
-    // Set map background color via CSS on the map container itself
-    // Ensure your SCSS for .geotour-map-container or specific map ID has:
-    // background-color: #0d1a26; /* Dark blue-grey, or your preferred dark bg */
-
-    // Add marker if coordinates are provided
+    console.log('Raster tile map initialized successfully');    // Add marker if coordinates are provided
     if (mapData.coordinates) {
+        console.log('Adding marker at coordinates:', mapData.coordinates);
         const marker = L.marker(mapData.coordinates).addTo(map);
         
+        // Add popup if available
         if (mapData.popupText) {
-            marker.bindPopup(mapData.popupText).openPopup();
+            marker.bindPopup(mapData.popupText);
+            
+            // Auto-open popup for single listings
+            if (mapElementId === 'listing-map') {
+                marker.openPopup();
+            }
+        }
+    } else if (!isNaN(parseFloat(mapElement.dataset.lat)) && !isNaN(parseFloat(mapElement.dataset.lng))) {
+        const markerCoords = [parseFloat(mapElement.dataset.lat), parseFloat(mapElement.dataset.lng)];
+        console.log('Adding marker from data attributes at:', markerCoords);
+        const marker = L.marker(markerCoords).addTo(map);
+        
+        const popupText = mapElement.dataset.popup || mapElement.dataset.title;
+        if (popupText) {
+            marker.bindPopup(popupText);
+            
+            if (mapElementId === 'listing-map') {
+                marker.openPopup();
+            }
         }
     }
-      initializedMaps.add(mapElementId);
+
+    initializedMaps.add(mapElementId);
     console.log(`Geotour raster map initialized on element: ${mapElementId}`);
     return map;
 }
@@ -86,31 +112,28 @@ export function initializeMapFromDataAttributes(mapElementId) {
 // Main initialization function
 export function initializeAllMaps() {
     console.log('Initializing all maps...');
-    
-    // Initialize single listing map
+      // Initialize single listing map
     const singleMapElement = document.getElementById('listing-map');
     if (singleMapElement) {
         console.log('Found single listing map element');
         
-        // Try to use geotourMapData first
-        if (typeof geotourMapData !== 'undefined' && geotourMapData.single) {
-            console.log('Using geotourMapData for single map');
-            initializeGeotourMap('listing-map', geotourMapData.single);
+        // Try to use geotourListingMapData first (from PHP template)
+        if (typeof window.geotourListingMapData !== 'undefined' && window.geotourListingMapData.single) {
+            console.log('Using geotourListingMapData for single map:', window.geotourListingMapData.single);
+            initializeGeotourMap('listing-map', window.geotourListingMapData.single);
         } else {
             console.log('Using data attributes for single map');
             // Fallback to data attributes
             initializeMapFromDataAttributes('listing-map');
         }
-    }
-
-    // Initialize archive map
+    }    // Initialize archive map
     const archiveMapElement = document.getElementById('archive-map');
     if (archiveMapElement) {
         console.log('Found archive map element');
         
-        if (typeof geotourMapData !== 'undefined' && geotourMapData.archive) {
-            console.log('Using geotourMapData for archive map');
-            initializeGeotourMap('archive-map', geotourMapData.archive);
+        if (typeof window.geotourListingMapData !== 'undefined' && window.geotourListingMapData.archive) {
+            console.log('Using geotourListingMapData for archive map');
+            initializeGeotourMap('archive-map', window.geotourListingMapData.archive);
         } else {
             console.log('Initializing default archive map');
             // Initialize with default view for now
