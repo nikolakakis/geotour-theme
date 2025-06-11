@@ -398,3 +398,112 @@
         rgba(255, 255, 255, 0.2) 100%
     );
 }
+
+// Listing-specific hero styles
+.listing-hero-section {
+    // Inherit all base hero styles
+    @extend .hero-section;
+    
+    .listing-hero-category {
+        margin-bottom: 1rem;
+        animation: fadeInUp 0.8s ease-out 0.3s backwards;
+        position: relative;
+        z-index: 11;
+        
+        .category-item {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(34, 165, 117, 0.9); // Use primary color
+            color: white;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 0.5rem;
+            
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+    
+    .listing-hero-title {
+        // Override any conflicting styles and ensure visibility
+        position: relative !important;
+        z-index: 11 !important;
+        opacity: 1 !important;
+        color: white !important;
+        display: block !important;
+        visibility: visible !important;
+        animation: fadeInUp 0.8s ease-out 0.1s backwards !important;
+        
+        // Ensure text shadow for readability
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7), 
+                     1px 1px 4px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    .listing-hero-region {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.9);
+        animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        position: relative;
+        z-index: 11;
+        
+        .location-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2322a575"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>') center/contain no-repeat;
+            margin-right: 0.5rem;
+        }
+        
+        span {
+            font-weight: 500;
+        }
+    }
+    
+    .listing-hero-subtitle {
+        // Override any conflicting styles and ensure visibility
+        position: relative !important;
+        z-index: 11 !important;
+        opacity: 1 !important;
+        display: block !important;
+        visibility: visible !important;
+        animation: fadeInUp 0.8s ease-out 0.2s backwards !important;
+        
+        p {
+            margin-bottom: 0;
+            color: rgba(255, 255, 255, 0.9) !important;
+            opacity: 1 !important;
+            display: block !important;
+            visibility: visible !important;
+        }
+    }
+    
+    // Force immediate visibility for listing hero elements (override global animations)
+    .hero-title,
+    .hero-subtitle,
+    .listing-hero-title,
+    .listing-hero-subtitle {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        animation-fill-mode: forwards !important;
+    }
+    
+    // Ensure hero content is visible
+    .hero-content {
+        opacity: 1 !important;
+        z-index: 10 !important;
+    }
+    
+    // Ensure hero container is visible
+    .hero-container {
+        opacity: 1 !important;
+        animation-fill-mode: forwards !important;
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Template part for displaying a single listing map
+ * Template part for displaying a single listing map in 100vw section
  * 
  * @package Geotour_Mobile_First
  */
@@ -44,35 +44,37 @@ $popup_content .= '<a href="' . esc_url($popup_permalink) . '" class="popup-link
 $popup_content .= '</div>';
 ?>
 
-<section class="listing-map-section">
-    <div id="listing-map" 
-         class="geotour-map-container listing-single-map"
-         data-lat="<?php echo esc_attr($marker_lat); ?>"
-         data-lng="<?php echo esc_attr($marker_lng); ?>"
-         data-zoom="<?php echo esc_attr($zoom_level); ?>"
-         data-title="<?php echo esc_attr($popup_title); ?>"
-         data-popup="<?php echo esc_attr($popup_content); ?>"
-         data-permalink="<?php echo esc_url($popup_permalink); ?>">
+<section class="listing-map-full-section">
+    <div class="listing-map-container-wrapper">
         
-        <!-- Loading placeholder -->
-        <div class="map-loading">
-            <p><?php _e('Loading map...', 'geotour'); ?></p>
+        <!-- Left side - Content overlap area (hidden on mobile) -->
+        <div class="listing-map-content-area">
+            <!-- Reserved for future content -->
         </div>
-    </div>
-    
-    <!-- Map caption/info -->
-    <div class="map-info">
-        <p class="map-location">
-            <i class="map-icon"></i>
-            <strong><?php _e('Location:', 'geotour'); ?></strong> 
-            <?php echo esc_html($marker_label); ?>
-        </p>
         
-        <?php if (isset($position_data['address']) && $position_data['address']) : ?>
-            <p class="map-address">
-                <small><?php echo esc_html($position_data['address']); ?></small>
-            </p>
-        <?php endif; ?>
+        <!-- Right side - Map area -->
+        <div class="listing-map-area">
+            <div id="listing-map" 
+                 class="geotour-map-container listing-single-map"
+                 data-lat="<?php echo esc_attr($marker_lat); ?>"
+                 data-lng="<?php echo esc_attr($marker_lng); ?>"
+                 data-zoom="<?php echo esc_attr($zoom_level); ?>"
+                 data-title="<?php echo esc_attr($popup_title); ?>"
+                 data-popup="<?php echo esc_attr($popup_content); ?>"
+                 data-permalink="<?php echo esc_url($popup_permalink); ?>">
+                
+                <!-- Loading placeholder -->
+                <div class="map-loading">
+                    <p><?php _e('Loading map...', 'geotour'); ?></p>
+                </div>
+            </div>
+            
+            <!-- Map controls area (reserved for future icons) -->
+            <div class="listing-map-controls">
+                <!-- Reserved for future map-related icons -->
+            </div>
+        </div>
+        
     </div>
 </section>
 

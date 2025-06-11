@@ -31,9 +31,9 @@ SOURCE DIRECTORIES:
 │       │   ├── _animations.scss    # Animation utilities
 │       │   └── _typography.scss    # Typography styles (Syne font system)
 │       ├── components/             # Reusable UI components
-│       │   ├── _hero.scss          # Hero section styles with enhanced overlays
+│       │   ├── _hero.scss          # Hero section styles with enhanced overlays (UPDATED - Listing hero support)
 │       │   ├── _content.scss       # Content components (articles, posts, archive grid)
-│       │   └── _maps.scss          # Styles for Leaflet maps (container, popups, controls, dark theme) (UPDATED)
+│       │   └── _maps.scss          # Styles for Leaflet maps (container, popups, controls, dark theme) (UPDATED - 100vw layout)
 │       ├── layout/
 │       │   ├── navigation/
 │       │   │   └── _main.scss      # Main menu SCSS with language flags
@@ -65,7 +65,8 @@ TEMPLATE PARTS:
 │   └── listing/                    # Listing CPT specific template parts
 │       ├── content-listing-single.php # Main content for a single listing
 │       ├── content-listing-archive.php # How a listing appears in archive loops (e.g., a card)
-│       ├── map-single.php          # Displays the Leaflet map for a single listing
+│       ├── hero-listing.php        # Dedicated hero section for listings (NEW)
+│       ├── map-single.php          # Displays the Leaflet map for a single listing (UPDATED - 100vw layout)
 │       ├── map-archive.php         # Displays the Leaflet map for archive listing pages
 │       ├── related-listings.php    # Displays nearby or related listings
 │       ├── related-posts.php       # Displays related standard posts
