@@ -46,7 +46,42 @@
     <?php endif; ?>
 
     <div class="entry-content">
+        <!-- Weather widget for testing -->
+        <div id="openmeteo"></div>
+        
         <?php the_content(); ?>
+        
+        <!-- Virtual Tour Section -->
+        <?php
+        $vtour_link = get_field('vtour_link');
+        if ($vtour_link) : ?>
+            <!-- Desktop Virtual Tour -->
+            <div id="geotour-overlay" class="desktop-vtour">
+                <div id="geotour-tour">
+                    <img class="vrgirl" src="https://www.geotour.gr/wp-content/uploads/2024/06/VRgirl.webp" alt="VR Girl" />
+                    <h3 class="geotour-title"><span>G</span>eotour Virtual Tour</h3>
+                    <p>Drag the mouse to change the field of view of the virtual tour, or use a VR headset to roam to Crete in an alternative way!</p>
+                    <div class="geotour-vtour">
+                        <span>You can open the tour in fullscreen by double clicking (or double tap with fingers) on it! Double click again to exit the fullscreen mode.</span>
+                        <iframe src="<?php echo esc_url($vtour_link); ?>" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Virtual Tour -->
+            <div id="geotour-mobile-tour" class="mobile-vtour">
+                <a href="<?php echo esc_url($vtour_link); ?>">
+                    <img class="vrgirl" src="https://www.geotour.gr/wp-content/uploads/2024/06/VRgirl.webp" alt="VR Girl" />
+                </a>
+                <a class="text-link" href="<?php echo esc_url($vtour_link); ?>">
+                    <span class="mobiletitle">G</span>eotour Virtual Tour
+                    <span class="text">Opens Geotour Virtual Tour in the current position</span>
+                </a>
+            </div>
+        <?php endif; ?>
+        
+        <!-- Nearest listings grid shortcode -->
+        <?php echo do_shortcode('[nearest-listings-grid]'); ?>
     </div>
 
     <footer class="entry-footer">

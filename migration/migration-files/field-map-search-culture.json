@@ -1,0 +1,22 @@
+[    
+    {
+        "old_meta_key": "boldthemes_theme_listing-searchculture_ekt_chronology",
+        "new_acf_field_name": "searchculture_ekt_chronology"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-searchculture_ekt_type",
+        "new_acf_field_name": "searchculture_ekt_type"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-searchculture_dcterms_spatial",
+        "new_acf_field_name": "searchculture_dcterms_spatial"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-searchculture_ekt_place",
+        "new_acf_field_name": "searchculture_ekt_place"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-searchculture_ekt_general_term",
+        "new_acf_field_name": "searchculture_ekt_general_term"
+    }
+]

@@ -1,251 +1,173 @@
-// Typography styles for Geotour theme
+// filepath: e:\visualstudio\geotour-theme\src\scss\base\_typography.scss
+
 @use '../base/variables' as variables;
+// Import the modern Sass color module
+@use 'sass:color';
 
-// Import Syne font from Google Fonts (if not already done in main.scss)
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
+// Import Syne and Public Sans from Google Fonts
+// Remember to enqueue these in functions.php for best performance.
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&display=swap');
 
-// Base typography settings
+// --- BASE TYPOGRAPHY ---
 body {
     font-family: variables.$font-primary;
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.65; // Slightly increased for better readability with Public Sans
     color: variables.$text-color;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: variables.$background-color; // Moved from a general styles file for clarity
 }
 
-// Heading styles - all using Syne font
+// --- HEADINGS ---
+// Using Syne for all headings for a strong, consistent brand identity.
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: variables.$font-heading;
-    font-weight: 700;
-    line-height: 1.2;
+    font-weight: 700; // Default bold weight
+    line-height: 1.25;
     margin: 0 0 1rem 0;
     color: variables.$heading-color;
 }
 
 h1, .h1 {
     font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 800;
+    font-weight: 800; // Extra-bold for the main title
     letter-spacing: -0.02em;
-    
-    @media (min-width: 768px) {
-        font-size: clamp(3rem, 6vw, 5rem);
-    }
 }
 
 h2, .h2 {
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(2rem, 4vw, 3.25rem);
     font-weight: 700;
-    letter-spacing: -0.01em;
-    
-    @media (min-width: 768px) {
-        font-size: clamp(2.5rem, 5vw, 3.5rem);
-    }
+    letter-spacing: -0.015em;
 }
 
 h3, .h3 {
-    font-size: clamp(1.5rem, 3vw, 2.25rem);
-    font-weight: 600;
-    
-    @media (min-width: 768px) {
-        font-size: clamp(1.75rem, 4vw, 2.5rem);
-    }
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 700;
 }
 
 h4, .h4 {
-    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-    font-weight: 600;
-    
-    @media (min-width: 768px) {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-    }
+    font-size: clamp(1.35rem, 3vw, 2rem);
+    font-weight: 700;
 }
 
 h5, .h5 {
-    font-size: clamp(1.125rem, 2vw, 1.5rem);
-    font-weight: 500;
-    
-    @media (min-width: 768px) {
-        font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-    }
+    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+    font-weight: 700;
 }
 
 h6, .h6 {
-    font-size: clamp(1rem, 1.5vw, 1.25rem);
-    font-weight: 500;
-    
-    @media (min-width: 768px) {
-        font-size: clamp(1.125rem, 2vw, 1.5rem);
-    }
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 700;
+    text-transform: uppercase; // Uppercase for a common use-case (e.g., sub-headings)
+    letter-spacing: 0.05em;
 }
 
-// Paragraph and text styles
+// --- BODY & PARAGRAPH TEXT ---
 p {
     margin: 0 0 1.5rem 0;
-    font-size: 1rem;
-    line-height: 1.7;
-    
-    @media (min-width: 768px) {
-        font-size: 1.125rem;
-        line-height: 1.6;
+    font-size: 1rem; // Base size for mobile
+
+    @media (min-width: variables.$breakpoint-md) {
+        font-size: 1.125rem; // Slightly larger for desktop readability
     }
 }
 
-// Lead text
 .lead {
+    font-family: variables.$font-primary;
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.6;
+    color: variables.$heading-color; // Make lead text slightly more prominent
     margin-bottom: 2rem;
-    
-    @media (min-width: 768px) {
+
+    @media (min-width: variables.$breakpoint-md) {
         font-size: 1.375rem;
-        line-height: 1.5;
     }
 }
 
-// Small text
-small, .small {
-    font-size: 0.875rem;
-    line-height: 1.5;
-}
-
-// Text utilities
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-
-.text-uppercase { text-transform: uppercase; }
-.text-lowercase { text-transform: lowercase; }
-.text-capitalize { text-transform: capitalize; }
-
-.font-weight-light { font-weight: 300; }
-.font-weight-normal { font-weight: 400; }
-.font-weight-medium { font-weight: 500; }
-.font-weight-semibold { font-weight: 600; }
-.font-weight-bold { font-weight: 700; }
-.font-weight-black { font-weight: 800; }
-
-// Links
+// --- LINKS ---
+// Using the vibrant 'Sea Blue' accent for links to make them stand out.
 a {
-    color: variables.$primary-color;
+    color: variables.$accent-color-sea;
     text-decoration: none;
-    transition: color 0.3s ease;
-    
+    font-weight: 500; // Slightly bolder links
+    transition: all 0.2s ease-in-out;
+
     &:hover,
     &:focus {
-        color: variables.$primary-dark;
+        // UPDATED: Replaced darken() with color.adjust()
+        color: color.adjust(variables.$accent-color-sea, $lightness: -10%);
         text-decoration: underline;
+        text-decoration-thickness: 2px;
     }
 }
 
-// Lists
+// --- LISTS ---
 ul, ol {
     margin: 0 0 1.5rem 0;
-    padding-left: 1.5rem;
-    
+    padding-left: 1.25rem;
+
     li {
-        margin-bottom: 0.5rem;
-        line-height: 1.6;
+        margin-bottom: 0.75rem;
+        line-height: 1.7;
     }
 }
 
-// Blockquotes
+// --- BLOCKQUOTES ---
+// A more modern, clean blockquote style.
 blockquote {
-    font-family: variables.$font-heading;
-    font-size: 1.25rem;
-    font-weight: 500;
-    font-style: italic;
+    font-family: variables.$font-heading; // Syne gives quotes a great character
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    font-weight: 700;
+    font-style: normal; // Syne doesn't need italics to stand out
     margin: 2rem 0;
-    padding: 1.5rem 2rem;
-    border-left: 4px solid variables.$primary-color;
-    background: rgba(variables.$primary-color, 0.05);
-    
-    @media (min-width: 768px) {
-        font-size: 1.5rem;
-        padding: 2rem 3rem;
-    }
-    
-    p:last-child {
+    padding: 1.5rem;
+    border: none; // Remove the old border
+    border-left: 4px solid variables.$accent-color-sun; // Use the 'Sun Yellow' accent
+    // UPDATED: Replaced lighten() with color.adjust()
+    background-color: color.adjust(variables.$accent-color-sun, $lightness: 38%); // A very light yellow background
+    color: variables.$heading-color;
+
+    p:last-of-type {
         margin-bottom: 0;
     }
-    
+
     cite {
         display: block;
-        font-size: 0.875rem;
-        font-weight: 400;
+        font-family: variables.$font-primary;
+        font-size: 0.9rem;
+        font-weight: 500;
         font-style: normal;
         margin-top: 1rem;
-        color: variables.$text-color-muted;
-        
+        color: variables.$text-color;
+
         &::before {
             content: '— ';
         }
     }
 }
 
-// Code and pre
-code {
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-    font-size: 0.875rem;
-    background: rgba(0, 0, 0, 0.05);
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px;
-}
+// Other text elements remain largely the same, but will inherit the new base styles.
+small, .small { font-size: 0.875rem; line-height: 1.5; color: variables.$text-color-muted; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.font-weight-bold { font-weight: 700; } // Public Sans has a great 700 weight
+.font-weight-medium { font-weight: 500; }
+.font-weight-normal { font-weight: 400; }
 
-pre {
-    background: rgba(0, 0, 0, 0.05);
-    padding: 1rem;
-    border-radius: 5px;
-    overflow-x: auto;
-    margin: 1.5rem 0;
-    
-    code {
-        background: none;
-        padding: 0;
-    }
-}
-
-// Table typography
-table {
-    font-size: 0.875rem;
-    
-    @media (min-width: 768px) {
-        font-size: 1rem;
-    }
-    
-    th {
-        font-family: variables.$font-heading;
-        font-weight: 600;
-    }
-}
-
-// Hero specific typography
+// Hero section styles
 .hero-title {
-    font-family: variables.$font-heading;
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    margin-bottom: 1rem;
-    
-    @media (min-width: 768px) {
-        font-size: clamp(3.5rem, 8vw, 6rem);
-        margin-bottom: 1.5rem;
-    }
+    // UPDATED: Modern way to create a transparent shadow color
+    $shadow-color: color.adjust(variables.$primary-dark, $lightness: -10%);
+    text-shadow: 2px 2px 8px color.change($shadow-color, $alpha: 0.2);
 }
 
 .hero-subtitle {
-    font-size: clamp(1.015rem, 2.5vw, 1.5rem);
-    line-height: 1.5;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    margin-bottom: 2rem;
-    
-    @media (min-width: 768px) {
-        font-size: clamp(1.25rem, 3vw, 1.75rem);
-        margin-bottom: 2.5rem;
-    }
+    // Uses lead styles by default
+    color: variables.$text-color; // Or #fff if on a dark background
+    text-shadow: none; // Often cleaner without a shadow on subtitles
 }

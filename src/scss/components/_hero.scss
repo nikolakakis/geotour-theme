@@ -234,7 +234,7 @@
     animation: fadeIn 1s ease-out 1.2s forwards;
     
     @media (max-width: 767px) {
-        bottom: 1.5rem;
+        bottom: -1.5rem;
     }
     
     // Add background blur for better visibility
@@ -512,11 +512,11 @@
         bottom: 1rem; // Move further down for listing hero
         
         @media (max-width: 767px) {
-            bottom: 0.5rem; // Even lower on mobile
+            bottom: -5.5rem; // Even lower on mobile
         }
         
         @media (min-width: 768px) {
-            bottom: 1.5rem;
+            bottom: -5.5rem;
         }
     }
 }

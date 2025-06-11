@@ -1,0 +1,71 @@
+// ==========================================================================
+// LISTING LAYOUT STYLES
+// ==========================================================================
+// Styles for single listing page layout components
+
+@use '../base/variables' as vars;
+@use 'sass:color';
+
+// Listing excerpt section in the map area
+.listing-excerpt-section {
+    padding: 3rem 2.5rem;
+    color: vars.$text-color;
+    font-family: vars.$font-primary;
+    position: relative;
+    z-index: 2;
+    
+    .excerpt-title {
+        font-family: vars.$font-heading;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: vars.$primary-color;
+        border-bottom: 3px solid vars.$primary-color;
+        padding-bottom: 0.75rem;
+        line-height: 1.2;
+    }
+    
+    .listing-excerpt-content {
+        margin-bottom: 2.5rem;
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: vars.$text-color;
+            margin-bottom: 0;
+            font-weight: 400;
+        }
+    }
+    
+    .listing-metadata {
+        padding-top: 2rem;
+        border-top: 2px solid color.change(vars.$primary-color, $alpha: 0.2);
+        
+        .listing-meta-categories,
+        .listing-meta-region {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: vars.$text-color;
+            line-height: 1.5;
+            
+            strong {
+                color: vars.$primary-color;
+                margin-right: 0.75rem;
+                font-weight: 600;
+                font-size: 1.05rem;
+            }
+        }
+        
+        .listing-meta-categories:last-child,
+        .listing-meta-region:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+// Responsive behavior for mobile
+@media (max-width: 1023px) {
+    .listing-excerpt-section {
+        display: none; // Hidden on mobile since the map content area is hidden
+    }
+}

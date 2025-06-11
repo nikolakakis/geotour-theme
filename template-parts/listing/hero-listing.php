@@ -68,13 +68,6 @@ if ($regions && !is_wp_error($regions)) {
                 </div>
             <?php endif; ?>
             
-            <!-- Listing excerpt/subtitle (full text, no trimming) -->
-            <?php if ($listing_excerpt && strlen($listing_excerpt) > 10) : ?>
-                <div class="hero-subtitle listing-hero-subtitle">
-                    <p><?php echo esc_html($listing_excerpt); ?></p>
-                </div>
-            <?php endif; ?>
-            
             <!-- Scroll indicator -->
             <div class="hero-scroll-indicator">
                 <div class="scroll-arrow"></div>

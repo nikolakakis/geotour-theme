@@ -33,14 +33,17 @@ SOURCE DIRECTORIES:
 │       ├── components/             # Reusable UI components
 │       │   ├── _hero.scss          # Hero section styles with enhanced overlays (UPDATED - Listing hero support)
 │       │   ├── _content.scss       # Content components (articles, posts, archive grid)
-│       │   └── _maps.scss          # Styles for Leaflet maps (container, popups, controls, dark theme) (UPDATED - 100vw layout)
+│       │   ├── _maps.scss          # Styles for Leaflet maps (container, popups, controls, dark theme) (UPDATED - 100vw layout)
+│       │   └── _virtualtour.scss   # Virtual tour widget component styles (NEW)
 │       ├── layout/
 │       │   ├── navigation/
 │       │   │   └── _main.scss      # Main menu SCSS with language flags
 │       │   ├── header/
 │       │   │   └── _main.scss      # Main header SCSS with clip-path design
-│       │   └── content/
-│       │       └── _main.scss      # Main content layout, responsive grid, navigation
+│       │   ├── content/
+│       │   │   └── _main.scss      # Main content layout, responsive grid, navigation
+│       │   └── listing/            # Listing-specific layout styles (NEW)
+│       │       └── _overthecontent.scss # Over-the-content area styles for listings (NEW)
 │       └── pages/                  # Page-specific styles
 
 WORDPRESS THEME STRUCTURE:

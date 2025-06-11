@@ -1,0 +1,5 @@
+Run
+wp geotour migrate_meta --map-file=e:\visualstudio\geotour-theme\migration\migration-files\field-map-search-culture.json --dry-run
+
+or without dry run 
+wp geotour migrate_meta --map-file=e:\visualstudio\geotour-theme\migration\migration-files\field-map-search-culture.json

@@ -34,6 +34,13 @@ $popup_title = get_the_title();
 $popup_excerpt = get_the_excerpt();
 $popup_permalink = get_permalink();
 
+// Get the listing excerpt for the content area
+$listing_excerpt = get_the_excerpt();
+if (empty($listing_excerpt)) {
+    $listing_excerpt = get_the_content();
+    $listing_excerpt = wp_trim_words(strip_tags($listing_excerpt), 50);
+}
+
 // Build popup HTML
 $popup_content = '<div class="listing-map-popup">';
 $popup_content .= '<h5>' . esc_html($popup_title) . '</h5>';
@@ -49,7 +56,45 @@ $popup_content .= '</div>';
         
         <!-- Left side - Content overlap area (hidden on mobile) -->
         <div class="listing-map-content-area">
-            <!-- Reserved for future content -->
+            <div class="listing-excerpt-section">
+                <h3 class="excerpt-title"><?php _e('About This Location', 'geotour'); ?></h3>
+                <?php if ($listing_excerpt && strlen($listing_excerpt) > 10) : ?>
+                    <div class="listing-excerpt-content">
+                        <p><?php echo esc_html($listing_excerpt); ?></p>
+                    </div>
+                <?php else : ?>
+                    <div class="listing-excerpt-content">
+                        <p><?php _e('Discover this fascinating location and its rich history.', 'geotour'); ?></p>
+                    </div>
+                <?php endif; ?>
+                
+                <!-- Additional metadata could go here -->
+                <div class="listing-metadata">
+                    <?php
+                    // Get listing categories
+                    $categories = get_the_terms(get_the_ID(), 'listing-category');
+                    if ($categories && !is_wp_error($categories)) {
+                        echo '<div class="listing-meta-categories">';
+                        echo '<strong>' . __('Type:', 'geotour') . '</strong> ';
+                        $category_names = array();
+                        foreach ($categories as $category) {
+                            $category_names[] = esc_html($category->name);
+                        }
+                        echo implode(', ', $category_names);
+                        echo '</div>';
+                    }
+                    
+                    // Get listing regions
+                    $regions = get_the_terms(get_the_ID(), 'listing-region');
+                    if ($regions && !is_wp_error($regions)) {
+                        echo '<div class="listing-meta-region">';
+                        echo '<strong>' . __('Region:', 'geotour') . '</strong> ';
+                        echo esc_html($regions[0]->name);
+                        echo '</div>';
+                    }
+                    ?>
+                </div>
+            </div>
         </div>
         
         <!-- Right side - Map area -->
