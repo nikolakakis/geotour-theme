@@ -16,19 +16,23 @@ get_header(); ?>
 <!-- 100vw Details section -->
 <?php include(get_template_directory() . '/template-parts/listing/details-sections.php'); ?>
 
-<div id="primary" class="content-area">
-    <main id="main" class="site-main">
+<?php while (have_posts()) : the_post(); ?>
+    
+    <!-- Main listing content -->
+    <div class="main-container">
+        <?php get_template_part('template-parts/listing/content-listing', 'single'); ?>
         
-        <?php while (have_posts()) : the_post(); ?>
-            
-            <!-- Main listing content -->
-            <div class="main-container">
-                <?php get_template_part('template-parts/listing/content-listing', 'single'); ?>
-            </div>
-            
-        <?php endwhile; ?>
-        
-    </main>
-</div>
+        <?php
+        // If comments are open or there are comments, load the comment template
+        if (comments_open() || get_comments_number()) :
+            comments_template();
+        endif;
+        ?>
+    </div>
+    
+<?php endwhile; ?>
+
+        </main><!-- #main -->
+    </div><!-- #primary -->
 
 <?php get_footer(); ?>
