@@ -13,6 +13,9 @@ get_header(); ?>
 <!-- 100vw Map section -->
 <?php get_template_part('template-parts/listing/map', 'single'); ?>
 
+<!-- 100vw Details section -->
+<?php include(get_template_directory() . '/template-parts/listing/details-sections.php'); ?>
+
 <div id="primary" class="content-area">
     <main id="main" class="site-main">
         

@@ -8,10 +8,7 @@
 
 <article id="post-<?php the_ID(); ?>" <?php post_class('content-article listing-single listing-wide-content'); ?>>
     
-    <div class="entry-content">
-        <!-- Weather widget for testing -->
-        <div id="openmeteo"></div>
-        
+    <div class="entry-content">        
         <?php the_content(); ?>
     </div>
         

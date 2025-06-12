@@ -1,0 +1,38 @@
+[    
+    {
+        "old_meta_key": "boldthemes_theme_listing-festive_date1",
+        "new_acf_field_name": "festive_date1"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-festive_date1_end",
+        "new_acf_field_name": "festive_date1_end"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-festive_reason1",
+        "new_acf_field_name": "festive_reason1"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-festive_date2",
+        "new_acf_field_name": "festive_date2"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-festive_date2_end",
+        "new_acf_field_name": "festive_date2_end"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-festive_reason2",
+        "new_acf_field_name": "festive_reason2"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-festive_date3",
+        "new_acf_field_name": "festive_date3"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-festive_date3_end",
+        "new_acf_field_name": "festive_date3_end"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-festive_reason3",
+        "new_acf_field_name": "festive_reason3"
+    }   
+]

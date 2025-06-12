@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The template for displaying single listing posts
  *
@@ -8,15 +9,14 @@
 get_header();
 ?>
 
-<div class="main-container">
-    <!-- Simple test map container -->
-    <div style="margin: 2rem 0;">
-        <h2>Test Map</h2>
-        <div id="listing-map" class="geotour-map-container"></div>
-    </div>
-    
-    <?php if (have_posts()) : ?>
-        <?php while (have_posts()) : the_post(); ?>
+<?php if (have_posts()) : ?>
+    <?php while (have_posts()) : the_post(); ?>
+        
+        <!-- Hero Section -->
+        <?php get_template_part('template-parts/listing/hero-listing'); ?>
+        
+        <!-- Main Content Container -->
+        <div class="main-container">
             <?php get_template_part('template-parts/listing/content-listing-single'); ?>
             
             <?php
@@ -25,12 +25,20 @@ get_header();
                 comments_template();
             endif;
             ?>
-            
-        <?php endwhile; ?>
-    <?php else : ?>
+        </div>
+        
+        <!-- Map Section (100vw) -->
+        <?php get_template_part('template-parts/listing/map-single'); ?>
+        
+        <!-- Listing Details Sections (100vw) - Over the content 2 -->
+        <?php get_template_part('template-parts/listing/details-sections'); ?>
+        
+    <?php endwhile; ?>
+<?php else : ?>
+    <div class="main-container">
         <?php get_template_part('template-parts/content', 'none'); ?>
-    <?php endif; ?>
-</div>
+    </div>
+<?php endif; ?>
 
 <?php
 get_footer();
