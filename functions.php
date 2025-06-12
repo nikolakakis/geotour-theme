@@ -43,6 +43,9 @@ require_once GEOTOUR_THEME_DIR . '/includes/shortcodes/content-gallery.php';
 // Map functionality
 require_once GEOTOUR_THEME_DIR . '/includes/maps/icon-management.php';
 
+// REST API endpoints
+require_once GEOTOUR_THEME_DIR . '/includes/api/spatial-info-v2.php';
+
 // Custom hooks and filters (Uncomment when ready)
 // require_once GEOTOUR_THEME_DIR . '/includes/hooks.php'; // Note: your file is named hook.php, consider renaming to hooks.php for consistency or update here
 
