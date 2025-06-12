@@ -99,6 +99,8 @@ PHP INCLUDES STRUCTURE:
 │   ├── hooks.php                   # Custom hooks and filters
 │   ├── navigation.php              # PHP helpers for navigation (walkers, etc.)
 │   ├── legacy-shortcodes.php       # BoldThemes shortcode replacements (NEW)
+│   ├── maps/                       # Map functionality (NEW)
+│   │   └── icon-management.php     # Category-based map icon system (NEW)
 │   ├── shortcodes/                 # Modern shortcode implementations (NEW)
 │   │   └── content-gallery.php     # Image gallery shortcode replacement (NEW)
 │   ├── custom-post-types/

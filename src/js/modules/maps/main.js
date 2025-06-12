@@ -12,6 +12,20 @@ const archaeologicalSiteIcon = L.icon({
     popupAnchor: [0, -64] // Point from which the popup should open relative to the iconAnchor (adjusted for new size)
 });
 
+// Function to create custom icon from configuration
+function createCustomIcon(iconConfig) {
+    if (!iconConfig || !iconConfig.iconUrl) {
+        return archaeologicalSiteIcon; // Fallback to default
+    }
+    
+    return L.icon({
+        iconUrl: iconConfig.iconUrl,
+        iconSize: iconConfig.iconSize || [64, 64],
+        iconAnchor: iconConfig.iconAnchor || [32, 64],
+        popupAnchor: iconConfig.popupAnchor || [0, -64]
+    });
+}
+
 // Fix for default markers in Leaflet with Vite
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -48,44 +62,48 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
             center = [lat, lng];
             zoom = !isNaN(zoomAttr) ? zoomAttr : 13;
         }
-    }
+    }    // Check if this should be a static map
+    const isStatic = mapData.isStatic || mapElement.dataset.static === 'true';
+    const showPopup = mapData.showPopup !== false && mapElement.dataset.noPopup !== 'true';
 
     // Initialize the map
-    const map = L.map(mapElementId).setView(center, zoom);
+    const mapOptions = {
+        center: center,
+        zoom: zoom,
+        zoomControl: !isStatic,
+        dragging: !isStatic,
+        touchZoom: !isStatic,
+        doubleClickZoom: !isStatic,
+        scrollWheelZoom: !isStatic,
+        boxZoom: !isStatic,
+        keyboard: !isStatic
+    };
+    
+    const map = L.map(mapElementId, mapOptions);
 
     // Add OpenStreetMap raster tile layer
     const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'    });
     osmLayer.addTo(map);
     
-    console.log('Raster tile map initialized successfully');    // Add marker if coordinates are provided
-    if (mapData.coordinates) {
-        console.log('Adding marker at coordinates:', mapData.coordinates);
-        const marker = L.marker(mapData.coordinates, { icon: archaeologicalSiteIcon }).addTo(map);
+    console.log('Raster tile map initialized successfully');
+    
+    // Add marker if coordinates are provided
+    if (mapData.coordinates || (!isNaN(parseFloat(mapElement.dataset.lat)) && !isNaN(parseFloat(mapElement.dataset.lng)))) {
+        console.log('Adding marker at coordinates:', center);
         
-        // Add popup if available
-        if (mapData.popupText) {
-            marker.bindPopup(mapData.popupText);
-            
-            // Auto-open popup for single listings
-            if (mapElementId === 'listing-map') {
-                marker.openPopup();
-            }
+        // Create icon from configuration
+        let markerIcon = archaeologicalSiteIcon; // Default fallback
+        if (mapData.iconConfig) {
+            markerIcon = createCustomIcon(mapData.iconConfig);
         }
-    } else if (!isNaN(parseFloat(mapElement.dataset.lat)) && !isNaN(parseFloat(mapElement.dataset.lng))) {
-        const markerCoords = [parseFloat(mapElement.dataset.lat), parseFloat(mapElement.dataset.lng)];
-        console.log('Adding marker from data attributes at:', markerCoords);
-        const marker = L.marker(markerCoords, { icon: archaeologicalSiteIcon }).addTo(map);
         
-        const popupText = mapElement.dataset.popup || mapElement.dataset.title;
-        if (popupText) {
-            marker.bindPopup(popupText);
-            
-            if (mapElementId === 'listing-map') {
-                marker.openPopup();
-            }
+        const marker = L.marker(center, { icon: markerIcon }).addTo(map);
+        
+        // Add popup only if enabled and content is available
+        if (showPopup && mapData.popupText) {
+            marker.bindPopup(mapData.popupText);
         }
     }
 
