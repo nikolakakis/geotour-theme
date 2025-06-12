@@ -59,8 +59,7 @@ if (empty($listing_excerpt)) {
                         <p><?php _e('Discover this fascinating location and its rich history.', 'geotour'); ?></p>
                     </div>
                 <?php endif; ?>
-                
-                <!-- Additional metadata could go here -->
+                  <!-- Additional metadata could go here -->
                 <div class="listing-metadata">
                     <?php
                     // Get listing categories
@@ -68,11 +67,11 @@ if (empty($listing_excerpt)) {
                     if ($categories && !is_wp_error($categories)) {
                         echo '<div class="listing-meta-categories">';
                         echo '<strong>' . __('Type:', 'geotour') . '</strong> ';
-                        $category_names = array();
+                        $category_links = array();
                         foreach ($categories as $category) {
-                            $category_names[] = esc_html($category->name);
+                            $category_links[] = '<a href="' . esc_url(geotour_get_taxonomy_listing_url('listing-category', $category->slug)) . '" class="category-link">' . esc_html($category->name) . '</a>';
                         }
-                        echo implode(', ', $category_names);
+                        echo implode(', ', $category_links);
                         echo '</div>';
                     }
                     
@@ -81,7 +80,7 @@ if (empty($listing_excerpt)) {
                     if ($regions && !is_wp_error($regions)) {
                         echo '<div class="listing-meta-region">';
                         echo '<strong>' . __('Region:', 'geotour') . '</strong> ';
-                        echo esc_html($regions[0]->name);
+                        echo '<a href="' . esc_url(geotour_get_taxonomy_listing_url('listing-region', $regions[0]->slug)) . '" class="region-link">' . esc_html($regions[0]->name) . '</a>';
                         echo '</div>';
                     }
                     ?>

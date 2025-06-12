@@ -48,9 +48,11 @@ if ($regions && !is_wp_error($regions)) {
             <!-- Listing breadcrumb/category -->
             <?php if (!empty($category_names)) : ?>
                 <div class="listing-hero-category">
-                    <?php foreach ($category_names as $index => $category) : ?>
+                    <?php foreach ($categories as $index => $category) : ?>
                         <?php if ($index > 0) echo ' • '; ?>
-                        <span class="category-item"><?php echo esc_html($category); ?></span>
+                        <a href="<?php echo esc_url(geotour_get_taxonomy_listing_url('listing-category', $category->slug)); ?>" class="category-item">
+                            <?php echo esc_html($category->name); ?>
+                        </a>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
@@ -64,7 +66,9 @@ if ($regions && !is_wp_error($regions)) {
             <?php if ($region_name) : ?>
                 <div class="listing-hero-region">
                     <i class="location-icon"></i>
-                    <span><?php echo esc_html($region_name); ?></span>
+                    <a href="<?php echo esc_url(geotour_get_taxonomy_listing_url('listing-region', $regions[0]->slug)); ?>" class="region-link">
+                        <?php echo esc_html($region_name); ?>
+                    </a>
                 </div>
             <?php endif; ?>
             

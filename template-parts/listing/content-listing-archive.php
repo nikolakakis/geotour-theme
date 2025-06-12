@@ -26,7 +26,7 @@
             if ($categories && !is_wp_error($categories)) {
                 echo '<div class="listing-categories">';
                 foreach ($categories as $category) {
-                    echo '<span class="listing-category">' . esc_html($category->name) . '</span>';
+                    echo '<a href="' . esc_url(geotour_get_taxonomy_listing_url('listing-category', $category->slug)) . '" class="listing-category">' . esc_html($category->name) . '</a>';
                 }
                 echo '</div>';
             }
@@ -36,7 +36,7 @@
             if ($regions && !is_wp_error($regions)) {
                 echo '<div class="listing-region">';
                 echo '<strong>' . __('Region:', 'geotour') . '</strong> ';
-                echo esc_html($regions[0]->name);
+                echo '<a href="' . esc_url(geotour_get_taxonomy_listing_url('listing-region', $regions[0]->slug)) . '">' . esc_html($regions[0]->name) . '</a>';
                 echo '</div>';
             }
             ?>

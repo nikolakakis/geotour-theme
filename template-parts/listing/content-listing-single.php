@@ -46,9 +46,7 @@
     <!-- Nearest listings grid shortcode (100vw) -->
     <section class="nearest-listings-full-section">
         <?php echo do_shortcode('[nearest-listings-grid]'); ?>
-    </section>
-
-    <footer class="entry-footer">
+    </section>    <footer class="entry-footer">
         <?php
         // Display listing tags
         $tags = get_the_terms(get_the_ID(), 'listing-tag');
@@ -56,7 +54,7 @@
             echo '<div class="listing-tags">';
             echo '<strong>' . __('Tags:', 'geotour') . '</strong> ';
             foreach ($tags as $tag) {
-                echo '<span class="listing-tag">' . esc_html($tag->name) . '</span>';
+                echo '<a href="' . esc_url(geotour_get_taxonomy_listing_url('listing-tag', $tag->slug)) . '" class="listing-tag">' . esc_html($tag->name) . '</a>';
             }
             echo '</div>';
         }
