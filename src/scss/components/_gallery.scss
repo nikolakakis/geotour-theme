@@ -1,0 +1,156 @@
+// ==========================================================================
+// CONTENT GALLERY COMPONENT STYLES
+// ==========================================================================
+// Modern image gallery replacement for bt_bb_css_image_grid shortcode
+
+@use '../base/variables' as vars;
+@use 'sass:color';
+
+.geotour-image-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
+    gap: var(--grid-gap, 20px);
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border: 1px solid color.change(vars.$primary-color, $alpha: 0.15);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px color.change(vars.$primary-color, $alpha: 0.08);
+    background: color.change(vars.$background-color, $alpha: 0.5);
+    
+    .grid-item {
+        display: block;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        
+        // Default span for items if format is missing or invalid
+        grid-column: span 1;
+        grid-row: span 1;
+        
+        // Handle specific format codes from the shortcode
+        &[data-format="21"] { grid-column: span 2; grid-row: span 1; }
+        &[data-format="12"] { grid-column: span 1; grid-row: span 2; }
+        &[data-format="22"] { grid-column: span 2; grid-row: span 2; }
+        &[data-format="31"] { grid-column: span 3; grid-row: span 1; }
+        &[data-format="13"] { grid-column: span 1; grid-row: span 3; }
+        &[data-format="32"] { grid-column: span 3; grid-row: span 2; }
+        &[data-format="23"] { grid-column: span 2; grid-row: span 3; }
+        &[data-format="33"] { grid-column: span 3; grid-row: span 3; }
+        &[data-format="11"] { grid-column: span 1; grid-row: span 1; }
+        
+        // Hover effects
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            z-index: 2;
+        }
+        
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        // Subtle zoom effect on hover
+        &:hover img {
+            transform: scale(1.05);
+        }
+        
+        // Add a subtle overlay effect
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                transparent 0%,
+                transparent 70%,
+                color.change(vars.$primary-color, $alpha: 0.1) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: var(--border-radius, 8px);
+            pointer-events: none;
+        }
+        
+        &:hover::after {
+            opacity: 1;
+        }
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .geotour-image-grid {
+        grid-template-columns: repeat(2, 1fr); // Force 2 columns on mobile
+        gap: 16px;
+        padding: 1rem;
+        
+        .grid-item {
+            // Reset all spans to 1x1 on mobile for better layout
+            grid-column: span 1 !important;
+            grid-row: span 1 !important;
+            
+            // Reduce hover effects on touch devices
+            &:hover {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            &:hover img {
+                transform: none;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .geotour-image-grid {
+        grid-template-columns: 1fr; // Single column on very small screens
+        gap: 14px;
+        padding: 0.75rem;
+    }
+}
+
+// Larger screens - enhance the grid
+@media (min-width: 1200px) {
+    .geotour-image-grid {
+        gap: var(--grid-gap, 24px); // Larger gap on big screens
+        padding: 2rem;
+    }
+}
+
+// Fancybox customization to match theme
+.fancybox__container {
+    --fancybox-bg: rgba(13, 26, 38, 0.95);
+    --fancybox-color: #{vars.$dark-text-primary};
+    --fancybox-accent-color: #{vars.$primary-color};
+}
+
+.fancybox__caption {
+    background: linear-gradient(
+        to top,
+        rgba(13, 26, 38, 0.9) 0%,
+        transparent 100%
+    );
+    color: vars.$dark-text-primary;
+    padding: 2rem 1rem 1rem;
+    
+    @media (max-width: 768px) {
+        padding: 1.5rem 1rem 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+// Loading state
+.geotour-image-grid .grid-item img {
+    background: color.change(vars.$primary-color, $alpha: 0.1);
+    
+    // Remove the loading opacity effect
+}

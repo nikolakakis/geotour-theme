@@ -8,6 +8,7 @@ import { initializeMainMenu } from './modules/navigation/main.js';
 import { initializeHeader } from './modules/header/main.js';
 import { initializeHero } from './modules/hero/main.js';
 import { initializeAllMaps } from './modules/maps/main.js'; // Corrected import
+import { initializeGallery } from './modules/gallery/main.js'; // Gallery module
 
 // Fix Leaflet default icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -28,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeHeader();
     initializeHero();
     initializeAllMaps(); // Corrected function call
-
+    initializeGallery(); // Initialize gallery functionality
+    
     // The direct map initialization previously here has been moved to initializeMaps in modules/maps/main.js
     // Ensure that initializeMaps handles the logic for finding 'listing-map' and setting up the map.
     // If 'listing-map' is not always present, initializeMaps should handle that gracefully.

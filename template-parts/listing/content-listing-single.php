@@ -6,55 +6,20 @@
  */
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class('content-article listing-single'); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class('content-article listing-single listing-wide-content'); ?>>
     
-    <header class="entry-header">
-        <h1 class="entry-title"><?php the_title(); ?></h1>
-        
-        <div class="entry-meta">
-            <?php
-            // Display listing categories
-            $categories = get_the_terms(get_the_ID(), 'listing-category');
-            if ($categories && !is_wp_error($categories)) {
-                echo '<div class="listing-categories">';
-                foreach ($categories as $category) {
-                    echo '<span class="listing-category">' . esc_html($category->name) . '</span>';
-                }
-                echo '</div>';
-            }
-            
-            // Display listing regions
-            $regions = get_the_terms(get_the_ID(), 'listing-region');
-            if ($regions && !is_wp_error($regions)) {
-                echo '<div class="listing-regions">';
-                echo '<strong>' . __('Region:', 'geotour') . '</strong> ';
-                $region_names = array();
-                foreach ($regions as $region) {
-                    $region_names[] = esc_html($region->name);
-                }
-                echo implode(', ', $region_names);
-                echo '</div>';
-            }
-            ?>
-        </div>
-    </header>
-
-    <?php if (has_post_thumbnail()) : ?>
-        <div class="post-thumbnail">
-            <?php the_post_thumbnail('listing-hero', array('class' => 'listing-featured-image')); ?>
-        </div>
-    <?php endif; ?>
-
     <div class="entry-content">
         <!-- Weather widget for testing -->
         <div id="openmeteo"></div>
         
         <?php the_content(); ?>
+    </div>
         
-        <!-- Virtual Tour Section -->
-        <?php
-        $vtour_link = get_field('vtour_link');
-        if ($vtour_link) : ?>
+    <!-- Virtual Tour Section (100vw) -->
+    <?php
+    $vtour_link = get_field('vtour_link');
+    if ($vtour_link) : ?>
+        <section class="virtual-tour-full-section">
             <!-- Desktop Virtual Tour -->
             <div id="geotour-overlay" class="desktop-vtour">
                 <div id="geotour-tour">
@@ -78,11 +43,13 @@
                     <span class="text">Opens Geotour Virtual Tour in the current position</span>
                 </a>
             </div>
-        <?php endif; ?>
-        
-        <!-- Nearest listings grid shortcode -->
+        </section>
+    <?php endif; ?>
+    
+    <!-- Nearest listings grid shortcode (100vw) -->
+    <section class="nearest-listings-full-section">
         <?php echo do_shortcode('[nearest-listings-grid]'); ?>
-    </div>
+    </section>
 
     <footer class="entry-footer">
         <?php

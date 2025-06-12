@@ -21,6 +21,8 @@ SOURCE DIRECTORIES:
 │   │   │   │   └── main.js         # Header functionality and animations
 │   │   │   ├── hero/
 │   │   │   │   └── main.js         # Hero section interactions, scroll effects, clickable scroll indicator
+│   │   │   ├── gallery/
+│   │   │   │   └── main.js         # Image gallery with Fancybox lightbox (NEW)
 │   │   │   └── maps/
 │   │   │       └── main.js         # Leaflet map initialization with raster tiles (UPDATED - Simplified)
 │   │   └── leaflet/                # Leaflet map functionality (if not using modules for everything)
@@ -34,7 +36,8 @@ SOURCE DIRECTORIES:
 │       │   ├── _hero.scss          # Hero section styles with enhanced overlays (UPDATED - Listing hero support)
 │       │   ├── _content.scss       # Content components (articles, posts, archive grid)
 │       │   ├── _maps.scss          # Styles for Leaflet maps (container, popups, controls, dark theme) (UPDATED - 100vw layout)
-│       │   └── _virtualtour.scss   # Virtual tour widget component styles (NEW)
+│       │   ├── _virtualtour.scss   # Virtual tour widget component styles (NEW)
+│       │   └── _gallery.scss       # Image gallery component styles with masonry layout (NEW)
 │       ├── layout/
 │       │   ├── navigation/
 │       │   │   └── _main.scss      # Main menu SCSS with language flags
@@ -95,6 +98,9 @@ PHP INCLUDES STRUCTURE:
 │   ├── utils.php                   # Utility functions (coordinates, GeoJSON, post meta helpers)
 │   ├── hooks.php                   # Custom hooks and filters
 │   ├── navigation.php              # PHP helpers for navigation (walkers, etc.)
+│   ├── legacy-shortcodes.php       # BoldThemes shortcode replacements (NEW)
+│   ├── shortcodes/                 # Modern shortcode implementations (NEW)
+│   │   └── content-gallery.php     # Image gallery shortcode replacement (NEW)
 │   ├── custom-post-types/
 │   │   └── listing.php             # Listing CPT and its core taxonomies registration
 │   ├── taxonomies/

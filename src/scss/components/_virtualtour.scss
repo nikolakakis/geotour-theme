@@ -6,14 +6,32 @@
 @use '../base/variables' as vars;
 @use 'sass:color';
 
+// 100vw Virtual Tour Section
+.virtual-tour-full-section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background: linear-gradient(135deg, vars.$background-color 0%, #f8f9fa 100%);
+    padding: 3rem 0;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    z-index: 1; // Lower than menu z-index
+}
+
 // Desktop Virtual Tour
 #geotour-overlay {
-    margin: 2rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 2rem;
-    background: linear-gradient(135deg, vars.$background-color 0%, #f8f9fa 100%);
+    background: white;
     border: 2px solid vars.$primary-color;
     border-radius: vars.$border-radius-lg;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
     
     // Show on desktop/tablet only
     @media (min-width: 800px) and (min-height: 600px) {
@@ -88,12 +106,15 @@
 
 // Mobile Virtual Tour
 #geotour-mobile-tour {
-    margin: 2rem 0;
+    max-width: 600px;
+    margin: 0 auto;
     padding: 1.5rem;
-    background: vars.$background-color;
+    background: white;
     border: 2px solid vars.$primary-color;
     border-radius: vars.$border-radius-lg;
     text-align: center;
+    position: relative;
+    z-index: 1;
     
     // Show on mobile/small screens only
     @media (max-width: 799px), (max-height: 599px) {
@@ -144,14 +165,18 @@
 
 // Responsive adjustments
 @media (max-width: 480px) {
+    .virtual-tour-full-section {
+        padding: 2rem 1rem;
+    }
+    
     #geotour-overlay {
         padding: 1.5rem;
-        margin: 1.5rem 0;
+        margin: 0 1rem;
     }
     
     #geotour-mobile-tour {
         padding: 1rem;
-        margin: 1.5rem 0;
+        margin: 0 1rem;
     }
     
     .geotour-title {

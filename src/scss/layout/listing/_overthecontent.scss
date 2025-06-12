@@ -63,6 +63,49 @@
     }
 }
 
+// Listing wide content layout
+.listing-wide-content {
+    .entry-content {
+        max-width: 1450px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        
+        @media (max-width: 768px) {
+            padding: 0 1rem;
+        }
+        
+        @media (min-width: 1500px) {
+            padding: 0 3rem;
+        }
+    }
+}
+
+// 100vw sections for listings
+.nearest-listings-full-section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background: #f8f9fa;
+    padding: 3rem 0;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    z-index: 1; // Lower than menu z-index
+    
+    // Container for the grid content
+    .grid-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        
+        @media (max-width: 768px) {
+            padding: 0 1rem;
+        }
+    }
+}
+
 // Responsive behavior for mobile
 @media (max-width: 1023px) {
     .listing-excerpt-section {

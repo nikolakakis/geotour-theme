@@ -34,6 +34,12 @@ require_once GEOTOUR_THEME_DIR . '/includes/navigation.php';
 require_once GEOTOUR_THEME_DIR . '/includes/custom-post-types/listing.php';
 // require_once GEOTOUR_THEME_DIR . '/includes/taxonomies/listing-taxonomies.php';
 
+// Legacy shortcode replacements
+require_once GEOTOUR_THEME_DIR . '/includes/legacy-shortcodes.php';
+
+// Modern shortcode implementations
+require_once GEOTOUR_THEME_DIR . '/includes/shortcodes/content-gallery.php';
+
 // Custom hooks and filters (Uncomment when ready)
 // require_once GEOTOUR_THEME_DIR . '/includes/hooks.php'; // Note: your file is named hook.php, consider renaming to hooks.php for consistency or update here
 
