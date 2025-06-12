@@ -1,0 +1,93 @@
+<?php
+/**
+ * Template Name: Listing Map
+ * Template for the Listing Map UI
+ * Full-screen map with sidebar for spatial navigation
+ *
+ * @package Geotour_Mobile_First
+ */
+
+// Prevent caching and force fresh data
+header('Cache-Control: no-cache, must-revalidate');
+
+get_header(); ?>
+
+<div class="big-map-container">
+    <!-- Map Loading Overlay -->
+    <div id="map-loading-overlay" class="map-loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p><?php _e('Loading map data...', 'geotour'); ?></p>
+        </div>
+    </div>
+
+    <!-- Sidebar for listings -->
+    <div id="map-sidebar" class="map-sidebar">
+        <div class="sidebar-header">
+            <h2><?php _e('Discover Crete', 'geotour'); ?></h2>
+            <button id="sidebar-toggle" class="sidebar-toggle" aria-label="<?php _e('Toggle sidebar', 'geotour'); ?>">
+                <span class="toggle-icon"></span>
+            </button>
+        </div>
+        
+        <!-- Results -->
+        <div class="sidebar-results">
+            <div class="results-header">
+                <span id="results-count"><?php _e('Loading...', 'geotour'); ?></span>
+            </div>
+            <div id="listings-container" class="listings-container">
+                <!-- Listings will be loaded via AJAX -->
+            </div>
+            
+            <!-- Sidebar Loading Overlay -->
+            <div id="sidebar-loading-overlay" class="sidebar-loading-overlay">
+                <div class="sidebar-spinner"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Map Container -->
+    <div id="big-map" class="big-map">
+        <!-- Map will be initialized here -->
+    </div>
+    
+    <!-- Map Controls -->
+    <div class="map-controls">
+        <button id="locate-me" class="map-control-btn" title="<?php _e('Find my location', 'geotour'); ?>">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M3.05,13H1V11H3.05C3.5,6.83 6.83,3.5 11,3.05V1H13V3.05C17.17,3.5 20.5,6.83 20.95,11H23V13H20.95C20.5,17.17 17.17,20.5 13,20.95V23H11V20.95C6.83,20.5 3.5,17.17 3.05,13M12,5A7,7 0 0,0 5,12A7,7 0 0,0 12,19A7,7 0 0,0 19,12A7,7 0 0,0 12,5Z"/>
+            </svg>
+        </button>
+        
+        <button id="fit-bounds" class="map-control-btn" title="<?php _e('Fit all markers', 'geotour'); ?>">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9,3V5H7V9H5V7H3V5A2,2 0 0,1 5,3H7A2,2 0 0,1 9,3M19,3A2,2 0 0,1 21,5V7H19V5H17V3H19M5,15H7V17H9V19H7A2,2 0 0,1 5,17V15M15,17H17V19H19V17H21V19A2,2 0 0,1 19,21H17A2,2 0 0,1 15,19V17Z"/>
+            </svg>
+        </button>
+        
+        <button id="reset-view" class="map-control-btn" title="<?php _e('Reset view', 'geotour'); ?>">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,4C14.1,4 16.1,4.8 17.6,6.3C20.7,9.4 20.7,14.5 17.6,17.6C15.8,19.5 13.3,20.2 10.9,19.9L11.4,17.9C13.1,18.1 14.9,17.5 16.2,16.2C18.5,13.9 18.5,10.1 16.2,7.7C15.1,6.6 13.5,6.1 12,6.1V10.1L7,5.1L12,0.1V4M6.3,17.6C3.7,15 3.3,11 5.1,7.9L6.6,9.4C5.5,11.6 5.9,14.4 7.8,16.2C8.3,16.7 8.9,17.1 9.6,17.4L9,19.4C8,19 7.1,18.4 6.3,17.6Z"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>
+// Pass PHP data to JavaScript
+window.geotourBigMap = {
+    apiUrl: '<?php echo esc_js(rest_url('geotour/v2/spatial-info')); ?>',
+    nonce: '<?php echo wp_create_nonce('wp_rest'); ?>',
+    defaultCenter: [35.2401, 24.8093], // Heraklion, Crete
+    defaultZoom: 10,
+    defaultIconUrl: '<?php echo esc_js(get_template_directory_uri() . '/assets/map-pins/default.svg'); ?>',
+    strings: {
+        loadingError: '<?php _e('Error loading map data. Please try again.', 'geotour'); ?>',
+        noResults: '<?php _e('No listings found in this area.', 'geotour'); ?>',
+        resultsFound: '<?php _e('{count} listings found', 'geotour'); ?>',
+        loadingListings: '<?php _e('Loading listings...', 'geotour'); ?>'
+    }
+};
+</script>
+
+<?php get_footer(); ?>

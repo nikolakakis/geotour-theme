@@ -9,6 +9,7 @@ import { initializeHeader } from './modules/header/main.js';
 import { initializeHero } from './modules/hero/main.js';
 import { initializeAllMaps } from './modules/maps/main.js'; // Corrected import
 import { initializeGallery } from './modules/gallery/main.js'; // Gallery module
+import { BigMapUI } from './modules/big-map/main.js'; // Big map module
 
 // Fix Leaflet default icons
 delete L.Icon.Default.prototype._getIconUrl;

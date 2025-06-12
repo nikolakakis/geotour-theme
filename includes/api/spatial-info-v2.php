@@ -255,7 +255,7 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
                 'permalink' => get_permalink(),
                 'latitude' => floatval($position['lat']),
                 'longitude' => floatval($position['lng']),
-                'map_icon_url' => geotour_get_listing_map_icon($post_id),
+                'map_icon_url' => geotour_get_listing_map_icon_url($post_id),
                 'categories' => [],
                 'regions' => [],
                 'tags' => [],

@@ -1,0 +1,506 @@
+// ==========================================================================
+// BIG MAP UI STYLES
+// ==========================================================================
+// Styles for the full-screen map interface with sidebar
+
+@use '../base/variables' as vars;
+@use 'sass:color';
+
+// Main container - full viewport
+.big-map-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    overflow: hidden;
+}
+
+// Loading overlay
+.map-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    
+    &.hidden {
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .loading-spinner {
+        text-align: center;
+        color: white;
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid color.change(vars.$primary-color, $alpha: 0.3);
+            border-top-color: vars.$primary-color;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Sidebar
+.map-sidebar {
+    width: 400px;
+    background: white;
+    border-right: 1px solid color.change(vars.$primary-color, $alpha: 0.1);
+    display: flex;
+    flex-direction: column;
+    z-index: 1100;
+    box-shadow: 4px 0 15px color.change(vars.$primary-color, $alpha: 0.1);
+    
+    @media (max-width: 768px) {
+        width: 100vw;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        
+        &.open {
+            transform: translateX(0);
+        }
+    }
+    
+    @media (max-width: 480px) {
+        width: 320px;
+    }
+}
+
+// Sidebar header
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid color.change(vars.$primary-color, $alpha: 0.1);
+    background: linear-gradient(135deg, vars.$primary-color, vars.$primary-light);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    display: none; // Hidden on desktop
+    
+    @media (max-width: 768px) {
+        display: block;
+    }
+    
+    &:hover {
+        background: color.change(white, $alpha: 0.1);
+    }
+    
+    .toggle-icon {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: white;
+        position: relative;
+        
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        &::before {
+            top: -6px;
+        }
+        
+        &::after {
+            top: 6px;
+        }
+    }
+}
+
+// Results section
+.sidebar-results {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative; // For loading overlay
+    
+    .results-header {
+        padding: 1rem 1.5rem;
+        background: color.change(vars.$background-color, $alpha: 0.3);
+        border-bottom: 1px solid color.change(vars.$primary-color, $alpha: 0.1);
+        
+        #results-count {
+            font-weight: 600;
+            color: vars.$heading-color;
+            font-size: 0.9rem;
+        }
+    }
+    
+    // Loading overlay for sidebar
+    .sidebar-loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        
+        &.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sidebar-spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid color.change(vars.$primary-color, $alpha: 0.2);
+            border-top-color: vars.$primary-color;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+    }
+}
+
+.listings-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+    
+    .listing-item {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid color.change(vars.$primary-color, $alpha: 0.05);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        gap: 1rem;
+        
+        &:hover {
+            background: color.change(vars.$primary-color, $alpha: 0.05);
+            transform: translateX(4px);
+        }
+        
+        &.active {
+            background: color.change(vars.$primary-color, $alpha: 0.1);
+            border-left: 4px solid vars.$primary-color;
+        }
+        
+        .listing-thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: color.change(vars.$primary-color, $alpha: 0.1);
+            flex-shrink: 0;
+            
+            // Placeholder when no image
+            &::before {
+                content: '📍';
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                font-size: 1.5rem;
+                color: vars.$primary-color;
+            }
+        }
+        
+        .listing-content {
+            flex: 1;
+            min-width: 0; // Allow content to shrink
+        }
+        
+        .listing-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: vars.$heading-color;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            
+            // Truncate long titles
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .listing-description {
+            font-size: 0.85rem;
+            color: vars.$text-color-muted;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+            
+            // Limit to 2 lines
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2; // Standard property
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .listing-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            
+            .meta-tag {
+                background: color.change(vars.$primary-color, $alpha: 0.1);
+                color: vars.$primary-color;
+                padding: 0.2rem 0.5rem;
+                border-radius: 12px;
+                font-size: 0.7rem;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+// Main map
+.big-map {
+    flex: 1;
+    position: relative;
+    
+    .leaflet-container {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// Map controls
+.map-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1200;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    
+    @media (max-width: 768px) {
+        top: 10px;
+        right: 10px;
+    }
+}
+
+.map-control-btn {
+    width: 44px;
+    height: 44px;
+    background: white;
+    border: 1px solid color.change(vars.$primary-color, $alpha: 0.2);
+    border-radius: 8px;
+    color: vars.$primary-color;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px color.change(vars.$primary-color, $alpha: 0.1);
+    
+    &:hover {
+        background: vars.$primary-color;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px color.change(vars.$primary-color, $alpha: 0.3);
+    }
+    
+    svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+    }
+}
+
+// Mobile sidebar toggle (floating button)
+@media (max-width: 768px) {
+    .map-controls {
+        &::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: 0;
+            width: 44px;
+            height: 44px;
+            background: vars.$primary-color;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px color.change(vars.$primary-color, $alpha: 0.3);
+            cursor: pointer;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"/></svg>');
+            background-size: 20px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+    
+    .big-map-container.sidebar-open {
+        .map-sidebar {
+            transform: translateX(0);
+        }
+    }
+}
+
+// Loading states
+.listings-container.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &::after {
+        content: '';
+        width: 24px;
+        height: 24px;
+        border: 2px solid color.change(vars.$primary-color, $alpha: 0.3);
+        border-top-color: vars.$primary-color;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+}
+
+// Custom map markers
+.custom-map-marker {
+    .marker-pin {
+        width: 32px;
+        height: 32px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+// User location marker
+.user-location-marker {
+    .user-marker {
+        font-size: 20px;
+        text-align: center;
+        line-height: 20px;
+        animation: pulse 2s infinite;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+// Map popup styles
+.map-popup {
+    max-width: 300px;
+    
+    h4 {
+        margin: 0 0 0.5rem 0;
+        color: vars.$heading-color;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    
+    .popup-image {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 0.5rem;
+    }
+    
+    p {
+        margin: 0 0 0.75rem 0;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        color: vars.$text-color;
+    }
+    
+    .popup-meta {
+        margin-bottom: 0.5rem;
+        font-size: 0.8rem;
+        color: vars.$text-color-muted;
+        
+        strong {
+            color: vars.$heading-color;
+        }
+    }
+    
+    .popup-link {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: vars.$primary-color;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+        
+        &:hover {
+            background: vars.$primary-dark;
+            color: white;
+        }
+    }
+}
+
+// Error states
+.error-message,
+.no-results {
+    padding: 2rem;
+    text-align: center;
+    color: vars.$text-color-muted;
+    font-style: italic;
+}

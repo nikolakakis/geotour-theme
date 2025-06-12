@@ -22,7 +22,7 @@ if ( ! function_exists( 'bt_create_listing' ) ) {
                     'singular_name' => __( 'Listing Item', 'geotour' ) // Changed text domain
                 ),
                 'public'        => true,
-                'has_archive'   => true,
+                'has_archive'   => 'listings', // Changed to 'listings' plural to avoid conflict
                 'menu_position' => 5,
                 'supports'      => array( 'title', 'editor', 'revisions', 'thumbnail', 'author', 'comments', 'excerpt' ),
                 'rewrite'       => array( 'with_front' => false, 'slug' => 'listing' )
