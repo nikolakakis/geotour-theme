@@ -47,6 +47,24 @@ export class BigMapUI {
         document.getElementById('locate-me')?.addEventListener('click', () => this.locateUser());
         document.getElementById('fit-bounds')?.addEventListener('click', () => this.fitBounds());
         document.getElementById('reset-view')?.addEventListener('click', () => this.resetView());
+        
+        // Filter controls
+        document.querySelectorAll('.remove-filter').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = button.getAttribute('href');
+                if (url) {
+                    window.location.href = url;
+                }
+            });
+        });
+        
+        document.querySelectorAll('.clear-filters').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.clearAllFilters();
+            });
+        });
     }
     
     initializeMap() {
@@ -220,11 +238,15 @@ export class BigMapUI {
         item.dataset.listingId = listing.id;
         
         const categories = listing.categories.map(cat => 
-            `<span class="meta-tag">${cat.name}</span>`
+            `<span class="meta-tag meta-category" data-filter-type="listing-category" data-filter-value="${cat.slug}">${cat.name}</span>`
         ).join('');
         
         const regions = listing.regions.map(reg => 
-            `<span class="meta-tag">${reg.name}</span>`
+            `<span class="meta-tag meta-region" data-filter-type="listing-region" data-filter-value="${reg.slug}">${reg.name}</span>`
+        ).join('');
+        
+        const tags = listing.tags.map(tag => 
+            `<span class="meta-tag meta-tag-item" data-filter-type="listing-tag" data-filter-value="${tag.slug}">${tag.name}</span>`
         ).join('');
         
         const thumbnailHtml = listing.featured_image 
@@ -239,14 +261,28 @@ export class BigMapUI {
                 <div class="listing-meta">
                     ${categories}
                     ${regions}
+                    ${tags}
                 </div>
             </div>
         `;
         
-        // Add click event
-        item.addEventListener('click', () => {
-            this.highlightListing(listing.id);
-            this.panToListing(listing);
+        // Add click event for the item itself
+        item.addEventListener('click', (e) => {
+            // Don't trigger if clicking on a meta tag
+            if (!e.target.classList.contains('meta-tag')) {
+                this.highlightListing(listing.id);
+                this.panToListing(listing);
+            }
+        });
+        
+        // Add click events for meta tags (categories, regions, tags)
+        item.querySelectorAll('.meta-tag[data-filter-type]').forEach(tag => {
+            tag.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent item click
+                const filterType = tag.dataset.filterType;
+                const filterValue = tag.dataset.filterValue;
+                this.applyFilter(filterType, filterValue);
+            });
         });
         
         return item;
@@ -365,6 +401,31 @@ export class BigMapUI {
     
     resetView() {
         this.map.setView(window.geotourBigMap.defaultCenter, window.geotourBigMap.defaultZoom);
+    }
+    
+    applyFilter(filterType, filterValue) {
+        // Build new URL with filter
+        const url = new URL(window.location);
+        
+        // Add or update the filter parameter
+        url.searchParams.set(filterType, filterValue);
+        
+        // Navigate to the filtered URL
+        window.location.href = url.toString();
+    }
+    
+    removeFilter(filterType) {
+        // Build new URL without specific filter
+        const url = new URL(window.location);
+        url.searchParams.delete(filterType);
+        
+        // Navigate to the URL without this filter
+        window.location.href = url.toString();
+    }
+    
+    clearAllFilters() {
+        // Navigate to clean listing page
+        window.location.href = '/listing';
     }
     
     showLoading(mapOnly = false) {

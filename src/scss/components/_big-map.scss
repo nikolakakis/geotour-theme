@@ -374,6 +374,50 @@
                 border-radius: 12px;
                 font-size: 0.7rem;
                 font-weight: 500;
+                transition: all 0.2s ease;
+                
+                // Make taxonomy tags clickable
+                &[data-filter-type] {
+                    cursor: pointer;
+                    
+                    &:hover {
+                        background: vars.$primary-color;
+                        color: white;
+                        transform: translateY(-1px);
+                        box-shadow: 0 2px 4px color.change(vars.$primary-color, $alpha: 0.3);
+                    }
+                }
+                
+                // Different colors for different taxonomy types
+                &.meta-category {
+                    background: color.change(#059669, $alpha: 0.1); // emerald
+                    color: #059669;
+                    
+                    &:hover {
+                        background: #059669;
+                        color: white;
+                    }
+                }
+                
+                &.meta-region {
+                    background: color.change(#dc2626, $alpha: 0.1); // red
+                    color: #dc2626;
+                    
+                    &:hover {
+                        background: #dc2626;
+                        color: white;
+                    }
+                }
+                
+                &.meta-tag-item {
+                    background: color.change(#7c3aed, $alpha: 0.1); // violet
+                    color: #7c3aed;
+                    
+                    &:hover {
+                        background: #7c3aed;
+                        color: white;
+                    }
+                }
             }
         }
     }
