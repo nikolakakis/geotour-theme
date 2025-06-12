@@ -3,7 +3,9 @@
 // ==========================================================================
 
 @use '../base/variables' as vars;
-
+#page {
+    margin-top: -30px;
+}
 .content-article {
     margin-bottom: 3rem;
     

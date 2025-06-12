@@ -16,6 +16,12 @@
 @use 'components/virtualtour'; // Virtual tour component styles
 @use 'components/gallery'; // Image gallery component styles
 @use 'components/listing-details'; // Listing details sections styles
+
+// Global overflow prevention
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
 // @use 'components/buttons';
 // @use 'components/cards';
 

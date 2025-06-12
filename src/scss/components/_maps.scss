@@ -237,9 +237,12 @@
     margin-right: -50vw;
     background: #0f172a;
     min-height: 400px;
+    max-height: 500px; // Prevent excessive height
+    overflow: hidden; // Prevent both X and Y overflow
     
     @media (min-width: 1024px) {
         min-height: 500px;
+        max-height: 600px;
     }
 }
 
@@ -309,6 +312,7 @@
     height: auto;
     border: none;
     border-radius: 0;
+    overflow: hidden; // Prevent content overflow
     
     // Map takes most of the space, leaving room for controls
     min-height: 350px;

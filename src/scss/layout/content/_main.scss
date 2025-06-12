@@ -4,9 +4,24 @@
 
 @use '../../base/variables' as vars;
 
+// Prevent horizontal overflow at the site level
+.site {
+    overflow-x: hidden;
+}
+
+#primary {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+.content-area {
+    max-width: 100%;
+}
+
 .site-main {
     min-height: 70vh;
     padding: 2rem 0;
+    overflow-x: hidden; // Prevent horizontal overflow
     
     // Responsive container with max-width for modern monitors
     .main-container {
