@@ -32,6 +32,39 @@ get_header(); ?>
         
         <!-- Results -->
         <div class="sidebar-results">
+            <!-- Active Filters Display -->
+            <?php 
+            $active_filters = array();
+            if (!empty($_GET['listing-category'])) {
+                $term = get_term_by('slug', sanitize_text_field($_GET['listing-category']), 'listing-category');
+                if ($term) $active_filters[] = array('type' => 'category', 'name' => $term->name, 'slug' => $term->slug);
+            }
+            if (!empty($_GET['listing-region'])) {
+                $term = get_term_by('slug', sanitize_text_field($_GET['listing-region']), 'listing-region');
+                if ($term) $active_filters[] = array('type' => 'region', 'name' => $term->name, 'slug' => $term->slug);
+            }
+            if (!empty($_GET['listing-tag'])) {
+                $term = get_term_by('slug', sanitize_text_field($_GET['listing-tag']), 'listing-tag');
+                if ($term) $active_filters[] = array('type' => 'tag', 'name' => $term->name, 'slug' => $term->slug);
+            }
+            
+            if (!empty($active_filters)) : ?>
+            <div class="active-filters">
+                <div class="filters-header">
+                    <span><?php _e('Filtered by:', 'geotour'); ?></span>
+                    <a href="/listing" class="clear-filters"><?php _e('Clear all', 'geotour'); ?></a>
+                </div>
+                <div class="filter-tags">
+                    <?php foreach ($active_filters as $filter) : ?>
+                        <span class="filter-tag filter-<?php echo esc_attr($filter['type']); ?>">
+                            <?php echo esc_html($filter['name']); ?>
+                            <a href="<?php echo esc_url(remove_query_arg('listing-' . $filter['type'])); ?>" class="remove-filter">&times;</a>
+                        </span>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endif; ?>
+            
             <div class="results-header">
                 <span id="results-count"><?php _e('Loading...', 'geotour'); ?></span>
             </div>
@@ -81,11 +114,19 @@ window.geotourBigMap = {
     defaultCenter: [35.2401, 24.8093], // Heraklion, Crete
     defaultZoom: 10,
     defaultIconUrl: 'data:image/svg+xml;base64,<?php echo base64_encode('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3b82f6"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>'); ?>',
+    // URL parameters for filtering
+    urlParams: {
+        category: '<?php echo esc_js(isset($_GET['listing-category']) ? sanitize_text_field($_GET['listing-category']) : ''); ?>',
+        region: '<?php echo esc_js(isset($_GET['listing-region']) ? sanitize_text_field($_GET['listing-region']) : ''); ?>',
+        tag: '<?php echo esc_js(isset($_GET['listing-tag']) ? sanitize_text_field($_GET['listing-tag']) : ''); ?>'
+    },
     strings: {
         loadingError: '<?php _e('Error loading map data. Please try again.', 'geotour'); ?>',
         noResults: '<?php _e('No listings found in this area.', 'geotour'); ?>',
         resultsFound: '<?php _e('{count} listings found', 'geotour'); ?>',
-        loadingListings: '<?php _e('Loading listings...', 'geotour'); ?>'
+        loadingListings: '<?php _e('Loading listings...', 'geotour'); ?>',
+        filteredBy: '<?php _e('Filtered by:', 'geotour'); ?>',
+        clearFilters: '<?php _e('Clear filters', 'geotour'); ?>'
     }
 };
 </script>

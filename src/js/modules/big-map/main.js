@@ -99,7 +99,19 @@ export class BigMapUI {
             params.append('bbox', bbox);
         }
         
+        // Add URL parameter filters if they exist
+        if (window.geotourBigMap.urlParams.category) {
+            params.append('listing_category', window.geotourBigMap.urlParams.category);
+        }
+        if (window.geotourBigMap.urlParams.region) {
+            params.append('listing_region', window.geotourBigMap.urlParams.region);
+        }
+        if (window.geotourBigMap.urlParams.tag) {
+            params.append('listing_tag', window.geotourBigMap.urlParams.tag);
+        }
+        
         const url = `${window.geotourBigMap.apiUrl}?${params.toString()}`;
+        console.log('Fetching listings with filters:', params.toString());
         
         const response = await fetch(url, {
             headers: {
