@@ -287,14 +287,15 @@ export class BigMapUI {
         this.boundsTimeout = setTimeout(async () => {
             // Get current bounding box
             const bounds = this.map.getBounds();
-            const bbox = `${bounds.getWest()},${bounds.getSouth()},${bounds.getEast()},${bounds.getNorth()}`;
+            const bbox = `${bounds.getWest().toFixed(6)},${bounds.getSouth().toFixed(6)},${bounds.getEast().toFixed(6)},${bounds.getNorth().toFixed(6)}`;
             
-            // Check if bounds have changed significantly
+            // Check if bounds have changed significantly (prevent duplicate calls)
             if (this.lastBounds && this.lastBounds === bbox) {
                 return;
             }
             
             this.lastBounds = bbox;
+            console.log('Map bounds changed, fetching new data for bbox:', bbox);
             
             try {
                 this.showSidebarLoading();
@@ -305,7 +306,7 @@ export class BigMapUI {
             } finally {
                 this.hideSidebarLoading();
             }
-        }, 500); // 500ms debounce
+        }, 1000); // Increased debounce to 1 second to reduce API calls
     }
     
     toggleSidebar() {

@@ -80,7 +80,7 @@ window.geotourBigMap = {
     nonce: '<?php echo wp_create_nonce('wp_rest'); ?>',
     defaultCenter: [35.2401, 24.8093], // Heraklion, Crete
     defaultZoom: 10,
-    defaultIconUrl: '<?php echo esc_js(get_template_directory_uri() . '/assets/map-pins/default.svg'); ?>',
+    defaultIconUrl: 'data:image/svg+xml;base64,<?php echo base64_encode('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3b82f6"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>'); ?>',
     strings: {
         loadingError: '<?php _e('Error loading map data. Please try again.', 'geotour'); ?>',
         noResults: '<?php _e('No listings found in this area.', 'geotour'); ?>',

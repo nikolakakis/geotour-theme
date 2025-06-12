@@ -20,12 +20,12 @@ if (!defined('ABSPATH')) {
  * @return array Map icon configuration with URL and settings
  */
 function geotour_get_listing_map_icon($listing_id) {
-    // Default fallback icon
+    // Default fallback icon - use a data URI or existing icon
     $default_icon = array(
-        'url' => get_template_directory_uri() . '/assets/map-pins/default.svg',
-        'size' => array(64, 64),
-        'anchor' => array(32, 64),
-        'popup_anchor' => array(0, -64)
+        'url' => 'data:image/svg+xml;base64,' . base64_encode('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3b82f6"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>'),
+        'size' => array(32, 32),
+        'anchor' => array(16, 32),
+        'popup_anchor' => array(0, -32)
     );
     
     // Get listing categories
@@ -69,9 +69,9 @@ function geotour_get_listing_map_icon($listing_id) {
     // Return category-specific icon configuration
     return array(
         'url' => $icon_url,
-        'size' => array(64, 64), // Standard size for consistency
-        'anchor' => array(32, 64), // Bottom center anchor
-        'popup_anchor' => array(0, -64), // Popup above icon
+        'size' => array(32, 32), // Consistent size
+        'anchor' => array(16, 32), // Bottom center anchor
+        'popup_anchor' => array(0, -32), // Popup above icon
         'category' => $selected_category->name,
         'category_id' => $selected_category->term_id
     );
