@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <title>3D View Green Icon</title>
+
+  <circle cx="50" cy="50" r="40" fill="white" stroke="#333333" stroke-width="2.5" />
+
+  <g transform="translate(-25, -18) scale(1.4)" fill="#22a575" stroke="#1b845d" stroke-width="1.5">
+
+    <path
+      d="M68,65 A22,22 0 1 1 75,45"
+      fill="none"
+      stroke="#999"
+      stroke-width="4"
+      stroke-linecap="round"
+      aria-label="Circular arrow"
+    />
+    <path
+      d="M70,45 L79,44 L76,52 Z"
+      fill="#999"
+      stroke-width="0"	  
+      aria-label="Arrowhead"
+    />
+
+    <g transform="translate(25, 26) scale(0.55)">
+      <polygon points="50,5 85,22 50,39 15,22" fill-opacity="0.8" />
+      <polygon points="15,22 15,58 50,75 50,39" />
+      <polygon points="50,39 50,75 85,58 85,22" fill-opacity="0.6"/>
+
+      <text
+        x="67.5"
+        y="70"
+        font-family="Arial, sans-serif"
+        font-size="21"
+        font-weight="bold"
+        fill="white"
+        stroke="none"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        transform="skewY(-18) translate(0, 2)"
+        aria-label="3D text"
+      >
+        3D
+      </text>
+    </g>
+  </g>
+</svg>

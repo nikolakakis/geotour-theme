@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Archaeological Site Map Pin - Fortification</title>
+  
+
+  <path
+    d="M32,2 C19.28,2 10,11.28 10,24 C10,29.97 13.53,36.67 19.5,43.06 C20.86,44.78 22.3,46.51 23.78,48.26 L32,62 L40.22,48.26 C41.7,46.51 43.14,44.78 44.5,43.06 C50.47,36.67 54,29.97 54,24 C54,11.28 44.72,2 32,2 Z M32,34 C26.48,34 22,29.52 22,24 C22,18.48 26.48,14 32,14 C37.52,14 42,18.48 42,24 C42,29.52 37.52,34 32,34 Z"
+    fill="#999" stroke="#D8C0A0" stroke-width="1.5"
+    aria-label="Map Pin"
+  />
+
+  <circle
+    cx="32"
+    cy="24"
+    r="20"
+    fill="white"
+    aria-label="Pin head background"
+  />
+
+  <g transform="translate(-29, -15.625) scale(1.9)" aria-label="Fortification Symbol">
+    <rect
+      x="26"
+      y="18"
+      width="12"
+      height="9"
+      fill="#CFD8DC" stroke="#78909C" stroke-width="0.5"
+    />
+
+    <rect
+      x="26"
+      y="17"
+      width="12"
+      height="1.5"
+      fill="#B0BEC5" stroke="#78909C" stroke-width="0.5"
+    />
+
+    <rect
+      x="26"
+      y="14.5"
+      width="3"
+      height="2"
+      fill="#B0BEC5" stroke="#78909C" stroke-width="0.5"
+    />
+    <rect
+      x="30.5" 
+      y="14.5"
+      width="3"
+      height="2"
+      fill="#B0BEC5" stroke="#78909C" stroke-width="0.5"
+    />
+    <rect
+      x="35"
+      y="14.5"
+      width="3"
+      height="2"
+      fill="#B0BEC5" stroke="#78909C" stroke-width="0.5"
+    />
+ <g transform="translate(-6.4, 5) scale(1.2)" aria-label="Fortification Symbol">
+    <path
+      d="M30,15.5 L30,18.5 A2,2 0 0,1 34,18.5 L34,15.5 Z"
+      fill="#78909C" stroke="#78909C" stroke-width="0.5"
+    />
+</g>
+
+    <rect
+      x="28.75" 
+      y="20.5"
+      width="1.5"
+      height="1.5"
+      fill="#78909C" stroke="#78909C" stroke-width="0.5"
+    />
+    <rect
+      x="31.25"
+      y="20.5"
+      width="1.5"
+      height="1.5"
+      fill="#78909C" stroke="#78909C" stroke-width="0.5"
+    />
+    <rect
+      x="33.75"
+      y="20.5"
+      width="1.5"
+      height="1.5"
+      fill="#78909C" stroke="#78909C" stroke-width="0.5"
+    />
+  </g>
+</svg>

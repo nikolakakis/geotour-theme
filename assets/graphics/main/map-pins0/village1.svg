@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Village Map Pin Icon - Adjusted Central House</title>
+	
+  <path
+    d="M32,2 C19.28,2 10,11.28 10,24 C10,29.97 13.53,36.67 19.5,43.06 C20.86,44.78 22.3,46.51 23.78,48.26 L32,62 L40.22,48.26 C41.7,46.51 43.14,44.78 44.5,43.06 C50.47,36.67 54,29.97 54,24 C54,11.28 44.72,2 32,2 Z"
+    fill="#FF7043"
+    stroke="#E64A19"
+    stroke-width="1.5"
+    aria-label="Map Pin for Village"
+  />
+
+  <circle
+    cx="32"
+    cy="24"
+    r="20"
+    fill="white"
+    aria-label="Pin head background"
+  />
+
+  <g transform="translate(24.5, 14) scale(0.75)" aria-label="Village Symbol">
+
+    <g transform="translate(-9, -4)">
+      <path
+        d="M0 15 L8 10 L16 15 V25 H0 V15 Z" fill="#a7aba6" stroke="#78909C" stroke-width="1.25"
+      />
+      <rect x="5" y="17.4" width="6" height="7" fill="#90A4AE" /> </g>
+
+    <g transform="translate(13, -4)">
+      <path
+        d="M0 15 L8 10 L16 15 V25 H0 V15 Z" fill="#a7aba6" stroke="#78909C" stroke-width="1.25"
+      />
+      <rect x="5" y="17.4" width="6" height="7" fill="#90A4AE" /> </g>
+
+    <g transform="translate(0, -2)">
+	 <rect x="3" y="5" width="3" height="5" fill="#78909C" stroke="#546E7A" stroke-width="0.4"/>
+      <path
+        d="M1 10.7 L10 3 L19 10.7 V25 H1 V10.7 Z" fill="#9fba99" stroke="#555" stroke-width="1.5"
+      />
+      <rect x="7" y="17" width="6" height="8" fill="#7c6403" /> <rect x="4" y="11.7" width="3" height="3" fill="#BBDEFB" /> <rect x="13" y="11.7" width="3" height="3" fill="#BBDEFB" />  </g>
+
+  </g>
+</svg>

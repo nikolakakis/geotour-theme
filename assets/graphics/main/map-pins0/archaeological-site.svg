@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Archaeological Site Map Pin - Crete (Temple)</title>
+  <g transform="translate(-2.4, -2) scale(1.08)" aria-label="selected">
+		  <path
+			d="M32,2 C19.28,2 10,11.28 10,24 C10,29.97 13.53,36.67 19.5,43.06 C20.86,44.78 22.3,46.51 23.78,48.26 L32,62 L40.22,48.26 C41.7,46.51 43.14,44.78 44.5,43.06 C50.47,36.67 54,29.97 54,24 C54,11.28 44.72,2 32,2 Z M32,34 C26.48,34 22,29.52 22,24 C22,18.48 26.48,14 32,14 C37.52,14 42,18.48 42,24 C42,29.52 37.52,34 32,34 Z"
+			fill="red" stroke="#D8C0A0" stroke-width="0"
+			aria-label="Map Pin Selected"
+		  />
+	  </g>
+
+  <path
+    d="M32,2 C19.28,2 10,11.28 10,24 C10,29.97 13.53,36.67 19.5,43.06 C20.86,44.78 22.3,46.51 23.78,48.26 L32,62 L40.22,48.26 C41.7,46.51 43.14,44.78 44.5,43.06 C50.47,36.67 54,29.97 54,24 C54,11.28 44.72,2 32,2 Z M32,34 C26.48,34 22,29.52 22,24 C22,18.48 26.48,14 32,14 C37.52,14 42,18.48 42,24 C42,29.52 37.52,34 32,34 Z"
+    fill="#fffdbe" stroke="#D8C0A0" stroke-width="1.5"
+    aria-label="Map Pin"
+  />
+
+  <circle
+    cx="32"
+    cy="24"
+    r="20"
+    fill="white"
+    aria-label="Pin head background"
+  />
+
+
+
+  <g transform="translate(-41.4, -14.625) scale(2.3,1.6)" aria-label="Temple Symbol">
+    <polygon
+      points="26,19 38,19 32,15"
+      fill="#B0BEC5" stroke="#78909C" stroke-width="0.75" stroke-linejoin="round"
+    />
+
+    <rect
+      x="27"
+      y="19"
+      width="3"
+      height="9"
+      fill="#CFD8DC" stroke="#78909C"
+      stroke-width="0.5" />
+    <rect x="26.5"
+      y="18.5"
+      width="4"
+      height="1"
+      fill="#B0BEC5"
+      stroke="#78909C"
+      stroke-width="0.5"
+    />
+    <rect x="26.5"
+      y="28"
+      width="4"
+      height="1"
+      fill="#B0BEC5"
+      stroke="#78909C"
+      stroke-width="0.5"
+    />
+
+    <rect
+      x="34"
+      y="19"
+      width="3"
+      height="9"
+      fill="#CFD8DC"
+      stroke="#78909C"
+      stroke-width="0.5"
+    />
+    <rect x="33.5"
+      y="18.5"
+      width="4"
+      height="1"
+      fill="#B0BEC5"
+      stroke="#78909C"
+      stroke-width="0.5"
+    />
+    <rect x="33.5"
+      y="28"
+      width="4"
+      height="1"
+      fill="#B0BEC5"
+      stroke="#78909C"
+      stroke-width="0.5"
+    />
+
+    <rect
+      x="26"
+      y="29"
+      width="12"
+      height="1.5"
+      fill="#B0BEC5"
+      stroke="#78909C"
+      stroke-width="0.5"
+    />
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+<svg width="200" height="250" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+  <title>Old Windmill Icon</title>
+  
+  <desc>A simplified icon of an old windmill.</desc>
+
+  <g id="windmill_structure" transform="scale(1.4,1) translate(-28, -8)">
+    <polygon points="70,230 130,230 120,90 80,90" fill="#A07E63" stroke="#5D4037" stroke-width="2"/>
+    
+    <path d="M75,90 Q100,70 125,90 Z" fill="#7A5C43" stroke="#5D4037" stroke-width="2"/>
+    
+    <circle cx="100" cy="80" r="8" fill="#5D4037" stroke="#422F26" stroke-width="1"/>
+  </g>
+  
+  <g id="windmill_sails" transform="translate(100, 100) scale(1.35) rotate(30)">
+    <rect x="-5" y="-60" width="10" height="65" fill="#C7A180" stroke="#5D4037" stroke-width="1" transform="rotate(0)" />
+    <rect x="-5" y="-60" width="10" height="65" fill="#C7A180" stroke="#5D4037" stroke-width="1" transform="rotate(90)" />
+    <rect x="-5" y="-60" width="10" height="65" fill="#C7A180" stroke="#5D4037" stroke-width="1" transform="rotate(180)" />
+    <rect x="-5" y="-60" width="10" height="65" fill="#C7A180" stroke="#5D4037" stroke-width="1" transform="rotate(270)" />
+  </g>
+  
+  <rect x="90" y="190" width="20" height="30" fill="#7A5C43" stroke="#5D4037" stroke-width="1.5" />
+
+</svg>

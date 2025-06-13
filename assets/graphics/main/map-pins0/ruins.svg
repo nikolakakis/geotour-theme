@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Map Pin - Ruined Settlement</title>
+  
+  <g transform="translate(0.8, 0) scale(0.98)" aria-label="selected">
+  <path
+    d="M32,2 C19.28,2 10,11.28 10,24 C10,29.97 13.53,36.67 19.5,43.06 C20.86,44.78 22.3,46.51 23.78,48.26 L32,62 L40.22,48.26 C41.7,46.51 43.14,44.78 44.5,43.06 C50.47,36.67 54,29.97 54,24 C54,11.28 44.72,2 32,2 Z"
+    fill="#444" stroke="#D8C0A0" stroke-width="1.5"
+    aria-label="Map Pin"
+  />
+</g>
+
+  <circle
+    cx="32.2"
+    cy="23.4"
+    r="19"
+    fill="white"
+    aria-label="Pin head background"
+  />
+
+  <g id="ruined-house-icon" transform="translate(-4.5, -8) scale(1.15)" fill="#a08d7c" stroke="#5D4037" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-label="Ruined Settlement Icon">
+      <path d="M 21 35 L 21 24 L 24 26 L 27 23 L 30 25 L 33 22 L 36 24 L 43 24 L 43 35 Z" />
+      <path d="M 21 24 L 28 18 L 35 18" fill="none" />
+      <path d="M 38 19 L 43 24" fill="none" />
+      
+	  <rect x="35" y="27.7" width="4" height="3.8" fill="#5D4037" stroke="none" />
+	  <rect x="25" y="27.7" width="4" height="6.8" fill="#5D4037" stroke="none" />
+	  
+  </g>
+
+</svg>
