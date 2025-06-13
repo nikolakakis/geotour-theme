@@ -111,11 +111,12 @@
                 <!-- <div class="icon-separator"></div> -->
                 <!-- Add more icons here as needed -->
             </div>
-        </div>
-    </nav>
+        </div>    </nav>
     <?php
-    // Include hero section on appropriate pages (but not on single listings)
-    if ((is_home() || is_front_page() || is_singular() || is_archive()) && !is_singular('listing')) {
+    // Include hero section on appropriate pages (but not on single listings or homepage template)
+    if ((is_home() || is_front_page() || is_singular() || is_archive()) 
+        && !is_singular('listing') 
+        && !is_page_template('page-homepage.php')) {
         get_template_part('template-parts/hero');
     }
     ?>
