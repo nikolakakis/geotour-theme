@@ -10,6 +10,11 @@ export class BigMapUI {
         this.isLoading = false;
         this.lastBounds = null;
         this.boundsTimeout = null;
+        this.searchTerm = ''; // Add search term property
+        
+        // Get URL parameters on initialization
+        this.urlParams = new URLSearchParams(window.location.search);
+        this.searchTerm = this.urlParams.get('search') || '';
         
         this.init();
     }
@@ -24,6 +29,7 @@ export class BigMapUI {
         this.setupEventListeners();
         this.initializeMap();
         this.loadInitialData();
+        this.initializeSearch(); // Add search initialization
     }
     
     setupEventListeners() {

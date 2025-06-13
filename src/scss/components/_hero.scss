@@ -448,9 +448,12 @@
         align-items: center;
         justify-content: center;
         margin-bottom: 1.5rem;
-        font-size: 1.1rem;
-        color: rgba(255, 255, 255, 0.9);
-        animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        a {
+            
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
         position: relative;
         z-index: 11;
         

@@ -93,6 +93,15 @@ function geotour_register_spatial_info_v2_route() {
                         'type' => 'string',
                         'sanitize_callback' => 'sanitize_text_field',
                     ],
+                    'search' => [
+                        'description' => __('Search listings by text. Searches in title, content, excerpt, and meta description.', 'geotour'),
+                        'type' => 'string',
+                        'sanitize_callback' => 'sanitize_text_field',
+                        'validate_callback' => function($param, $request, $key) {
+                            // Allow empty string or string with at least 2 characters
+                            return empty($param) || (is_string($param) && strlen(trim($param)) >= 2);
+                        },
+                    ],
                 ],
             ],
         ]
@@ -146,6 +155,7 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
     $listing_category = $request->get_param('listing_category');
     $listing_region = $request->get_param('listing_region');
     $listing_tag = $request->get_param('listing_tag');
+    $search = $request->get_param('search'); // New search parameter
 
     // Base query args
     $query_args = [
@@ -161,7 +171,25 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
         ]
     ];
 
-    // Add taxonomy filters
+    // Add text search if provided
+    if (!empty($search)) {
+        $search_term = trim($search);
+        
+        // Add search parameter to query
+        $query_args['s'] = $search_term;
+        
+        // Enhance search to include custom fields and taxonomy terms
+        add_filter('posts_search', 'geotour_enhance_listing_search', 10, 2);
+        add_filter('posts_join', 'geotour_search_join_taxonomy', 10, 2);
+        add_filter('posts_where', 'geotour_search_where_taxonomy', 10, 2);
+        add_filter('posts_groupby', 'geotour_search_groupby', 10, 2);
+        
+        // Store search term globally for the filters
+        global $geotour_search_term;
+        $geotour_search_term = $search_term;
+    }
+
+    // Add taxonomy filters (existing code remains the same)
     $tax_query = ['relation' => 'AND'];
 
     if (!empty($listing_category)) {
@@ -198,21 +226,28 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
         $query_args['tax_query'] = $tax_query;
     }
 
-    // Handle bounding box filtering with custom query
+    // Handle bounding box filtering (existing code)
     if (!empty($bbox)) {
         $coords = explode(',', $bbox);
         $minLng = floatval(trim($coords[0]));
         $minLat = floatval(trim($coords[1]));
         $maxLng = floatval(trim($coords[2]));
         $maxLat = floatval(trim($coords[3]));
-
-        // We'll filter at the PHP level after getting all posts
-        // This is more reliable than trying to filter ACF serialized data in the database
     }
 
     $query = new WP_Query($query_args);
+    
+    // Remove search filters after query
+    if (!empty($search)) {
+        remove_filter('posts_search', 'geotour_enhance_listing_search', 10);
+        remove_filter('posts_join', 'geotour_search_join_taxonomy', 10);
+        remove_filter('posts_where', 'geotour_search_where_taxonomy', 10);
+        remove_filter('posts_groupby', 'geotour_search_groupby', 10);
+    }
+
     $data = [];
 
+    // Rest of the function remains the same...
     if ($query->have_posts()) {
         while ($query->have_posts()) {
             $query->the_post();
@@ -220,7 +255,7 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
             $position = get_field('position', $post_id);
 
             if (empty($position) || !isset($position['lat']) || !isset($position['lng'])) {
-                continue; // Skip if no valid coordinates
+                continue;
             }
 
             $lat = floatval($position['lat']);
@@ -229,7 +264,7 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
             // Apply bbox filtering at PHP level for precision
             if (!empty($bbox)) {
                 if ($lat < $minLat || $lat > $maxLat || $lng < $minLng || $lng > $maxLng) {
-                    continue; // Skip if outside bbox
+                    continue;
                 }
             }
 
@@ -259,7 +294,7 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
                 'categories' => [],
                 'regions' => [],
                 'tags' => [],
-                'featured_image' => get_the_post_thumbnail_url($post_id, 'thumbnail'), // Small square thumbnail
+                'featured_image' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
                 'featured_image_medium' => get_the_post_thumbnail_url($post_id, 'medium'),
             ];
 
@@ -302,4 +337,76 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
     }
 
     return new WP_REST_Response($data, 200);
+}
+
+/**
+ * Enhanced search function for listings
+ * Searches in title, content, excerpt, and Yoast meta description
+ */
+function geotour_enhance_listing_search($search, $wp_query) {
+    global $wpdb, $geotour_search_term;
+    
+    if (empty($search) || empty($geotour_search_term)) {
+        return $search;
+    }
+
+    $search_term = esc_sql($wpdb->esc_like($geotour_search_term));
+    
+    // Build enhanced search query
+    $search = " AND (
+        ({$wpdb->posts}.post_title LIKE '%{$search_term}%')
+        OR ({$wpdb->posts}.post_content LIKE '%{$search_term}%')
+        OR ({$wpdb->posts}.post_excerpt LIKE '%{$search_term}%')
+        OR (meta_yoast.meta_value LIKE '%{$search_term}%')
+        OR (meta_address.meta_value LIKE '%{$search_term}%')
+        OR (tax_terms.name LIKE '%{$search_term}%')
+    )";
+
+    return $search;
+}
+
+/**
+ * Join taxonomy and meta tables for enhanced search
+ */
+function geotour_search_join_taxonomy($join, $wp_query) {
+    global $wpdb, $geotour_search_term;
+    
+    if (empty($geotour_search_term)) {
+        return $join;
+    }
+
+    // Join meta table for Yoast description
+    $join .= " LEFT JOIN {$wpdb->postmeta} AS meta_yoast ON ({$wpdb->posts}.ID = meta_yoast.post_id AND meta_yoast.meta_key = '_yoast_wpseo_metadesc')";
+    
+    // Join meta table for address field
+    $join .= " LEFT JOIN {$wpdb->postmeta} AS meta_address ON ({$wpdb->posts}.ID = meta_address.post_id AND meta_address.meta_key = 'contact_address')";
+    
+    // Join taxonomy tables
+    $join .= " LEFT JOIN {$wpdb->term_relationships} AS tr ON ({$wpdb->posts}.ID = tr.object_id)";
+    $join .= " LEFT JOIN {$wpdb->term_taxonomy} AS tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id AND tt.taxonomy IN ('listing-category', 'listing-region', 'listing-tag'))";
+    $join .= " LEFT JOIN {$wpdb->terms} AS tax_terms ON (tt.term_id = tax_terms.term_id)";
+
+    return $join;
+}
+
+/**
+ * Additional WHERE clause for taxonomy search
+ */
+function geotour_search_where_taxonomy($where, $wp_query) {
+    // The main search logic is handled in geotour_enhance_listing_search
+    return $where;
+}
+
+/**
+ * Group by post ID to avoid duplicates from taxonomy joins
+ */
+function geotour_search_groupby($groupby, $wp_query) {
+    global $wpdb, $geotour_search_term;
+    
+    if (empty($geotour_search_term)) {
+        return $groupby;
+    }
+
+    $groupby = "{$wpdb->posts}.ID";
+    return $groupby;
 }
