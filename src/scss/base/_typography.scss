@@ -168,6 +168,7 @@ small, .small { font-size: 0.875rem; line-height: 1.5; color: variables.$text-co
 
 .hero-subtitle {
     // Uses lead styles by default
-    color: variables.$text-color; // Or #fff if on a dark background
+    color: #fff; // Or #fff if on a dark background
     text-shadow: none; // Often cleaner without a shadow on subtitles
+    font-size: 1.5rem;
 }
