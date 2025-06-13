@@ -1,5 +1,5 @@
-GEOTOUR THEME FILE STRUCTURE
-=============================
+GEOTOUR THEME FILE STRUCTURE - UPDATED
+========================================
 Last Updated: December 2024
 Project: Geotour Crete WordPress Theme Redevelopment
 
@@ -22,103 +22,155 @@ SOURCE DIRECTORIES:
 │   │   │   ├── hero/
 │   │   │   │   └── main.js         # Hero section interactions, scroll effects, clickable scroll indicator
 │   │   │   ├── gallery/
-│   │   │   │   └── main.js         # Image gallery with Fancybox lightbox (NEW)
-│   │   │   └── maps/
-│   │   │       └── main.js         # Leaflet map initialization with raster tiles (UPDATED - Simplified)
-│   │   └── leaflet/                # Leaflet map functionality (if not using modules for everything)
+│   │   │   │   └── main.js         # Image gallery with Fancybox lightbox
+│   │   │   ├── maps/
+│   │   │   │   └── main.js         # Leaflet map initialization for single listings
+│   │   │   └── big-map/            # Full-screen map UI (listing archive page)
+│   │   │       └── main.js         # Big map with sidebar for spatial navigation
+│   │   └── homepage/               # Homepage-specific modules
+│   │       └── search-form.js      # Homepage search form functionality
 │   └── scss/
 │       ├── main.scss               # Main SCSS entry point with all imports
 │       ├── base/                   # Foundation styles
-│       │   ├── _variables.scss     # SCSS variables and colors (fixed duplicates)
+│       │   ├── _variables.scss     # SCSS variables and colors
 │       │   ├── _animations.scss    # Animation utilities
 │       │   └── _typography.scss    # Typography styles (Syne font system)
 │       ├── components/             # Reusable UI components
-│       │   ├── _hero.scss          # Hero section styles with enhanced overlays (UPDATED - Listing hero support)
+│       │   ├── _hero.scss          # Hero section styles (general + listing-specific)
 │       │   ├── _content.scss       # Content components (articles, posts, archive grid)
-│       │   ├── _maps.scss          # Styles for Leaflet maps (container, popups, controls, dark theme) (UPDATED - 100vw layout)
-│       │   ├── _virtualtour.scss   # Virtual tour widget component styles (NEW)
-│       │   ├── _gallery.scss       # Image gallery component styles with masonry layout (NEW)
-│       │   └── _listing-details.scss # Listing details sections styles (4-column responsive layout) (NEW)
+│       │   ├── _maps.scss          # Single listing map styles (100vw layout)
+│       │   ├── _big-map.scss       # Full-screen map UI styles (archive page)
+│       │   ├── _virtualtour.scss   # Virtual tour widget component styles
+│       │   ├── _gallery.scss       # Image gallery component styles with masonry layout
+│       │   ├── _listing-details.scss # Listing details sections styles (3-column responsive layout)
+│       │   └── _homepage.scss      # Homepage fullscreen hero and search form
 │       ├── layout/
 │       │   ├── navigation/
-│       │   │   └── _main.scss      # Main menu SCSS with language flags
+│       │   │   └── _main.scss      # Main menu SCSS with Virtual Tour/3D Map icons
 │       │   ├── header/
 │       │   │   └── _main.scss      # Main header SCSS with clip-path design
 │       │   ├── content/
 │       │   │   └── _main.scss      # Main content layout, responsive grid, navigation
-│       │   └── listing/            # Listing-specific layout styles (NEW)
-│       │       └── _overthecontent.scss # Over-the-content area styles for listings (NEW)
-│       └── pages/                  # Page-specific styles
+│       │   ├── listing/            # Listing-specific layout styles
+│       │   │   └── _overthecontent.scss # Over-the-content area styles for listings
+│       │   └── footer/
+│       │       └── _footer-modern.scss # Modern footer styles
+│       └── pages/                  # Page-specific styles (future use)
 
 WORDPRESS THEME STRUCTURE:
 ├── style.css                       # WordPress theme header (required)
-├── index.php                       # Main template fallback using content-main.php
+├── index.php                       # Main template fallback
 ├── functions.php                   # Main functions (loader only)
 ├── header.php                      # Site header with SVG clip-path and hero integration
 ├── footer.php                      # Site footer template
-├── single.php                      # Single post template using template parts
-├── page.php                        # Static page template using template parts
-├── single-listing.php              # Single listing template with dedicated hero and 100vw map (NEW)
+├── single.php                      # Single post template
+├── page.php                        # Static page template
+├── page-homepage.php               # Homepage template with fullscreen hero + search
+├── page-listing.php                # Full-screen listing map page (archive replacement)
 ├── archive.php                     # Archive template with grid layout
 ├── 404.php                         # Error page template
 ├── search.php                      # Search results template
 └── assets/                         # Static assets directory
     └── map-pins/                   # Custom SVG map pin icons for different listing types
 
-TEMPLATE PARTS:
+=== SINGLE LISTING PAGE STRUCTURE (MOST IMPORTANT) ===
+
+MAIN TEMPLATE:
+├── single-listing.php              # 🎯 MAIN ENTRY POINT for single listings
+
+TEMPLATE PARTS (called in order):
+├── template-parts/listing/
+│   ├── hero-listing.php            # 🏔️ Hero section with listing title, categories, region
+│   ├── content-listing-single.php  # 📄 Main content + virtual tour + nearest listings grid
+│   ├── map-single.php              # 🗺️ 100vw map section with coordinates & content overlay
+│   └── details-sections.php        # 📋 100vw details: site access, contact info, weather
+
+RELATED STYLES:
+├── src/scss/components/
+│   ├── _hero.scss                  # .listing-hero-section styles
+│   ├── _content.scss               # .listing-single, .listing-wide-content styles
+│   ├── _maps.scss                  # .listing-map-full-section styles
+│   ├── _listing-details.scss       # .listing-details-full-section styles
+│   ├── _virtualtour.scss           # Virtual tour widget styles
+│   └── _gallery.scss               # Image gallery styles for listing images
+└── src/scss/layout/listing/
+    └── _overthecontent.scss        # .listing-excerpt-section, .nearest-listings-full-section
+
+JAVASCRIPT MODULES:
+├── src/js/modules/
+│   ├── maps/main.js                # Leaflet map initialization for single listing
+│   ├── gallery/main.js             # Fancybox for listing image galleries
+│   └── hero/main.js                # Hero interactions and scroll effects
+
+PHP FUNCTIONS:
+├── includes/
+│   ├── maps/icon-management.php    # geotour_get_listing_map_icon() - category-based icons
+│   ├── utils.php                   # geotour_get_taxonomy_listing_url() - taxonomy links
+│   ├── legacy-shortcodes.php       # Shortcode replacements for old content
+│   └── custom-post-types/listing.php # Listing CPT registration
+
+=== END SINGLE LISTING STRUCTURE ===
+
+ARCHIVE LISTING PAGE (Full-screen map):
+├── page-listing.php                # Full-screen map with sidebar
+├── src/js/modules/big-map/main.js  # Big map UI with AJAX loading
+├── src/scss/components/_big-map.scss # Full-screen map styles
+└── includes/api/spatial-info-v2.php # REST API for map data
+
+TEMPLATE PARTS (General):
 ├── template-parts/                 # Modular template components
-│   ├── hero.php                    # Hero section with featured images and body class
+│   ├── hero.php                    # General hero section (not used for listings)
 │   ├── content-main.php            # Main content wrapper with archive grid support
-│   ├── content-single.php          # Single post/page content (removes duplicate H1)
+│   ├── content-single.php          # Single post/page content (not listings)
 │   ├── content.php                 # Archive loop content with card styling
 │   ├── content-none.php            # No content found template with search form
-│   └── listing/                    # Listing CPT specific template parts
-│       ├── content-listing-single.php # Main content for a single listing (UPDATED - Added details sections)
-│       ├── content-listing-archive.php # How a listing appears in archive loops (e.g., a card)
-│       ├── hero-listing.php        # Dedicated hero section for listings (NEW)
-│       ├── map-single.php          # Displays the Leaflet map for a single listing (UPDATED - 100vw layout)
-│       ├── details-sections.php    # Site access & category-based details in 4-column layout (NEW)
-│       ├── map-archive.php         # Displays the Leaflet map for archive listing pages
-│       ├── related-listings.php    # Displays nearby or related listings
-│       ├── related-posts.php       # Displays related standard posts
-│       ├── related-old-photos.php  # Displays related "old photos" CPT items
-│       └── related-people.php      # Displays related "people" CPT items
+│   ├── listing/                    # 📁 LISTING-SPECIFIC TEMPLATE PARTS
+│   │   ├── content-listing-single.php # Main content for single listing
+│   │   ├── content-listing-archive.php # Listing card for archive loops
+│   │   ├── hero-listing.php        # Dedicated hero section for listings
+│   │   ├── map-single.php          # Single listing map (100vw layout)
+│   │   ├── details-sections.php    # Site access & category-based details (100vw)
+│   │   ├── map-archive.php         # Archive map for listing loops (NOT USED - replaced by page-listing.php)
+│   │   └── related-listings.php    # Related listings grid
+│   └── footer/
+│       └── modern.php              # Modern footer template
 
-CUSTOM TEMPLATES:
-├── templates/                      # Custom template files
-│   ├── parts/                      # Reusable template parts
-│   ├── single-listing.php          # Single listing template (UPDATED - uses new template parts)
-│   ├── archive-listing.php         # Listing archive template (UPDATED - includes map integration)
-│   ├── taxonomy-listing-category.php
-│   ├── taxonomy-listing-region.php
-│   └── taxonomy-listing-tag.php
+CUSTOM TEMPLATES (Legacy/Unused):
+├── templates/                      # ⚠️ DEPRECATED - should be moved to root
+│   ├── single-listing.php          # ❌ OLD - use root single-listing.php instead
+│   └── archive-listing.php         # ❌ OLD - replaced by page-listing.php
 
 PHP INCLUDES STRUCTURE:
 ├── includes/                       # Organized PHP functionality
 │   ├── theme-support.php           # Theme setup, menus, image sizes
 │   ├── scripts-styles.php          # Asset enqueuing with Vite manifest
 │   ├── utils.php                   # Utility functions (coordinates, GeoJSON, post meta helpers)
-│   ├── hooks.php                   # Custom hooks and filters
-│   ├── navigation.php              # PHP helpers for navigation (walkers, etc.)
-│   ├── legacy-shortcodes.php       # BoldThemes shortcode replacements (NEW)
-│   ├── maps/                       # Map functionality (NEW)
-│   │   └── icon-management.php     # Category-based map icon system (NEW)
-│   ├── shortcodes/                 # Modern shortcode implementations (NEW)
-│   │   └── content-gallery.php     # Image gallery shortcode replacement (NEW)
+│   ├── navigation.php              # Navigation walkers and helpers
+│   ├── legacy-shortcodes.php       # BoldThemes shortcode replacements
+│   ├── listing-map-routes.php      # Custom /listing route handler
+│   ├── listing-taxonomy-redirects.php # Redirect taxonomy archives to map
+│   ├── maps/                       # Map functionality
+│   │   └── icon-management.php     # Category-based map icon system
+│   ├── shortcodes/                 # Modern shortcode implementations
+│   │   └── content-gallery.php     # Image gallery shortcode replacement
 │   ├── custom-post-types/
-│   │   └── listing.php             # Listing CPT and its core taxonomies registration
-│   ├── taxonomies/
-│   │   └── listing-taxonomies.php  # Additional/separate taxonomies
-│   ├── admin/
-│   │   └── admin-init.php          # Admin customizations loader
-│   ├── api/
-│   │   └── api-init.php            # AJAX/REST API endpoints loader
-│   └── template-parts/             # Reusable PHP template components
+│   │   └── listing.php             # Listing CPT and taxonomies registration
+│   └── api/
+│       └── spatial-info-v2.php     # REST API for listing map data
 
 BUILD CONFIGURATION:
 ├── package.json                    # npm configuration with Vite scripts
 ├── vite.config.js                  # Vite bundler configuration
 ├── postcss.config.js               # PostCSS configuration (autoprefixer)
 ├── .gitignore                      # Git ignore rules
-├── notes.txt                       # Project documentation and plans
-└── MAP_IMPLEMENTATION.md           # Map integration guide and best practices
+└── notes.txt                       # Project documentation and plans
+
+🎯 RECOMMENDATIONS FOR BETTER ORGANIZATION:
+
+1. MOVE templates/ files to root directory
+2. CREATE dedicated includes/listing/ folder for all listing-related PHP
+3. CONSOLIDATE all listing styles into src/scss/pages/_single-listing.scss
+4. CREATE src/js/pages/single-listing.js for all listing-specific JavaScript
+5. REMOVE unused/deprecated files
+
+PRIORITY: Single listing page is the most important - focus organization efforts there first.

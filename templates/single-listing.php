@@ -1,10 +1,18 @@
 <?php
-
 /**
  * The template for displaying single listing posts
+ * 
+ * MOVED TO ROOT: This file should be moved to /single-listing.php
+ * This template is deprecated - use the root single-listing.php instead
  *
  * @package Geotour_Mobile_First
  */
+
+// Redirect to root template if it exists
+if (file_exists(get_template_directory() . '/single-listing.php')) {
+    include(get_template_directory() . '/single-listing.php');
+    return;
+}
 
 get_header();
 ?>
