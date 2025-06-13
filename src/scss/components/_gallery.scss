@@ -18,6 +18,7 @@
     background: color.change(vars.$background-color, $alpha: 0.5);
     
     .grid-item {
+        padding: 10px;
         display: block;
         position: relative;
         overflow: hidden;

@@ -1,18 +1,20 @@
-    <footer id="colophon" class="site-footer">
-        <div class="site-info">
-            <a href="<?php echo esc_url(__('https://wordpress.org/', 'geotour')); ?>">
-                <?php
-                /* translators: %s: CMS name, i.e. WordPress. */
-                printf(esc_html__('Proudly powered by %s', 'geotour'), 'WordPress');
-                ?>
-            </a>
-            <span class="sep"> | </span>
-                <?php
-                /* translators: 1: Theme name, 2: Theme author. */
-                printf(esc_html__('Theme: %1$s by %2$s.', 'geotour'), 'Geotour Mobile First', '<a href="#">Your Name</a>');
-                ?>
-        </div><!-- .site-info -->
-    </footer><!-- #colophon -->
+<?php
+/**
+ * The template for displaying the footer
+ *
+ * @package Geotour_Mobile_First
+ */
+
+// Check if we're on the listing map page
+$is_map_page = is_page_template('page-listing.php');
+?>
+
+</div><!-- #content -->
+
+<?php if (!$is_map_page): ?>
+    <?php get_template_part('template-parts/footer/modern'); ?>
+<?php endif; ?>
+
 </div><!-- #page -->
 
 <?php wp_footer(); ?>

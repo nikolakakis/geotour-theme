@@ -45,6 +45,7 @@ function geotour_init_legacy_shortcode_replacements() {
     
     // Hide reviews-feed shortcodes directly (in case they're not wrapped)
     add_shortcode('reviews-feed', 'geotour_hide_shortcode');
+    add_shortcode('bt_bb_raw_content', 'geotour_hide_shortcode');
 }
 
 /**

@@ -8,6 +8,7 @@
 @use 'layout/header/main' as header; // Include the new header styles
 @use 'layout/content/main' as content-layout; // Main content layout styles
 @use 'layout/listing/overthecontent'; // Listing over-the-content area styles
+@use 'layout/footer/footer-modern';
 
 // Component specific styles
 @use 'components/hero'; // Hero section styles
@@ -17,6 +18,7 @@
 @use 'components/gallery'; // Image gallery component styles
 @use 'components/listing-details'; // Listing details sections styles
 @use 'components/big-map'; // Big map UI styles
+
 
 // Global overflow prevention
 html, body {
