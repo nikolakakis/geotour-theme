@@ -18,10 +18,16 @@
 @use 'components/gallery'; // Image gallery component styles
 @use 'components/listing-details'; // Listing details sections styles
 @use 'components/big-map'; // Big map UI styles
-@use 'components/homepage'; // Homepage specific styles
 
+// Page specific styles
+@use 'pages/single-listing'; // Single listing page (MOST IMPORTANT)
+@use 'pages/homepage'; // Homepage with search form
 
 // Global overflow prevention
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
 html, body {
     overflow-x: hidden;
     max-width: 100%;

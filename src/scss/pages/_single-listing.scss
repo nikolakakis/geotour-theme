@@ -1,0 +1,145 @@
+// ==========================================================================
+// SINGLE LISTING PAGE STYLES
+// Consolidated styles for the most important page type
+// ==========================================================================
+
+@use '../base/variables' as vars;
+@use 'sass:color';
+
+// 1. Hero Section (.listing-hero-section)
+.listing-hero-section {
+    position: relative;
+    background: vars.$primary-color;
+    color: white;
+    padding: 2rem 0;
+    
+    .hero-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-meta {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        
+        .category-link,
+        .region-link {
+            color: rgba(white, 0.9);
+            text-decoration: none;
+            
+            &:hover {
+                color: white;
+            }
+        }
+    }
+}
+
+// 2. Map Section (.listing-map-full-section) - Over-the-content with excerpt + map
+.listing-map-full-section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    height: 60vh;
+    
+    .map-container {
+        height: 100%;
+        position: relative;
+    }
+    
+    .listing-excerpt-overlay {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        background: rgba(white, 0.95);
+        padding: 1.5rem;
+        border-radius: 8px;
+        max-width: 300px;
+        z-index: 1000;
+        
+        @media (max-width: 768px) {
+            position: static;
+            margin: 1rem;
+            max-width: none;
+        }
+    }
+}
+
+// 3. Details Sections (.listing-details-full-section) - 100vw sections
+.listing-details-full-section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 3rem 0;
+    background: color.change(vars.$background-color, $lightness: -2%);
+    
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+    
+    .detail-section {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        
+        h3 {
+            color: vars.$heading-color;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+    }
+}
+
+// 4. Main Content Area
+.listing-single-page {
+    .main-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 3rem 1rem;
+        
+        .listing-content {
+            line-height: 1.7;
+            
+            h2, h3, h4 {
+                color: vars.$heading-color;
+                margin: 2rem 0 1rem;
+            }
+            
+            p {
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        .virtual-tour-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: color.change(vars.$primary-color, $alpha: 0.05);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .nearest-listings {
+            margin-top: 3rem;
+            
+            .listings-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+                margin-top: 1.5rem;
+            }
+        }
+    }
+}
