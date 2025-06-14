@@ -43,6 +43,7 @@ SOURCE DIRECTORIES:
 │       │   ├── _virtualtour.scss   # Virtual tour widget component styles
 │       │   ├── _gallery.scss       # Image gallery component styles with masonry layout
 │       │   ├── _listing-details.scss # Listing details sections styles (3-column responsive layout)
+│       │   ├── _contact-form.scss  # Contact Form 7 modern styling with validation states
 │       │   └── _homepage.scss      # Homepage fullscreen hero and search form
 │       ├── layout/
 │       │   ├── navigation/
