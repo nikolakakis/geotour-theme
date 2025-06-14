@@ -89,28 +89,152 @@
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-    padding: 3rem 0;
+    padding: 2rem 0; // Reduced from 3rem to make it less prominent
     background: color.change(vars.$background-color, $lightness: -2%);
     
-    .details-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
+    .listing-details-container {
+        display: flex;
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 1rem;
+        gap: 2rem;
+        
+        // Layout adjustments based on content availability
+        &.has-additional-info {
+            // When additional info is present: 66% + 34% layout
+            .details-combined {
+                flex: 0 0 66%;
+            }
+            
+            .details-weather {
+                flex: 0 0 34%;
+            }
+        }
+        
+        &.weather-only {
+            // When no additional info: center weather with max-width
+            justify-content: center;
+            
+            .details-weather {
+                flex: 0 0 100%;
+                max-width: 900px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            flex-direction: column;
+            
+            .details-combined,
+            .details-weather {
+                flex: 1 1 auto;
+            }
+        }
     }
     
-    .detail-section {
+    .details-column {
         background: white;
-        padding: 1.5rem;
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         
-        h3 {
+        .column-content {
+            padding: 1.5rem;
+        }
+        
+        .section-heading {
             color: vars.$heading-color;
             margin-bottom: 1rem;
-            font-size: 1.3rem;
+            font-size: 1.2rem; // Slightly smaller than before
+            font-weight: 600;
+        }
+    }
+    
+    // Combined column specific styles
+    .details-combined {
+        .site-access-section,
+        .contact-details-section {
+            margin-bottom: 2rem;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        
+        .access-methods ul {
+            list-style: none;
+            padding: 0;
+            
+            li {
+                padding: 0.5rem 0;
+                border-bottom: 1px solid #eee;
+                
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+        
+        .access-notes {
+            margin-top: 1rem;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .contact-social-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            
+            a {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 4px;
+                background: #f5f5f5;
+                color: #666;
+                transition: all 0.2s ease;
+                
+                &:hover {
+                    background: vars.$primary-color;
+                    color: white;
+                }
+                
+                svg {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+        
+        .contact-whatsapp a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #25d366;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            
+            .whatsapp-icon {
+                width: 16px;
+                height: 16px;
+            }
+        }
+        
+        .category-characteristics {
+            // Placeholder for future category-specific content
+            margin-top: 2rem;
+        }
+    }
+    
+    // Weather column specific styles
+    .details-weather {
+        #openmeteo {
+            // Weather widget container
+            min-height: 200px;
         }
     }
 }
