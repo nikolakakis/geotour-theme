@@ -156,7 +156,8 @@ PHP INCLUDES STRUCTURE:
 │   ├── custom-post-types/
 │   │   └── listing.php             # Listing CPT and taxonomies registration
 │   └── api/
-│       └── spatial-info-v2.php     # REST API for listing map data
+│       ├── spatial-info-v2.php     # REST API for listing map data
+│       └── custom-listing-endpoints.php # Custom REST API endpoints for listings (panotours/v1, geotour/v1 selector)
 
 BUILD CONFIGURATION:
 ├── package.json                    # npm configuration with Vite scripts
