@@ -42,7 +42,7 @@ $is_english = ($current_lang === 'en');
                     $geotour_links = [
                         ['title_en' => 'About Geotour', 'title_el' => 'Σχετικά με το Geotour', 'url' => home_url('/about-geotour')],
                         ['title_en' => 'Geotour timeline', 'title_el' => 'Χρονολόγιο Geotour', 'url' => home_url('/about-geotour/geotour-timeline/')],                        
-                        ['title_en' => 'A Technical Overview', 'title_el' => 'Τεχνική Επισκόπηση', 'url' => home_url('/technical-overview')],
+                        ['title_en' => 'A Technical Overview', 'title_el' => 'Τεχνική Επισκόπηση', 'url' => home_url('/geotour-a-technical-overview-of-a-wordpress-based-platform-for-sustainable-tourism-and-cultural-discovery-in-crete')],
                     ];
 
                     foreach ($geotour_links as $link) {
