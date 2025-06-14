@@ -124,3 +124,64 @@ add_filter('rest_endpoints', function($endpoints) {
     }
     return $endpoints;
 });
+
+/**
+ * Add listing coordinates to the body tag as data attributes on single listing pages.
+ * This allows client-side JavaScript to access coordinates without extra AJAX calls.
+ */
+function geotour_add_listing_coordinates_to_body() {
+    if (is_singular('listing')) {
+        $post_id = get_the_ID();
+        if (!$post_id) {
+            return;
+        }
+
+        $position_acf = get_field('position', $post_id);
+        $lat = null;
+        $lng = null;
+
+        if ($position_acf && isset($position_acf['markers']) && is_array($position_acf['markers']) && !empty($position_acf['markers'])) {
+            $first_marker = $position_acf['markers'][0];
+            if (isset($first_marker['lat']) && isset($first_marker['lng'])) {
+                $lat = esc_attr($first_marker['lat']);
+                $lng = esc_attr($first_marker['lng']);
+            }
+        }
+
+        if ($lat !== null && $lng !== null) {
+            // Replace 'geotour-main-js' with your actual main theme script handle if different.
+            // If you don't have a specific theme script handle, you could use a common one like 'jquery',
+            // but it's generally better to attach to your theme's main script.
+            $script_handle = 'geotour-main-js'; // IMPORTANT: Verify this script handle
+            
+            // Check if the handle is already registered to avoid errors if it's not.
+            // A more robust solution would be to ensure 'geotour-main-js' is always enqueued on single listing pages.
+            // For now, we'll add a simple check.
+            if(wp_script_is($script_handle, 'registered') || wp_script_is($script_handle, 'enqueued')) {
+                 $js_code = "
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.body) {
+        document.body.setAttribute('data-listing-lat', '{$lat}');
+        document.body.setAttribute('data-listing-lng', '{$lng}');
+    }
+});";
+                wp_add_inline_script($script_handle, $js_code);
+            } else {
+                // Fallback: if the handle isn't found, try to output directly, though less ideal.
+                // This part is a basic fallback and might need adjustment based on theme structure.
+                // A better approach is to ensure the $script_handle is correct and always available.
+                add_action('wp_footer', function() use ($lat, $lng) {
+                    echo "<script type=\'text/javascript\'>\n";
+                    echo "document.addEventListener('DOMContentLoaded', function() {\n";
+                    echo "    if (document.body) {\n";
+                    echo "        document.body.setAttribute('data-listing-lat', '{$lat}');\n";
+                    echo "        document.body.setAttribute('data-listing-lng', '{$lng}');\n";
+                    echo "    }\n";
+                    echo "});\n";
+                    echo "</script>\n";
+                }, 99); // High priority to ensure it's late in the footer
+            }
+        }
+    }
+}
+add_action('wp_enqueue_scripts', 'geotour_add_listing_coordinates_to_body');

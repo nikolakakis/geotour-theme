@@ -34,6 +34,17 @@
             }
         }
     }
+    
+    // Reduce parallax intensity on scroll
+    will-change: transform;
+    
+    @media (prefers-reduced-motion: no-preference) {
+        transform: translateY(calc(var(--scroll-y, 0) * 0.3)); // Reduced from default parallax intensity
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+        transform: none; // Respect user's motion preferences
+    }
 }
 
 // 2. Map Section (.listing-map-full-section) - Over-the-content with excerpt + map
@@ -44,6 +55,7 @@
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
+    
     height: 60vh;
     
     .map-container {
@@ -131,15 +143,6 @@
             text-align: center;
         }
         
-        .nearest-listings {
-            margin-top: 3rem;
-            
-            .listings-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1.5rem;
-                margin-top: 1.5rem;
-            }
-        }
+        
     }
 }

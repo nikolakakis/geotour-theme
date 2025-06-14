@@ -78,12 +78,12 @@ WORDPRESS THEME STRUCTURE:
 MAIN TEMPLATE:
 ├── single-listing.php              # 🎯 MAIN ENTRY POINT for single listings
 
-TEMPLATE PARTS (called in order):
+TEMPLATE PARTS (called in order) - CORRECTED MAPPING:
 ├── template-parts/listing/
-│   ├── hero-listing.php            # 🏔️ Hero section with listing title, categories, region
-│   ├── content-listing-single.php  # 📄 Main content + virtual tour + nearest listings grid
-│   ├── map-single.php              # 🗺️ 100vw map section with coordinates & content overlay
-│   └── details-sections.php        # 📋 100vw details: site access, contact info, weather
+│   ├── hero-listing.php            # 🏔️ .listing-hero-section - Header with title, listing-category, listing-region links, scroll arrow
+│   ├── map-single.php              # 🗺️ .listing-map-full-section - 100vw section with "About this Location" excerpt + map (NOT just a map!)
+│   ├── details-sections.php        # 📋 .listing-details-full-section - 100vw details grid layout ⚠️ NEEDS ATTENTION
+│   └── content-listing-single.php  # 📄 .main-container - Centered content: .listing-content + .virtual-tour-section + .nearest-listings
 
 RELATED STYLES:
 ├── src/scss/components/
