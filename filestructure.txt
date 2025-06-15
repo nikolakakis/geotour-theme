@@ -158,7 +158,8 @@ PHP INCLUDES STRUCTURE:
 │   │   └── listing.php             # Listing CPT and taxonomies registration
 │   └── api/
 │       ├── spatial-info-v2.php     # REST API for listing map data
-│       └── custom-listing-endpoints.php # Custom REST API endpoints for listings (panotours/v1, geotour/v1 selector)
+│       ├── custom-listing-endpoints.php # Custom REST API endpoints for listings (panotours/v1, geotour/v1 selector)
+│       └── nearest-listings-endpoint.php # Nearest listings API with ACF position support (panotours/v1/nearest)
 
 BUILD CONFIGURATION:
 ├── package.json                    # npm configuration with Vite scripts

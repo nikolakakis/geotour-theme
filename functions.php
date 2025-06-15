@@ -46,6 +46,7 @@ require_once GEOTOUR_THEME_DIR . '/includes/maps/icon-management.php';
 // REST API endpoints
 require_once GEOTOUR_THEME_DIR . '/includes/api/spatial-info-v2.php';
 require_once GEOTOUR_THEME_DIR . '/includes/api/custom-listing-endpoints.php'; // Added this line
+require_once GEOTOUR_THEME_DIR . '/includes/api/nearest-listings-endpoint.php'; // Nearest listings with ACF position support
 
 // Listing map routes
 require_once GEOTOUR_THEME_DIR . '/includes/listing-map-routes.php';

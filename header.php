@@ -89,48 +89,14 @@
             if ($site_description || is_customize_preview()) :
                 echo '<p class="site-description">'. esc_html($site_description) .'</p>';
             endif;
-            echo '</div>';
-        endif;        wp_nav_menu([
-            'theme_location' => 'primary', // Ensure this theme location is registered
-            'menu_class'     => 'menu', // Original class
-            'container'      => false,
-            'walker'         => new Geotour_Accordion_Menu_Walker(), // Assuming this walker is defined
-        ]);
-        ?>        <!-- Virtual Tour and 3D Map section -->
-        <div class="menu-language-section">
-            <div class="menu-flags-container">                <div class="flag-item">
-                    <a href="https://tour.geotour.gr" aria-label="Virtual Tour">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 32" fill="none" stroke="white" stroke-width="1.5">
-                            <g transform="translate(0, 12) scale(1)" aria-label="vt">
-                                <rect x="2" y="8" width="20" height="8" rx="3" fill="white"/>
-                                <circle cx="8" cy="12" r="2" fill="black"/>
-                                <circle cx="16" cy="12" r="2" fill="black"/>
-                                <path d="M2 12h2m16 0h2" stroke="white" stroke-width="2"/>
-                                <path d="M7 8l2-3h6l2 3" stroke="white" stroke-width="1.5" fill="none"/>
-                            </g>
-                        </svg>
-                        <span style="color: white;">Virtual Tour</span>
-                    </a>
-                </div>
-                <div class="flag-item">
-                    <a href="https://tour.geotour.gr/3dmap/" aria-label="3D Map">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 32" fill="white">
-                            <g transform="translate(0, 10) scale(1)" aria-label="3dmap">
-                                <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white" opacity="0.9"/>
-                                <path d="M2 17l10 5 10-5" stroke="white" stroke-width="1.5" fill="none"/>
-                                <path d="M2 12l10 5 10-5" stroke="white" stroke-width="1.5" fill="none"/>
-                                <path d="M12 7v10" stroke="white" stroke-width="1" fill="none"/>
-                                <circle cx="12" cy="7" r="1" fill="red"/>
-                            </g>
-                        </svg>
-                        <span style="color: white;">3D Map</span>
-                    </a>
-                </div>
-                <!-- Future expandable area for additional icons -->
-                <!-- <div class="icon-separator"></div> -->
-                <!-- Add more icons here as needed -->
-            </div>
-        </div></nav>
+            echo '</div>';        endif;        wp_nav_menu([
+                'theme_location' => 'primary', // Ensure this theme location is registered
+                'menu_class'     => 'menu', // Original class
+                'container'      => false,
+                'walker'         => new Geotour_Accordion_Menu_Walker()
+            ]);
+        ?>
+    </nav>
     <?php
     // Include hero section on appropriate pages (but not on single listings or homepage template)
     if ((is_home() || is_front_page() || is_singular() || is_archive()) 
