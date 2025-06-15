@@ -134,6 +134,11 @@ export class BigMapUI {
             params.append('listing_tag', window.geotourBigMap.urlParams.tag);
         }
         
+        // Add search parameter if it exists
+        if (window.geotourBigMap.urlParams.search) {
+            params.append('search', window.geotourBigMap.urlParams.search);
+        }
+        
         const url = `${window.geotourBigMap.apiUrl}?${params.toString()}`;
         console.log('Fetching listings with filters:', params.toString());
         
