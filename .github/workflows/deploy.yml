@@ -1,0 +1,52 @@
+name: Deploy Theme to Production Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout your source code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3. Install dependencies and build the project.
+      # This creates the 'build/' folder inside the Action's environment.
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build
+
+      # 4. Deploy the complete theme to the server
+      - name: SFTP Deploy
+        uses: appleboy/sftp-action@master
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          # Source is now the project root, so we deploy everything...
+          source: "./"
+          # The remote path on your server. This looks correct.
+          target: "/geotour/wp-content/themes/geotour-theme/"
+          dry_run: true
+          # ...except for the files and folders listed here.
+          exclude: |
+            **/.git*
+            **/.github
+            **/node_modules
+            **/src
+            .gitignore
+            package.json
+            package-lock.json
+            vite.config.js
+            composer.json
+            composer.lock

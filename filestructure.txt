@@ -1,6 +1,6 @@
 GEOTOUR THEME FILE STRUCTURE - UPDATED
 ========================================
-Last Updated: December 2024
+Last Updated: June 2025
 Project: Geotour Crete WordPress Theme Redevelopment
 
 ROOT DIRECTORY: e:\visualstudio\geotour-theme\
