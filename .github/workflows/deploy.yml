@@ -28,7 +28,7 @@ jobs:
 
       # 4. Deploy the complete theme to the server
       - name: SFTP Deploy
-        uses: appleboy/sftp-action@v1.0.0
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
