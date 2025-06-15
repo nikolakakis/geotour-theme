@@ -5,6 +5,9 @@
 @use '../../base/variables' as vars;
 
 // Prevent horizontal overflow at the site level
+body {
+    background-color: #194032;
+}
 .site {
     overflow-x: hidden;
 }
