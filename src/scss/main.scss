@@ -23,6 +23,7 @@
 // Page specific styles
 @use 'pages/single-listing'; // Single listing page (MOST IMPORTANT)
 @use 'pages/homepage' as page-homepage; // Homepage with search form (namespaced to avoid conflict)
+@use 'pages/404' as error-page; // 404 error page styles
 
 // Global overflow prevention
 html, body {

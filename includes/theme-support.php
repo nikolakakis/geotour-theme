@@ -92,6 +92,10 @@ function geotour_document_title_parts($title) {
         // For homepage template
         $title['title'] = get_the_title();
         $title['tagline'] = get_bloginfo('description');
+    } elseif (is_404()) {
+        // For 404 pages
+        $title['title'] = __('Page Not Found', 'geotour');
+        $title['tagline'] = get_bloginfo('name');
     }
     
     return $title;

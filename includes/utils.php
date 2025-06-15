@@ -239,6 +239,9 @@ function geotour_get_meta_description() {
     } elseif (is_home() || is_front_page()) {
         // Blog home or front page
         $meta_description = get_bloginfo('description') ?: __('Explore Crete with GeoTour - your comprehensive guide to the island\'s history, culture, and natural beauty.', 'geotour');
+    } elseif (is_404()) {
+        // 404 pages
+        $meta_description = __('Page not found. Explore our interactive map of Crete or search for archaeological sites, beaches, and attractions.', 'geotour');
     }
     
     return $meta_description;
