@@ -29,6 +29,7 @@ function geotour_theme_setup() {
     ));
     add_theme_support('customize-selective-refresh-widgets');
     add_theme_support('responsive-embeds');
+    add_theme_support('title-tag');
     
     // Navigation menus
     register_nav_menus(array(
@@ -69,3 +70,42 @@ function geotour_widgets_init() {
     ));
 }
 add_action('widgets_init', 'geotour_widgets_init');
+
+/**
+ * Custom document title function
+ */
+function geotour_document_title_parts($title) {
+    // Customize titles for different page types
+    if (is_singular('listing')) {
+        // For listings, add location info if available
+        $post_id = get_the_ID();
+        $regions = wp_get_post_terms($post_id, 'listing-region');
+        if (!empty($regions) && !is_wp_error($regions)) {
+            $region_name = $regions[0]->name;
+            $title['title'] = get_the_title() . ' - ' . $region_name;
+        }
+    } elseif (is_page_template('page-listing.php')) {
+        // For the big map page
+        $title['title'] = __('Discover Crete Map', 'geotour');
+        $title['tagline'] = get_bloginfo('description');
+    } elseif (is_page_template('page-homepage.php')) {
+        // For homepage template
+        $title['title'] = get_the_title();
+        $title['tagline'] = get_bloginfo('description');
+    }
+    
+    return $title;
+}
+add_filter('document_title_parts', 'geotour_document_title_parts');
+
+/**
+ * Fallback title function for older WordPress versions
+ */
+function geotour_render_title() {
+    echo '<title>' . wp_get_document_title() . '</title>' . "\n";
+}
+
+// Only add this if WordPress doesn't support title-tag
+if (!current_theme_supports('title-tag')) {
+    add_action('wp_head', 'geotour_render_title');
+}

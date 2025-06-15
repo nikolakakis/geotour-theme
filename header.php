@@ -16,6 +16,60 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    <?php
+    // Add proper title tag support
+    if (!function_exists('_wp_render_title_tag')) {
+        // Fallback for older WordPress versions
+        echo '<title>' . wp_get_document_title() . '</title>' . "\n";
+    }
+      // Add meta description if not handled by SEO plugin
+    $meta_description = '';
+    
+    // Try Yoast SEO first
+    if (class_exists('WPSEO_Frontend')) {
+        $yoast_frontend = WPSEO_Frontend::get_instance();
+        if (method_exists($yoast_frontend, 'metadesc')) {
+            $meta_description = $yoast_frontend->metadesc(false);
+        }
+    }
+    
+    // Try RankMath
+    if (empty($meta_description) && class_exists('RankMath')) {
+        $meta_description = RankMath\Helper::get_post_meta('description');
+    }
+    
+    // Use custom function if no SEO plugin description
+    if (empty($meta_description) && function_exists('geotour_get_meta_description')) {
+        $meta_description = geotour_get_meta_description();
+    }
+    
+    // Final fallback
+    if (empty($meta_description)) {
+        $meta_description = get_bloginfo('description') ?: __('Explore Crete with GeoTour - your guide to the island\'s treasures.', 'geotour');
+    }
+    
+    // Output meta description if we have one
+    if (!empty($meta_description)) {
+        echo '<meta name="description" content="' . esc_attr(wp_trim_words($meta_description, 25, '...')) . '">' . "\n";
+    }
+    
+    // Add Open Graph tags for better social sharing
+    if (is_singular()) {
+        $post_id = get_the_ID();
+        echo '<meta property="og:title" content="' . esc_attr(get_the_title($post_id)) . '">' . "\n";
+        echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+        echo '<meta property="og:url" content="' . esc_attr(get_permalink($post_id)) . '">' . "\n";
+        echo '<meta property="og:type" content="article">' . "\n";
+        
+        // Featured image for OG
+        $featured_image = get_the_post_thumbnail_url($post_id, 'large');
+        if ($featured_image) {
+            echo '<meta property="og:image" content="' . esc_attr($featured_image) . '">' . "\n";
+        }
+    }
+    ?>
+    
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

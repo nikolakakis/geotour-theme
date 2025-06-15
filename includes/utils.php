@@ -185,3 +185,61 @@ if (!function_exists('geotour_entry_footer')) {
         );
     }
 }
+
+/**
+ * Generate better meta descriptions for different page types
+ */
+function geotour_get_meta_description() {
+    $meta_description = '';
+    
+    if (is_singular('listing')) {
+        // For listings, create rich description
+        $post_id = get_the_ID();
+        
+        // Try Yoast first
+        $meta_description = get_post_meta($post_id, '_yoast_wpseo_metadesc', true);
+        
+        if (empty($meta_description)) {
+            // Create from listing data
+            $categories = wp_get_post_terms($post_id, 'listing-category');
+            $regions = wp_get_post_terms($post_id, 'listing-region');
+            
+            $category_name = (!empty($categories) && !is_wp_error($categories)) ? $categories[0]->name : '';
+            $region_name = (!empty($regions) && !is_wp_error($regions)) ? $regions[0]->name : '';
+            
+            $meta_description = sprintf(
+                __('Discover %s in %s, Crete. %s', 'geotour'),
+                get_the_title(),
+                $region_name ?: 'Crete',
+                wp_trim_words(get_the_excerpt() ?: get_the_content(), 20, '...')
+            );
+        }
+    } elseif (is_page_template('page-listing.php')) {
+        // Big map page
+        $meta_description = __('Explore Crete with our interactive map. Discover archaeological sites, beaches, museums, and hidden gems across the island.', 'geotour');
+    } elseif (is_page_template('page-homepage.php')) {
+        // Homepage template
+        $meta_description = get_bloginfo('description') ?: __('Your ultimate guide to exploring Crete. Discover the best places to visit, from ancient Minoan sites to pristine beaches.', 'geotour');
+    } elseif (is_tax('listing-category')) {
+        // Listing category pages
+        $term = get_queried_object();
+        $meta_description = sprintf(
+            __('Explore %s in Crete. Find the best %s locations with detailed information, photos, and interactive maps.', 'geotour'),
+            $term->name,
+            strtolower($term->name)
+        );
+    } elseif (is_tax('listing-region')) {
+        // Listing region pages
+        $term = get_queried_object();
+        $meta_description = sprintf(
+            __('Discover %s region in Crete. Explore archaeological sites, beaches, attractions and local gems in %s.', 'geotour'),
+            $term->name,
+            $term->name
+        );
+    } elseif (is_home() || is_front_page()) {
+        // Blog home or front page
+        $meta_description = get_bloginfo('description') ?: __('Explore Crete with GeoTour - your comprehensive guide to the island\'s history, culture, and natural beauty.', 'geotour');
+    }
+    
+    return $meta_description;
+}
