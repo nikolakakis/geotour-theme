@@ -10,7 +10,9 @@ export class BigMapUI {
         this.isLoading = false;
         this.lastBounds = null;
         this.boundsTimeout = null;
-        this.searchTerm = ''; // Add search term property
+        this.searchTerm = '';
+        this.isMobile = window.innerWidth <= 1024; // Track mobile state
+        this.sidebarVisible = !this.isMobile; // Visible by default on desktop, hidden on mobile
         
         // Get URL parameters on initialization
         this.urlParams = new URLSearchParams(window.location.search);
@@ -29,25 +31,59 @@ export class BigMapUI {
         this.setupEventListeners();
         this.initializeMap();
         this.loadInitialData();
-        this.initializeSearch(); // Add search initialization
+        this.setupSidebarState(); // Set initial sidebar state
+    }
+    
+    setupSidebarState() {
+        const container = document.querySelector('.big-map-container');
+        const sidebar = this.sidebar;
+        const floatingBtn = document.getElementById('floating-sidebar-toggle');
+        
+        if (this.isMobile) {
+            // Mobile: hidden by default
+            sidebar.classList.remove('open');
+            container.classList.remove('sidebar-open');
+            if (floatingBtn) floatingBtn.style.display = 'block';
+        } else {
+            // Desktop: visible by default
+            sidebar.classList.remove('hidden');
+            if (floatingBtn) floatingBtn.style.display = 'none';
+        }
     }
     
     setupEventListeners() {
-        // Sidebar toggle for mobile
+        // Sidebar toggle for all screen sizes
         const toggleBtn = document.getElementById('sidebar-toggle');
         if (toggleBtn) {
             toggleBtn.addEventListener('click', () => this.toggleSidebar());
         }
         
-        // Mobile sidebar toggle from map controls
-        const mapControls = document.querySelector('.map-controls');
-        if (mapControls) {
-            mapControls.addEventListener('click', (e) => {
-                if (e.target === mapControls || e.target.matches('.map-controls::before')) {
-                    this.toggleSidebar();
-                }
-            });
+        // Floating sidebar toggle button
+        const floatingToggleBtn = document.getElementById('floating-sidebar-toggle');
+        if (floatingToggleBtn) {
+            floatingToggleBtn.addEventListener('click', () => this.toggleSidebar());
         }
+        
+        // Map click to hide sidebar on mobile
+        // This will be added after map initialization
+        
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            const wasMobile = this.isMobile;
+            this.isMobile = window.innerWidth <= 1024;
+            
+            // Reset sidebar state if screen size category changed
+            if (wasMobile !== this.isMobile) {
+                this.setupSidebarState();
+            }
+            
+            // Always resize map on window resize
+            if (this.map) {
+                setTimeout(() => {
+                    this.map.invalidateSize();
+                }, 100);
+            }
+        });
         
         // Map controls
         document.getElementById('locate-me')?.addEventListener('click', () => this.locateUser());
@@ -98,6 +134,13 @@ export class BigMapUI {
         // Add map move events for bounding box filtering
         this.map.on('moveend', () => this.onMapMoveEnd());
         this.map.on('zoomend', () => this.onMapMoveEnd());
+        
+        // Add map click event to hide sidebar on mobile
+        this.map.on('click', () => {
+            if (this.isMobile && this.sidebarVisible) {
+                this.hideSidebarOnMobile();
+            }
+        });
     }
     
     async loadInitialData() {
@@ -197,7 +240,14 @@ export class BigMapUI {
         marker.bindPopup(popupContent);
         
         // Add click event to highlight in sidebar
-        marker.on('click', () => this.highlightListing(listing.id));
+        marker.on('click', () => {
+            this.highlightListing(listing.id);
+            
+            // Hide sidebar on mobile when marker is clicked
+            if (this.isMobile) {
+                this.hideSidebarOnMobile();
+            }
+        });
         
         return marker;
     }
@@ -283,6 +333,11 @@ export class BigMapUI {
             if (!e.target.classList.contains('meta-tag')) {
                 this.highlightListing(listing.id);
                 this.panToListing(listing);
+                
+                // Hide sidebar on mobile after clicking a listing
+                if (this.isMobile) {
+                    this.hideSidebarOnMobile();
+                }
             }
         });
         
@@ -370,9 +425,52 @@ export class BigMapUI {
     
     toggleSidebar() {
         const container = document.querySelector('.big-map-container');
-        if (container) {
-            container.classList.toggle('sidebar-open');
+        const sidebar = this.sidebar;
+        const floatingBtn = document.getElementById('floating-sidebar-toggle');
+        
+        if (this.isMobile) {
+            // Mobile behavior: use open/close classes
+            const isOpen = sidebar.classList.contains('open');
+            if (isOpen) {
+                sidebar.classList.remove('open');
+                container.classList.remove('sidebar-open');
+                this.sidebarVisible = false;
+            } else {
+                sidebar.classList.add('open');
+                container.classList.add('sidebar-open');
+                this.sidebarVisible = true;
+            }
+        } else {
+            // Desktop behavior: use hidden class
+            const isHidden = sidebar.classList.contains('hidden');
+            if (isHidden) {
+                sidebar.classList.remove('hidden');
+                this.sidebarVisible = true;
+                if (floatingBtn) floatingBtn.style.display = 'none';
+            } else {
+                sidebar.classList.add('hidden');
+                this.sidebarVisible = false;
+                if (floatingBtn) floatingBtn.style.display = 'block';
+            }
+            
+            // Force map resize after sidebar toggle on desktop
+            setTimeout(() => {
+                if (this.map) {
+                    this.map.invalidateSize();
+                }
+            }, 300); // Wait for CSS transition to complete
         }
+    }
+    
+    hideSidebarOnMobile() {
+        if (!this.isMobile) return;
+        
+        const container = document.querySelector('.big-map-container');
+        const sidebar = this.sidebar;
+        
+        sidebar.classList.remove('open');
+        container.classList.remove('sidebar-open');
+        this.sidebarVisible = false;
     }
     
     locateUser() {

@@ -73,23 +73,90 @@
     flex-direction: column;
     z-index: 1100;
     box-shadow: 4px 0 15px color.change(vars.$primary-color, $alpha: 0.1);
+    transition: transform 0.3s ease;
     
-    @media (max-width: 768px) {
-        width: 100vw;
+    // Hide sidebar when toggled (all screen sizes)
+    &.hidden {
+        transform: translateX(-100%);
+    }
+    
+    @media (max-width: 1024px) {
+        width: 350px;
         position: absolute;
         left: 0;
         top: 0;
         height: 100vh;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
+        transform: translateX(-100%); // Hidden by default on mobile
         
         &.open {
             transform: translateX(0);
         }
+        
+        &.hidden {
+            transform: translateX(-100%);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        width: 100vw;
+        max-width: 400px;
     }
     
     @media (max-width: 480px) {
         width: 320px;
+    }
+}
+
+// Floating sidebar toggle button for all screen sizes
+.floating-sidebar-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1300;
+    background: vars.$primary-color;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(vars.$primary-color, 0.4);
+    transition: all 0.3s ease;
+    display: none;
+    
+    svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+    }
+    
+    &:hover {
+        background: color.change(vars.$primary-color, $lightness: -10%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(vars.$primary-color, 0.5);
+        
+        svg {
+            transform: translateX(2px);
+        }
+    }
+    
+    // Show when sidebar is hidden on desktop OR when on mobile
+    @media (max-width: 1024px) {
+        display: block;
+    }
+    
+    // Show on desktop when sidebar is hidden
+    @media (min-width: 1025px) {
+        .map-sidebar.hidden ~ & {
+            display: block;
+        }
+    }
+    
+    // Hide when sidebar is open on mobile
+    .big-map-container.sidebar-open & {
+        @media (max-width: 1024px) {
+            opacity: 0;
+            pointer-events: none;
+        }
     }
 }
 
@@ -103,10 +170,47 @@
     justify-content: space-between;
     align-items: center;
     
+    .header-nav-controls {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        
+        .home-link {
+            background: rgba(white, 0.1);
+            border: 1px solid rgba(white, 0.2);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            
+            svg {
+                width: 18px;
+                height: 18px;
+                fill: currentColor;
+            }
+            
+            &:hover {
+                background: rgba(white, 0.2);
+                transform: translateY(-1px);
+            }
+        }
+    }
+    
     h2 {
         margin: 0;
         font-size: 1.5rem;
         font-weight: 600;
+        flex: 1;
+        text-align: center;
+        
+        @media (max-width: 480px) {
+            font-size: 1.2rem;
+        }
     }
 }
 
@@ -118,39 +222,20 @@
     padding: 0.5rem;
     border-radius: 4px;
     transition: background-color 0.2s ease;
-    display: none; // Hidden on desktop
+    display: block; // Always visible instead of display: none
     
-    @media (max-width: 768px) {
-        display: block;
+    svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+        transition: transform 0.2s ease;
     }
     
     &:hover {
         background: color.change(white, $alpha: 0.1);
-    }
-    
-    .toggle-icon {
-        display: block;
-        width: 20px;
-        height: 2px;
-        background: white;
-        position: relative;
         
-        &::before,
-        &::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: white;
-            transition: all 0.3s ease;
-        }
-        
-        &::before {
-            top: -6px;
-        }
-        
-        &::after {
-            top: 6px;
+        svg {
+            transform: translateX(-2px);
         }
     }
 }
@@ -427,6 +512,7 @@
 .big-map {
     flex: 1;
     position: relative;
+    transition: all 0.3s ease;
     
     .leaflet-container {
         width: 100%;
@@ -434,10 +520,19 @@
     }
 }
 
+// Container adjustments when sidebar is hidden
+.big-map-container {
+    // When sidebar is hidden on desktop, map should fill full width
+    .map-sidebar.hidden ~ .big-map {
+        width: 100vw;
+        left: 0;
+    }
+}
+
 // Map controls
 .map-controls {
     position: absolute;
-    top: 20px;
+    top: 70px; // Moved down from 20px to avoid zoom controls
     right: 20px;
     z-index: 1200;
     display: flex;
@@ -445,7 +540,7 @@
     gap: 0.5rem;
     
     @media (max-width: 768px) {
-        top: 10px;
+        top: 60px; // Moved down from 10px
         right: 10px;
     }
 }
@@ -478,30 +573,13 @@
     }
 }
 
-// Mobile sidebar toggle (floating button)
-@media (max-width: 768px) {
-    .map-controls {
-        &::before {
-            content: '';
-            position: absolute;
-            top: -60px;
-            left: 0;
-            width: 44px;
-            height: 44px;
-            background: vars.$primary-color;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px color.change(vars.$primary-color, $alpha: 0.3);
-            cursor: pointer;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"/></svg>');
-            background-size: 20px;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-    }
-    
-    .big-map-container.sidebar-open {
-        .map-sidebar {
-            transform: translateX(0);
+// Mobile sidebar behavior
+@media (max-width: 1024px) {
+    .big-map-container {
+        &.sidebar-open {
+            .map-sidebar {
+                transform: translateX(0);
+            }
         }
     }
 }
