@@ -1,0 +1,85 @@
+@use '../base/variables' as vars;
+@use 'sass:color';
+
+// Animation for loading controls
+@keyframes fadeInUpControls {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Styles for the map controls container and individual icon buttons
+// This will be applied to the existing .listing-map-controls div
+
+.listing-map-controls {
+    // Override the placeholder from _maps.scss
+    // The existing styles in _maps.scss for flex centering are good.
+    &::after {
+        display: none; // Remove the default placeholder dots
+    }
+
+    // Add a gap between icon buttons
+    gap: 8px; // Adjust as needed
+
+    .map-control-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        background-color: color.adjust(vars.$dark-surface, $alpha: -0.5); // Slightly transparent dark background
+        color: vars.$dark-text-primary;
+        border: 1px solid vars.$dark-border;
+        border-radius: vars.$border-radius-sm; // Using existing variable for consistency
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        text-decoration: none;
+        padding: 0; // Ensure no extra padding affects size
+        opacity: 0; // Start transparent for load animation
+        transform: translateY(10px); // Start slightly down for load animation
+        animation: fadeInUpControls 0.5s ease forwards;
+
+        // Staggered load animation for multiple buttons
+        &:nth-child(1) { animation-delay: 0.1s; }
+        &:nth-child(2) { animation-delay: 0.2s; }
+        &:nth-child(3) { animation-delay: 0.3s; }
+        &:nth-child(4) { animation-delay: 0.4s; } // For 3D Video Path
+        &:nth-child(5) { animation-delay: 0.5s; } // For 3D Tour
+        // Add more if other buttons become active by default
+
+        &:hover,
+        &:focus {
+            background-color: color.adjust(vars.$dark-surface, $alpha: -0.2); // Lighter on hover
+            border-color: vars.$primary-color;
+            color: vars.$primary-light; // Use a light accent on hover
+            outline: none;
+            transform: translateY(-2px) scale(1.08); // Combined hover effect: slight lift and scale
+            box-shadow: 0 4px 10px rgba(vars.$primary-color, 0.3); // Shadow with accent color
+        }
+
+        // Specific class for 3D related buttons for potentially more emphasis
+        &.map-control-3d {
+            // Example: slightly different border or initial animation if needed
+            // border-left: 3px solid vars.$accent-color-sun; // Example emphasis
+        }
+
+        // Styles for SVG icons placed inside buttons
+        // Assumes SVG icons will be used
+        svg {
+            width: 24px; // Standard size for icons within a 48px button
+            height: 24px;
+            fill: currentColor; // SVG will inherit the button's text color
+        }
+
+        // Future: Specific classes for each icon if needed for unique styling or backgrounds
+        // &.icon-google-maps {}
+        // &.icon-route-planner {}
+        // &.icon-3d-map {}
+        // ... etc.
+    }
+}

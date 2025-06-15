@@ -1,53 +1,29 @@
-# Geotour Mobile First Theme
+# Geotour Theme Development Notes
 
-A modern, mobile-first WordPress theme designed specifically for geographic and tourism content management. Built for the Geotour Crete project, this theme provides comprehensive listing management, interactive mapping, and spatial data visualization capabilities.
+## ACF `position` Field
 
-## Overview
+The `position` Advanced Custom Field (ACF) is a required field for the `listing` custom post type. It stores geographical information in a JSON format.
 
-The Geotour Mobile First Theme is a complete redevelopment of the original Geotour theme, focusing on modern web standards, performance optimization, and enhanced user experience. The theme is specifically designed for managing geographic listings with advanced mapping features, spatial search capabilities, and mobile-responsive design.
+**Important:** When retrieving coordinates for a specific listing, always use the values from the `markers` array, specifically the first marker.
 
-### Key Features
+-   **Latitude:** `markers[0]['lat']`
+-   **Longitude:** `markers[0]['lng']`
 
-- **Mobile-First Responsive Design**: Optimized for all device sizes with touch-friendly interfaces
-- **Advanced Mapping Integration**: Leaflet-based maps with custom markers and spatial search
-- **Geographic Listing Management**: Custom post type for locations with comprehensive metadata
-- **REST API Integration**: Custom endpoints for spatial data and listing management
-- **Modern Build System**: Vite-powered asset compilation with SCSS and modern JavaScript
-- **ACF Integration**: Advanced Custom Fields for flexible content management
-- **Performance Optimized**: Efficient caching, lazy loading, and optimized asset delivery
+The top-level `lat` and `lng` values within the `position` field data represent the map's center point in the WordPress admin editor, not necessarily the listing's exact location.
 
-### Technology Stack
+### Example JSON structure snippet:
 
-- **Frontend**: SCSS (Sass), Modern JavaScript (ES6+), Leaflet.js
-- **Backend**: WordPress, PHP 8.0+, Advanced Custom Fields Pro
-- **Build Tools**: Vite, PostCSS, npm
-- **Mapping**: Leaflet with OpenStreetMap tiles
-- **Fonts**: Syne font family for modern typography
+```json
+{
+    "position": [
+        "a:7:{s:3:"lat";s:15:"35.293340888894";s:3:"lng";s:15:"24.342527389526";s:4:"zoom";i:15;s:7:"markers";a:1:{i:0;a:6:{s:5:"label";s:0:"";s:13:"default_label";s:0:"";s:3:"lat";d:35.293340888894001;s:3:"lng";d:24.342527389526001;s:7:"geocode";a:0:{}s:4:"uuid";s:20:"marker_6846fa1c21099";}}s:7:"address";s:0:"";s:6:"layers";a:1:{i:0;s:20:"OpenStreetMap.Mapnik";}s:7:"version";s:5:"1.6.1";}"
+    ]
+}
+```
+
+(Note: The example shows a serialized PHP array stored as a string within the JSON. You'll need to `unserialize()` this string in PHP after `json_decode()` if you are accessing it directly from post meta, though ACF's `get_field()` typically handles this for you.)
 
 ---
-## Version History
-
-### Version 0.9.0 - Initial Development Release
-*Release Date: June 2025*
-
-**Major Features Implemented:**
-- Complete theme architecture and file structure
-- Mobile-first responsive design system
-- Custom listing post type with taxonomies (categories, regions, tags)
-- ACF integration for listing metadata and coordinates
-- Single listing page with hero section, map, and details sections
-- Full-screen listing archive page with interactive map
-- Custom REST API endpoints for spatial data
-- Modern header with social media integration and navigation
-- Contact Form 7 styling integration
-- Asset build system with Vite
-
-**Template Structure:**
-- `single-listing.php` - Main listing template
-- `page-listing.php` - Full-screen map archive
-- Template parts for modular listing components
-- Hero sections with SVG clip-path design
-- Over-the-content layout sections
 
 **API Endpoints Implemented:**
 - `/wp-json/panotours/v1/listings` - Listing search and filtering
@@ -62,38 +38,3 @@ The Geotour Mobile First Theme is a complete redevelopment of the original Geoto
 - Page-specific styles for single listings and homepage
 - Contact form and gallery component styles
 
-**Known Issues:**
-- Migration from old metabox system to ACF in progress
-- Some legacy shortcodes still being replaced
-- Performance optimization ongoing
-
-**Next Steps for v1.0:**
-- Complete ACF migration from old metabox system
-- Implement category-specific listing characteristics
-- Add advanced filtering and search capabilities
-- Performance optimization and caching improvements
-- Complete documentation and code cleanup
-
----
-
-## Development Notes
-
-### Architecture Decisions
-- Chose mobile-first approach for better performance on mobile devices
-- Implemented modular template system for easier maintenance
-- Used ACF for flexible content management instead of custom metaboxes
-- Built custom REST API endpoints for better frontend integration
-- Adopted modern build tools for efficient asset management
-
-### Performance Considerations
-- Implemented efficient image loading and optimization
-- Used viewport-relative units for better responsive behavior
-- Minimized HTTP requests through asset bundling
-- Implemented proper caching strategies for API endpoints
-
-### Future Roadmap
-- Enhanced search and filtering capabilities
-- Multi-language support improvements
-- Advanced map clustering for large datasets
-- Progressive Web App (PWA) features
-- Enhanced accessibility compliance
