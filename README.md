@@ -25,7 +25,6 @@ The Geotour Mobile First Theme is a complete redevelopment of the original Geoto
 - **Fonts**: Syne font family for modern typography
 
 ---
-
 ## Version History
 
 ### Version 0.9.0 - Initial Development Release
