@@ -53,10 +53,68 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
         
         <?php if ($has_additional_info) : ?>
         <!-- Combined Column: Site Access & Additional Info -->
-        <div class="details-column details-combined">
-            <div class="column-content">
-                
-                <?php if ($has_access_info) : ?>
+        <div class="details-column details-combined">                <div class="column-content">
+                      <!-- Category and Region Information -->
+                    <div class="listing-taxonomy-section">
+                        <?php
+                        // Get regions with hierarchical structure FIRST
+                        $regions = get_the_terms(get_the_ID(), 'listing-region');
+                        if (!empty($regions) && !is_wp_error($regions)) {
+                            // Build hierarchical breadcrumb for regions
+                            $region_hierarchy = [];
+                            foreach ($regions as $region) {
+                                $current_region = $region;
+                                $hierarchy_path = [];
+                                
+                                while ($current_region && !is_wp_error($current_region)) {
+                                    array_unshift($hierarchy_path, $current_region);
+                                    if ($current_region->parent == 0) {
+                                        break;
+                                    }
+                                    $current_region = get_term($current_region->parent, 'listing-region');
+                                }
+                                
+                                if (!empty($hierarchy_path)) {
+                                    $region_hierarchy[] = $hierarchy_path;
+                                }
+                            }
+                            
+                            // Display the longest hierarchy
+                            if (!empty($region_hierarchy)) {
+                                usort($region_hierarchy, function($a, $b) {
+                                    return count($b) - count($a);
+                                });
+                                
+                                $main_hierarchy = $region_hierarchy[0]; ?>
+                                <div class="taxonomy-region">
+                                    <?php 
+                                    foreach ($main_hierarchy as $index => $region_item) {
+                                        if ($index > 0) echo ' → ';
+                                        ?>
+                                        <a href="/listing/?listing-region=<?php echo esc_attr($region_item->slug); ?>">
+                                            <?php echo esc_html($region_item->name); ?>
+                                        </a>
+                                    <?php } ?>
+                                </div>
+                            <?php }
+                        }
+                        
+                        // Get categories SECOND
+                        $categories = get_the_terms(get_the_ID(), 'listing-category');
+                        if (!empty($categories) && !is_wp_error($categories)) { ?>
+                            <div class="taxonomy-categories">
+                                <?php 
+                                $category_links = [];
+                                foreach ($categories as $category) {
+                                    $category_links[] = '<a href="/listing/?listing-category=' . esc_attr($category->slug) . '">' . esc_html($category->name) . '</a>';
+                                }
+                                echo implode(', ', $category_links);
+                                ?>
+                            </div>
+                        <?php } ?>
+                    </div>
+                    
+                    <?php if ($has_access_info) : ?>
                 <div class="site-access-section">
                     <h4 class="section-heading"><?php _e('Site Access', 'geotour'); ?></h4>
                     

@@ -1,48 +1,6 @@
 @use '../base/variables' as vars;
 @use 'sass:color';
 
-// Basic styling for Leaflet map containers
-.geotour-map-container {
-    width: 100%;
-    min-height: 300px;
-    height: 400px;
-    border: 1px solid #334155; // Darker border for dark theme
-    border-radius: vars.$border-radius;
-    background-color: #0d1a26; // Dark blue-grey background for the map area
-    display: block;
-    position: relative;
-    z-index: 1;
-    
-    // Responsive heights
-    @media (max-width: 768px) {
-        height: 300px;
-    }
-    
-    @media (min-width: 1024px) {
-        height: 500px;
-    }
-    
-    // Specific variants for different contexts
-    &.listing-single-map {
-        height: 350px;
-        
-        @media (min-width: 768px) {
-            height: 450px;
-        }
-    }
-    
-    &.listing-archive-map {
-        height: 300px;
-        
-        @media (min-width: 768px) {
-            height: 400px;
-        }
-        
-        @media (min-width: 1200px) {
-            height: 500px;
-        }
-    }
-}
 
 // Ensure the map itself takes up the full container size
 .leaflet-container {
@@ -249,7 +207,7 @@
 .listing-map-container-wrapper {
     display: flex;
     height: 100%;
-    min-height: 400px;
+    
     
     @media (min-width: 1024px) {
         min-height: 500px;

@@ -40,3 +40,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Modules initialized.');
 });
+
+// Add smooth scrolling behavior for scroll-to-content buttons
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollButtons = document.querySelectorAll('.scroll-to-content-btn');
+    
+    scrollButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});

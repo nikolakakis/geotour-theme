@@ -8,7 +8,7 @@
 
 <article id="post-<?php the_ID(); ?>" <?php post_class('content-article listing-single listing-wide-content'); ?>>
     
-    <div class="entry-content">        
+    <div id="listing-content" class="entry-content">
         <?php the_content(); ?>
     </div>
         

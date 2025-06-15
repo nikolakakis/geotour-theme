@@ -74,43 +74,63 @@ WORDPRESS THEME STRUCTURE:
 └── assets/                         # Static assets directory
     └── map-pins/                   # Custom SVG map pin icons for different listing types
 
-=== SINGLE LISTING PAGE STRUCTURE (MOST IMPORTANT) ===
+=== SINGLE LISTING PAGE STRUCTURE (MOST IMPORTANT) - UPDATED ===
 
 MAIN TEMPLATE:
 ├── single-listing.php              # 🎯 MAIN ENTRY POINT for single listings
 
-TEMPLATE PARTS (called in order) - CORRECTED MAPPING:
+TEMPLATE PARTS (called in order) - CORRECT MAPPING:
 ├── template-parts/listing/
-│   ├── hero-listing.php            # 🏔️ .listing-hero-section - Header with title, listing-category, listing-region links, scroll arrow
-│   ├── map-single.php              # 🗺️ .listing-map-full-section - 100vw section with "About this Location" excerpt + map (NOT just a map!)
+│   ├── hero-listing.php            # 🏔️ .listing-hero-section - Title, listing-category, listing-region links, scroll arrow
+│   ├── map-single.php              # 🗺️ .listing-map-full-section - 100vw: "About this Location" excerpt + position map (NOT just map!)
 │   ├── details-sections.php        # 📋 .listing-details-full-section - 100vw details grid layout ⚠️ NEEDS ATTENTION
+│   ├── map-custom.php              # 🎯 .listing-custom-map-section - 100vw ACF shortcode map (NEW ADDITION)
 │   └── content-listing-single.php  # 📄 .main-container - Centered content: .listing-content + .virtual-tour-section + .nearest-listings
 
-RELATED STYLES:
-├── src/scss/components/
-│   ├── _hero.scss                  # .listing-hero-section styles
-│   ├── _content.scss               # .listing-single, .listing-wide-content styles
-│   ├── _maps.scss                  # .listing-map-full-section styles
-│   ├── _listing-details.scss       # .listing-details-full-section styles
-│   ├── _virtualtour.scss           # Virtual tour widget styles
-│   └── _gallery.scss               # Image gallery styles for listing images
-└── src/scss/layout/listing/
-    └── _overthecontent.scss        # .listing-excerpt-section, .nearest-listings-full-section
+SINGLE LISTING LAYOUT ORDER (Top to Bottom):
+1. .listing-hero-section            → hero-listing.php
+   - Title with listing-category and listing-region links
+   - Links format: /listing/?listing-category=archaeological-site
+   - Scroll down arrow for UX
+   
+2. .listing-about-full-section      → map-single.php  
+   - 100vw section with excerpt overlay + position map
+   - "About this Location" long summary (NOT just a map!)
+   - Map shows listing's geographical position
+   - NO category/region links (moved to hero)
+   
+3. .listing-details-full-section    → details-sections.php ⚠️ FOCUS HERE
+   - 100vw grid layout for access info, contacts, weather
+   - Responsive grid with category-specific content
+   - NEEDS IMMEDIATE ATTENTION
+   
+4. .listing-custom-map-section      → map-custom.php (NEW)
+   - 100vw section controlled by ACF 'listing_map' field
+   - Processes shortcode: [geotour_map map_id="15703" ...]
+   - Only visible if field contains valid shortcode
+   
+5. .main-container                  → content-listing-single.php
+   - max-width: 1400px, centered content
+   - .listing-content (main article text)
+   - .virtual-tour-section (VR tour block)  
+   - .nearest-listings (related listings shortcode from plugin)
 
-JAVASCRIPT MODULES:
-├── src/js/modules/
-│   ├── maps/main.js                # Leaflet map initialization for single listing
-│   ├── gallery/main.js             # Fancybox for listing image galleries
-│   └── hero/main.js                # Hero interactions and scroll effects
+LAYOUT CHARACTERISTICS:
+├── Full-width sections (100vw):
+│   ├── .listing-map-full-section     # Excerpt + map
+│   ├── .listing-details-full-section # Grid details ⚠️
+│   └── .listing-custom-map-section   # ACF shortcode map
+├── Centered content (.main-container):
+│   ├── max-width: 1400px
+│   ├── margin: 0 auto
+│   └── padding: responsive
+├── Grid layouts:
+│   ├── .details-grid (responsive CSS Grid)
+│   └── .listings-grid (CSS Grid with minmax())
+└── Mobile-first approach with responsive breakpoints
 
-PHP FUNCTIONS:
-├── includes/
-│   ├── maps/icon-management.php    # geotour_get_listing_map_icon() - category-based icons
-│   ├── utils.php                   # geotour_get_taxonomy_listing_url() - taxonomy links
-│   ├── legacy-shortcodes.php       # Shortcode replacements for old content
-│   └── custom-post-types/listing.php # Listing CPT registration
-
-=== END SINGLE LISTING STRUCTURE ===
+PRIORITY FOCUS: 
+📋 .listing-details-full-section (details-sections.php) needs grid layout implementation
 
 ARCHIVE LISTING PAGE (Full-screen map):
 ├── page-listing.php                # Full-screen map with sidebar
