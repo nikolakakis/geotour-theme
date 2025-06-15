@@ -1,5 +1,6 @@
 // Big Map UI JavaScript Module
 // Handles the full-screen map with sidebar and AJAX listing loading
+// Uses global Leaflet provided by geotour-crete-maps plugin
 
 export class BigMapUI {
     constructor() {
@@ -24,6 +25,13 @@ export class BigMapUI {
     init() {
         // Check if we're on the big map page
         if (!document.querySelector('.big-map-container')) {
+            return;
+        }
+        
+        // Check if Leaflet is available
+        if (typeof L === 'undefined') {
+            console.error('Leaflet not found - make sure the geotour-crete-maps plugin is active');
+            this.showError('Map library not loaded. Please contact site administrator.');
             return;
         }
         

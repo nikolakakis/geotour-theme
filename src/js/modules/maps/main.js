@@ -1,5 +1,6 @@
 // src/js/modules/maps/main.js
-import L from 'leaflet';
+// Use global Leaflet provided by plugin instead of importing
+// import L from 'leaflet';
 
 // Store initialized maps to prevent re-initialization
 const initializedMaps = new Set();
@@ -27,14 +28,25 @@ function createCustomIcon(iconConfig) {
 }
 
 // Fix for default markers in Leaflet with Vite
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
+if (typeof L !== 'undefined' && L.Icon && L.Icon.Default) {
+    // Only fix if not already fixed by plugin
+    if (L.Icon.Default.prototype._getIconUrl) {
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+            iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        });
+    }
+}
 
 export function initializeGeotourMap(mapElementId, mapData = {}) {
+    // Check if Leaflet is available
+    if (typeof L === 'undefined') {
+        console.error('Leaflet not found - make sure the geotour-crete-maps plugin is active');
+        return null;
+    }
+    
     if (!document.getElementById(mapElementId) || initializedMaps.has(mapElementId)) {
         return null;
     }
