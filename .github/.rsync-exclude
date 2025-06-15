@@ -1,0 +1,16 @@
+# Git and GitHub files
+.git*
+.github
+.gitignore
+
+# Node.js development files
+node_modules
+src
+package.json
+package-lock.json
+vite.config.js
+
+# Composer files
+composer.json
+composer.lock
+vendor

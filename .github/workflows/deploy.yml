@@ -1,4 +1,4 @@
-name: Deploy Theme to Production Server
+name: Deploy Theme to Production
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # 1. Checkout your source code
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       # 2. Setup Node.js environment
@@ -19,34 +19,20 @@ jobs:
         with:
           node-version: '20'
 
-      # 3. Install dependencies and build the project.
-      # This creates the 'build/' folder inside the Action's environment.
+      # 3. Install dependencies and build the project
       - name: Install and Build
         run: |
           npm install
           npm run build
 
-      # 4. Deploy the complete theme to the server
-      - name: SFTP Deploy
-        uses: appleboy/ssh-action@v1.0.3
+      # 4. Setup SSH using your private key secret
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
         with:
-          host: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          password: ${{ secrets.SFTP_PASSWORD }}
-          # Source is now the project root, so we deploy everything...
-          source: "./"
-          # The remote path on your server. This looks correct.
-          target: "/geotour/wp-content/themes/geotour-theme/"
-          dry_run: true
-          # ...except for the files and folders listed here.
-          exclude: |
-            **/.git*
-            **/.github
-            **/node_modules
-            **/src
-            .gitignore
-            package.json
-            package-lock.json
-            vite.config.js
-            composer.json
-            composer.lock
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # 5. SAFELY DEPLOY WITH DRY RUN
+      # The --dry-run flag tells rsync to list what it WOULD do, without making changes.
+      - name: Deploy with rsync (Dry Run)
+        run: |
+          rsync --dry-run -avz --delete --exclude-from=.github/.rsync-exclude -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/geotour/wp-content/themes/geotour-theme/
