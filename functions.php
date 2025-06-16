@@ -200,3 +200,59 @@ function enable_block_editor_for_my_cpt( $args, $post_type ) {
     return $args;
 }
 add_filter( 'register_post_type_args', 'enable_block_editor_for_my_cpt', 20, 2 );
+
+/**
+ * Add ACF fields for sidebar control
+ */
+function geotour_add_sidebar_acf_fields() {
+    if (function_exists('acf_add_local_field_group')) {
+        acf_add_local_field_group(array(
+            'key' => 'group_sidebar_control',
+            'title' => 'Layout Options',
+            'fields' => array(
+                array(
+                    'key' => 'field_hide_sidebar',
+                    'label' => 'Hide Sidebar',
+                    'name' => 'hide_sidebar',
+                    'type' => 'true_false',
+                    'instructions' => 'Check this to hide the sidebar and use full-width layout',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'default_value' => 0,
+                    'ui' => 1,
+                    'ui_on_text' => 'Hidden',
+                    'ui_off_text' => 'Visible',
+                ),
+            ),
+            'location' => array(
+                array(
+                    array(
+                        'param' => 'post_type',
+                        'operator' => '==',
+                        'value' => 'listing',
+                    ),
+                ),
+                array(
+                    array(
+                        'param' => 'post_type',
+                        'operator' => '==',
+                        'value' => 'post',
+                    ),
+                ),
+                array(
+                    array(
+                        'param' => 'post_type',
+                        'operator' => '==',
+                        'value' => 'page',
+                    ),
+                ),
+            ),
+            'menu_order' => 0,
+            'position' => 'side',
+            'style' => 'default',
+            'label_placement' => 'top',
+            'instruction_placement' => 'label',
+        ));
+    }
+}
+add_action('acf/init', 'geotour_add_sidebar_acf_fields');

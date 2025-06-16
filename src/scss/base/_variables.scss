@@ -74,3 +74,5 @@ $border-radius-pill: 50rem;
 
 // --- OTHER GLOBALS ---
 $container-max-width: $breakpoint-xl;
+$container-wide-max-width: 1600px;      // Wide container for content with sidebar
+$container-full-width: 100vw;           // Full width container for flexible layouts

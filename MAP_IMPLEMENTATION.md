@@ -4,9 +4,9 @@
 This guide explains how to implement maps in the Geotour WordPress theme. The theme uses **Leaflet.js** with **raster tile layers** for all mapping functionality. All necessary libraries are loaded by default.
 
 ## Core Libraries (Pre-loaded)
-- **Leaflet.js** (v1.9.4) - Main mapping library
+- **Leaflet.js** (v1.9.4) - Main mapping library, it is removed from the theme and is controlled by a plugin
 - **Leaflet.markercluster** (v1.5.3) - For marker clustering
-- **Leaflet CSS** - Styling for map controls and UI
+- **Leaflet CSS** - Styling for map controls and UI, it is removed from the theme and is controlled by a plugin
 
 ## Map Implementation Locations
 

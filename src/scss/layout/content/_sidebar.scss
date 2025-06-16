@@ -1,0 +1,329 @@
+// ==========================================================================
+// CONTENT WITH SIDEBAR LAYOUT
+// ==========================================================================
+// Layout system for content with sidebar support
+
+@use '../../base/variables' as vars;
+@use 'sass:color';
+
+// Content wrapper classes
+.content-wrapper {
+    width: 100%;
+    max-width: vars.$container-wide-max-width; // 1600px
+    margin: 0 auto;
+    padding: 0 2rem;
+    
+    @media (max-width: vars.$breakpoint-xl) {
+        max-width: 100%;
+        padding: 0 1.5rem;
+    }
+    
+    @media (max-width: vars.$breakpoint-lg) {
+        padding: 0 1.5rem;
+    }
+    
+    @media (max-width: vars.$breakpoint-md) {
+        padding: 0 1rem;
+    }
+}
+
+// Full width wrapper for 100vw layouts
+.content-wrapper-full {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    
+    // Inner container for text content in full-width layouts
+    .content-container {
+        max-width: vars.$container-max-width; // 1200px for text content
+        margin: 0 auto;
+        padding: 0 2rem;
+        
+        @media (max-width: vars.$breakpoint-lg) {
+            padding: 0 1.5rem;
+        }
+        
+        @media (max-width: vars.$breakpoint-md) {
+            padding: 0 1rem;
+        }
+    }
+}
+
+// Main content layout with sidebar
+.content-with-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 320px; // Approximately 75% / 25% at 1600px
+    gap: 3rem;
+    align-items: start;
+    
+    @media (max-width: vars.$breakpoint-xl) {
+        gap: 2.5rem;
+        grid-template-columns: 1fr 300px;
+    }
+    
+    @media (max-width: vars.$breakpoint-lg) {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    // Main Content Area
+    .main-content {
+        min-width: 0; // Prevent grid overflow
+        
+        .entry-content {
+            line-height: 1.7;
+            
+            // Better typography spacing in wide layout
+            p {
+                margin-bottom: 1.5rem;
+                max-width: none; // Allow full width usage
+            }
+            
+            h2, h3, h4, h5, h6 {
+                margin-top: 2.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            h2:first-child,
+            h3:first-child,
+            h4:first-child {
+                margin-top: 0;
+            }
+            
+            // Handle images and media in wide layout
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+            
+            .wp-block-image,
+            .wp-block-gallery {
+                margin: 2rem 0;
+            }
+        }
+    }
+    
+    // Sidebar Area
+    .sidebar-content {
+        position: sticky;
+        top: 2rem;
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+        
+        @media (max-width: vars.$breakpoint-lg) {
+            position: static;
+            max-height: none;
+            overflow-y: visible;
+        }
+    }
+}
+
+// Content without sidebar (full width option)
+.content-no-sidebar {
+    width: 100%;
+    
+    .main-content {
+        width: 100%;
+        max-width: 100%;
+        
+        .entry-content {
+            line-height: 1.7;
+            
+            // Default content width (same as with sidebar)
+            > *:not(.content-section-wide):not(.content-section-full):not(.virtual-tour-full-section):not(.nearest-listings-full-section) {
+                max-width: 1200px; // Same as container-max-width
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            // Allow flexible width control for different content types
+            .content-section-narrow {
+                max-width: vars.$container-max-width;
+                margin: 0 auto;
+                padding: 0 2rem;
+                
+                @media (max-width: vars.$breakpoint-lg) {
+                    padding: 0 1.5rem;
+                }
+                
+                @media (max-width: vars.$breakpoint-md) {
+                    padding: 0 1rem;
+                }
+            }
+            
+            .content-section-wide {
+                max-width: vars.$container-wide-max-width;
+                margin: 0 auto;
+                padding: 0 2rem;
+                
+                @media (max-width: vars.$breakpoint-lg) {
+                    padding: 0 1.5rem;
+                }
+                
+                @media (max-width: vars.$breakpoint-md) {
+                    padding: 0 1rem;
+                }
+            }
+            
+            .content-section-full {
+                width: 100vw;
+                position: relative;
+                left: 50%;
+                right: 50%;
+                margin-left: -50vw;
+                margin-right: -50vw;
+                padding: 0;
+            }
+            
+            // Handle full-width sections that are already defined
+            .virtual-tour-full-section,
+            .nearest-listings-full-section {
+                max-width: none;
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+// Sidebar styling
+.listing-sidebar {
+    background: color.change(vars.$background-color, $alpha: 0.5);
+    border-radius: vars.$border-radius-lg;
+    padding: 2rem;
+    border: 1px solid vars.$border-color;
+    box-shadow: 0 2px 8px color.change(vars.$primary-color, $alpha: 0.1);
+    
+    @media (max-width: vars.$breakpoint-lg) {
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    @media (max-width: vars.$breakpoint-md) {
+        padding: 1rem;
+    }
+    
+    .sidebar-section {
+        margin-bottom: 2rem;
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
+        
+        .sidebar-title {
+            font-family: vars.$font-heading;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: vars.$heading-color;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid color.change(vars.$primary-color, $alpha: 0.2);
+        }
+        
+        .sidebar-content {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: vars.$text-color;
+            
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                
+                li {
+                    padding: 0.4rem 0;
+                    border-bottom: 1px solid color.change(vars.$border-color, $alpha: 0.5);
+                    
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                    
+                    a {
+                        color: vars.$text-color;
+                        text-decoration: none;
+                        transition: color 0.2s ease;
+                        
+                        &:hover {
+                            color: vars.$primary-color;
+                        }
+                    }
+                }
+            }
+            
+            p {
+                margin-bottom: 1rem;
+                
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                
+                strong {
+                    color: vars.$heading-color;
+                }
+            }
+            
+            a {
+                color: vars.$accent-color-sea;
+                text-decoration: none;
+                
+                &:hover {
+                    color: color.adjust(vars.$accent-color-sea, $lightness: -10%);
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+// Toggle for hiding sidebar
+.sidebar-hidden {
+    .content-with-sidebar {
+        grid-template-columns: 1fr;
+        
+        .sidebar-content {
+            display: none;
+        }
+    }
+}
+
+// Utility classes for content width control in full-width layouts
+.content-width-narrow {
+    max-width: vars.$container-max-width;
+    margin: 0 auto;
+    padding: 0 2rem;
+    
+    @media (max-width: vars.$breakpoint-lg) {
+        padding: 0 1.5rem;
+    }
+    
+    @media (max-width: vars.$breakpoint-md) {
+        padding: 0 1rem;
+    }
+}
+
+.content-width-wide {
+    max-width: vars.$container-wide-max-width;
+    margin: 0 auto;
+    padding: 0 2rem;
+    
+    @media (max-width: vars.$breakpoint-lg) {
+        padding: 0 1.5rem;
+    }
+    
+    @media (max-width: vars.$breakpoint-md) {
+        padding: 0 1rem;
+    }
+}
+
+.content-width-full {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    max-width: none;
+}
