@@ -91,129 +91,145 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
 
             </article>
         </div>
-        
-        <!-- Sidebar Area -->
+          <!-- Sidebar Area -->
         <?php if (!$hide_sidebar) : ?>
         <aside class="sidebar-content">
             <div class="listing-sidebar">
+                  <!-- Festive Dates -->
+                <div id="festivedates"></div>
                 
-                <!-- Quick Info Section -->
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title"><?php _e('Quick Info', 'geotour'); ?></h3>
-                    <div class="sidebar-content">
-                        <?php
-                        // Display categories
-                        $categories = get_the_terms(get_the_ID(), 'listing-category');
-                        if ($categories && !is_wp_error($categories)) {
-                            echo '<p><strong>' . __('Category:', 'geotour') . '</strong><br>';
-                            $category_links = [];
-                            foreach ($categories as $category) {
-                                $category_links[] = '<a href="/listing/?listing-category=' . esc_attr($category->slug) . '">' . esc_html($category->name) . '</a>';
-                            }
-                            echo implode(', ', $category_links) . '</p>';
-                        }
+                <!-- Related News Posts with fallback -->
+                <?php
+                // Check if related-newsposts shortcode has results
+                $current_listing_id = get_the_ID();
+                $related_posts_args = array(
+                    'post_type' => 'post',
+                    'post_status' => 'publish',
+                    'posts_per_page' => 1, // Just check if any exist
+                    'meta_query' => array(
+                        array(
+                            'key' => 'related_listings',
+                            'value' => '"' . $current_listing_id . '"',
+                            'compare' => 'LIKE',
+                        )
+                    )
+                );
+                
+                $has_related_posts = new WP_Query($related_posts_args);
+                
+                if ($has_related_posts->have_posts()) {
+                    // Has related posts, output shortcode without title
+                    echo do_shortcode('[related-newsposts]');
+                } else {
+                    // No related posts, show latest 5 posts with title
+                    echo '<h3 class="sidebar-title">' . __('Latest Posts', 'geotour') . '</h3>';
+                    echo '<div class="sidebar-content related-posts-list">';
+                    
+                    $latest_posts = new WP_Query(array(
+                        'post_type' => 'post',
+                        'post_status' => 'publish',
+                        'posts_per_page' => 5,
+                        'orderby' => 'date',
+                        'order' => 'DESC'
+                    ));
+                    
+                    if ($latest_posts->have_posts()) {
+                        $post_count = $latest_posts->post_count;
+                        $current_index = 0;
                         
-                        // Display regions
-                        $regions = get_the_terms(get_the_ID(), 'listing-region');
-                        if ($regions && !is_wp_error($regions)) {
-                            echo '<p><strong>' . __('Region:', 'geotour') . '</strong><br>';
-                            $region_links = [];
-                            foreach ($regions as $region) {
-                                $region_links[] = '<a href="/listing/?listing-region=' . esc_attr($region->slug) . '">' . esc_html($region->name) . '</a>';
-                            }
-                            echo implode(', ', $region_links) . '</p>';
-                        }
-                        ?>
-                    </div>
-                </div>
-                
-                <!-- Navigation Section -->
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title"><?php _e('Navigation', 'geotour'); ?></h3>
-                    <div class="sidebar-content">
-                        <?php
-                        $position_data = get_field('position');
-                        if ($position_data && isset($position_data['markers'][0])) {
-                            $marker = $position_data['markers'][0];
-                            $lat = $marker['lat'];
-                            $lng = $marker['lng'];
+                        while ($latest_posts->have_posts()) {
+                            $latest_posts->the_post();
+                            $postid = get_the_ID();
+                            $current_index++;
                             
-                            echo '<ul>';
-                            echo '<li><a href="https://www.google.com/maps?q=' . $lat . ',' . $lng . '" target="_blank">' . __('Open in Google Maps', 'geotour') . '</a></li>';
-                            echo '<li><a href="https://www.geotour.gr/timeline/route-planner/?routelistings=' . get_the_ID() . '" target="_blank">' . __('Route Planner', 'geotour') . '</a></li>';
-                            echo '</ul>';
-                        }
-                        ?>
-                    </div>
-                </div>
-                
-                <!-- Contact Information if available -->
-                <?php 
-                $contact_title = get_field('contact_title');
-                $contact_phone = get_field('contact_phone');
-                $contact_mobile = get_field('contact_mobile');
-                $contact_website = get_field('contact_website');
-                
-                if ($contact_title || $contact_phone || $contact_mobile || $contact_website) : ?>
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title"><?php _e('Contact', 'geotour'); ?></h3>
-                    <div class="sidebar-content">
-                        <?php if ($contact_title) : ?>
-                            <p><strong><?php echo esc_html($contact_title); ?></strong></p>
-                        <?php endif; ?>
-                        
-                        <?php if ($contact_phone) : ?>
-                            <p><?php _e('Phone:', 'geotour'); ?> <?php echo esc_html($contact_phone); ?></p>
-                        <?php endif; ?>
-                        
-                        <?php if ($contact_mobile) : ?>
-                            <p><?php _e('Mobile:', 'geotour'); ?> <?php echo esc_html($contact_mobile); ?></p>
-                        <?php endif; ?>
-                        
-                        <?php if ($contact_website) : ?>
-                            <p><a href="<?php echo esc_url($contact_website); ?>" target="_blank"><?php _e('Visit Website', 'geotour'); ?></a></p>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <?php endif; ?>
-                
-                <!-- Related Listings -->
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title"><?php _e('Related Listings', 'geotour'); ?></h3>
-                    <div class="sidebar-content">
-                        <?php
-                        $related_args = array(
-                            'post_type' => 'listing',
-                            'posts_per_page' => 5,
-                            'post__not_in' => array(get_the_ID()),
-                            'tax_query' => array()
-                        );
-                        
-                        // Add category filter if available
-                        if ($categories && !is_wp_error($categories)) {
-                            $related_args['tax_query'][] = array(
-                                'taxonomy' => 'listing-category',
-                                'field' => 'term_id',
-                                'terms' => wp_list_pluck($categories, 'term_id')
-                            );
-                        }
-                        
-                        $related_query = new WP_Query($related_args);
-                        
-                        if ($related_query->have_posts()) {
-                            echo '<ul>';
-                            while ($related_query->have_posts()) {
-                                $related_query->the_post();
-                                echo '<li><a href="' . get_permalink() . '">' . get_the_title() . '</a></li>';
+                            $post_title = get_the_title($postid);
+                            $post_permalink = get_the_permalink($postid);
+                            $post_creation_date = get_the_date('', $postid);
+                            
+                            // Get the thumbnail URL
+                            $thumbnail_id = get_post_thumbnail_id($postid);
+                            $thumbnail_url = wp_get_attachment_image_url($thumbnail_id, 'thumbnail');
+                            $placeholder_url = "https://placehold.co/80x80/cccccc/ffffff?text=No+Image";
+                            
+                            // Get categories for the post
+                            $post_terms = get_the_terms($postid, 'category');
+                            $term_output = '';
+                            if ($post_terms && !is_wp_error($post_terms)) {
+                                $term_count = 0;
+                                foreach ($post_terms as $term) {
+                                    if ($term_count >= 2) break;
+                                    $term_link = get_term_link($term);
+                                    if (!is_wp_error($term_link)) {
+                                        $term_output .= '<a href="' . esc_url($term_link) . '" class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full hover:bg-gray-200 transition-colors duration-200" style="font-size: 11px; background: #f3f4f6; color: #374151; padding: 2px 8px; border-radius: 12px; text-decoration: none; margin-right: 6px;">' . esc_html($term->name) . '</a>';
+                                        $term_count++;
+                                    }
+                                }
                             }
-                            echo '</ul>';
-                            wp_reset_postdata();
-                        } else {
-                            echo '<p>' . __('No related listings found.', 'geotour') . '</p>';
+                            
+                            echo '<article>';
+                            
+                            // Title
+                            echo '<h4 style="font-size: 0.875rem; font-weight: 500; line-height: 1.2; margin-bottom: 0.5rem;">';
+                            echo '<a href="' . esc_url($post_permalink) . '" style="color: inherit; text-decoration: none;" onmouseover="this.style.color=\'#2563eb\'" onmouseout="this.style.color=\'inherit\'">';
+                            echo esc_html($post_title);
+                            echo '</a>';
+                            echo '</h4>';
+                            
+                            // Image and meta info row
+                            echo '<div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 1rem;">';
+                            
+                                // Image
+                                echo '<a href="' . esc_url($post_permalink) . '" style="display: block; flex-shrink: 0;">';
+                                echo '<img src="' . esc_url($thumbnail_url ? $thumbnail_url : $placeholder_url) . '" ';
+                                echo 'alt="' . esc_attr($post_title) . '" ';
+                                echo 'style="width: 48px; height: 48px; object-fit: cover; border-radius: 6px;">';
+                                echo '</a>';
+                                
+                                // Date & Categories
+                                echo '<div style="flex: 1; min-width: 0;">';
+                                    echo '<time datetime="' . esc_attr(get_the_date('c', $postid)) . '" style="display: block; font-size: 0.75rem; color: #6b7280; margin-bottom: 4px;">';
+                                    echo esc_html($post_creation_date);
+                                    echo '</time>';
+                                    
+                                    if (!empty($term_output)) {
+                                        echo '<div style="display: flex; flex-wrap: wrap; gap: 6px;">';
+                                        echo $term_output;
+                                        echo '</div>';
+                                    }
+                                echo '</div>';
+                                
+                            echo '</div>';
+                            
+                            // Separator
+                            if ($current_index < $post_count) {
+                                echo '<hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">';
+                            }
+                            
+                            echo '</article>';
                         }
-                        ?>
-                    </div>
-                </div>
+                    }
+                    
+                    echo '</div>';
+                    wp_reset_postdata();
+                }
+                
+                wp_reset_postdata(); // Reset the has_related_posts query
+                ?>
+                
+                <!-- Related People -->
+                <?php echo do_shortcode('[related-people]'); ?>
+                
+                <!-- Related Photos -->
+                <?php echo do_shortcode('[related-photos]'); ?>
+                
+                <!-- Search Culture Title -->
+                <div id="searchculturetitle"></div>
+                
+                <!-- Search Culture -->
+                <div id="searchculture"></div>
+                
+                <!-- Geotour Ferry Hopper Widget -->
+                <?php echo do_shortcode('[geotour_ferryhopper_widget]'); ?>
                 
             </div>
         </aside>

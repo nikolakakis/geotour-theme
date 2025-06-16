@@ -110,13 +110,9 @@
     .sidebar-content {
         position: sticky;
         top: 2rem;
-        max-height: calc(100vh - 4rem);
-        overflow-y: auto;
         
         @media (max-width: vars.$breakpoint-lg) {
             position: static;
-            max-height: none;
-            overflow-y: visible;
         }
     }
 }
@@ -227,6 +223,7 @@
             font-size: 0.9rem;
             line-height: 1.6;
             color: vars.$text-color;
+            overflow: visible; // Ensure no overflow scrollbars
             
             ul {
                 list-style: none;
@@ -273,6 +270,12 @@
                     color: color.adjust(vars.$accent-color-sea, $lightness: -10%);
                     text-decoration: underline;
                 }
+            }
+            
+            // Ensure related posts list doesn't create scrollbars
+            &.related-posts-list {
+                overflow: visible;
+                max-height: none;
             }
         }
     }
