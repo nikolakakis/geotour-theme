@@ -256,3 +256,50 @@ function geotour_add_sidebar_acf_fields() {
     }
 }
 add_action('acf/init', 'geotour_add_sidebar_acf_fields');
+
+/**
+ * Build hierarchical options for select dropdowns
+ * Handles parent-child relationships and exclusions
+ */
+function geotour_build_hierarchical_options($terms, $parent_id = 0, $level = 0, $excluded_slugs = array()) {
+    $output = '';
+    
+    if (empty($terms)) {
+        return $output;
+    }
+    
+    // Get all excluded term IDs (including children)
+    $excluded_ids = array();
+    if (!empty($excluded_slugs)) {
+        foreach ($excluded_slugs as $slug) {
+            $term = get_term_by('slug', $slug, isset($terms[0]) ? $terms[0]->taxonomy : 'listing-category');
+            if ($term && !is_wp_error($term)) {
+                $excluded_ids[] = $term->term_id;
+                // Get all children of excluded terms
+                $children = get_term_children($term->term_id, $term->taxonomy);
+                if (!empty($children) && !is_wp_error($children)) {
+                    $excluded_ids = array_merge($excluded_ids, $children);
+                }
+            }
+        }
+    }
+    
+    foreach ($terms as $term) {
+        // Skip if term is excluded
+        if (in_array($term->term_id, $excluded_ids)) {
+            continue;
+        }
+        
+        // Only process terms with the correct parent
+        if ($term->parent == $parent_id) {
+            $indent = str_repeat('&nbsp;&nbsp;&nbsp;', $level);
+            $output .= '<option value="' . esc_attr($term->slug) . '">' . $indent . esc_html($term->name) . '</option>';
+            
+            // Recursively get children
+            $children_output = geotour_build_hierarchical_options($terms, $term->term_id, $level + 1, $excluded_slugs);
+            $output .= $children_output;
+        }
+    }
+    
+    return $output;
+}

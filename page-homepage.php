@@ -55,11 +55,14 @@ get_header(); ?>
                                             'order' => 'ASC'
                                         ]);
                                         
+                                        // Debug: Check if we have regions
+                                        if (current_user_can('manage_options')) {
+                                            echo '<!-- Debug: Found ' . (is_array($regions) ? count($regions) : 0) . ' regions -->';
+                                        }
+                                        
                                         if (!empty($regions) && !is_wp_error($regions)) :
-                                            // Use the global function directly
-                                            if (function_exists('geotour_build_hierarchical_options')) : // MODIFIED
-                                                echo geotour_build_hierarchical_options($regions, 0);
-                                            endif; // ADDED
+                                            // Use the global function
+                                            echo geotour_build_hierarchical_options($regions, 0);
                                         else :
                                             echo '<option disabled>No regions found</option>';
                                         endif;
@@ -80,6 +83,11 @@ get_header(); ?>
                                             'order' => 'ASC'
                                         ]);
                                         
+                                        // Debug: Check if we have categories
+                                        if (current_user_can('manage_options')) {
+                                            echo '<!-- Debug: Found ' . (is_array($categories) ? count($categories) : 0) . ' categories -->';
+                                        }
+                                        
                                         if (!empty($categories) && !is_wp_error($categories)) :
                                             // Define excluded category slugs and their children
                                             $excluded_categories = [
@@ -90,10 +98,8 @@ get_header(); ?>
                                                 'services'
                                             ];
                                             
-                                            // Use the global function directly
-                                            if (function_exists('geotour_build_hierarchical_options')) : // MODIFIED
-                                                echo geotour_build_hierarchical_options($categories, 0, 0, $excluded_categories);
-                                            endif; // ADDED
+                                            // Use the global function
+                                            echo geotour_build_hierarchical_options($categories, 0, 0, $excluded_categories);
                                         else :
                                             echo '<option disabled>No categories found</option>';
                                         endif;
