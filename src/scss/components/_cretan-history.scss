@@ -1,0 +1,112 @@
+@use '../base/variables' as vars;
+@use 'sass:color';
+
+
+#cretan-history-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center; // Vertically center the content
+    justify-content: center;
+    
+    margin: 10px 20px;
+    
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      margin: 0px 10px 10px 0px; // Adjust spacing as needed
+      &:first-child { // Target only the first breadcrumb-item
+        padding: 10px;
+        background-color: vars.$main-color;        
+        color: white;
+        font-family: "Syne";
+      }
+      &:not(:last-child) {
+        &::after {
+          content: '>';
+          margin-left: 10px; // Adjust spacing as needed
+        }
+      }
+  
+      .period-icon {
+        width: 32px; // Adjust size as needed
+        height: 32px; // Adjust size as needed
+        padding: 3px;
+        border-radius: 6px;
+        border: 0px solid #000; // Add a border for better visibility
+        margin-left: 0px; // Adjust spacing as needed
+        img {
+            mix-blend-mode: darken;
+        }
+        // Gradient colors for each period
+        &.prehistoric {
+          background-color: rgba(vars.$main-color, 0.09);
+        }
+  
+        &.minoan {
+          background-color: rgba(vars.$main-color, 0.12);
+        }
+  
+        &.dark-ages {
+          background-color: rgba(vars.$main-color, 0.15);
+        }
+  
+        &.classical {
+          background-color: rgba(vars.$main-color, 0.18);
+        }
+  
+        &.hellenistic {
+          background-color: rgba(vars.$main-color, 0.21);
+        }
+  
+        &.roman {
+          background-color: rgba(vars.$main-color, 0.24);
+        }
+  
+        &.byzantine-i {
+          background-color: rgba(vars.$main-color, 0.27);
+        }
+  
+        &.arab {
+          background-color: rgba(vars.$main-color, 0.30);
+        }
+  
+        &.byzantine-ii {
+          background-color: rgba(vars.$main-color, 0.32);
+        }
+  
+        &.venetian {
+          background-color: rgba(vars.$main-color, 0.34);
+        }
+  
+        &.ottoman {
+          background-color: rgba(vars.$main-color, 0.36);
+        }
+  
+        &.modern {
+          background-color: rgba(vars.$main-color, 0.38);
+        }
+      }
+    }
+    .breadcrumb-item.active {
+        .period-icon {
+            width: 48px; // Adjust size as needed
+            height: 48px; // Adjust size as needed
+            padding: 5px;
+            border-radius: 9px;
+            border: 3px solid #000; // Add a border for better visibility
+            margin-left: 0px; // Adjust spacing as needed
+            img {
+                mix-blend-mode: darken;
+            }
+        }
+    }
+    @media (max-width: 768px) { // Adjust breakpoint as needed
+        margin: 4px 0px;    
+        .breadcrumb-item {           
+            margin: 0px 5px 5px 0px; // Adjust spacing as needed
+            &:first-child { // Target only the first breadcrumb-item
+                padding: 7px;                
+            }
+        }
+    }
+  }
