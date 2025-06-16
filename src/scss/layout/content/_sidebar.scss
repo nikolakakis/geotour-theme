@@ -110,6 +110,7 @@
     .sidebar-content {
         position: sticky;
         top: 2rem;
+        z-index: 9;
         
         @media (max-width: vars.$breakpoint-lg) {
             position: static;
