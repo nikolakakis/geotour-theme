@@ -5,108 +5,160 @@
 #cretan-history-breadcrumb {
     display: flex;
     flex-wrap: wrap;
-    align-items: center; // Vertically center the content
-    justify-content: center;
-    
-    margin: 10px 20px;
-    
+    align-items: center;
+    justify-content: center; // Center items if they don't fill the row
+    padding: 1rem; // Added padding to the container
+    gap: 0.5rem; // Added gap for spacing between items
+
     .breadcrumb-item {
-      display: flex;
-      align-items: center;
-      margin: 0px 10px 10px 0px; // Adjust spacing as needed
-      &:first-child { // Target only the first breadcrumb-item
-        padding: 10px;
-        background-color: vars.$main-color;        
-        color: white;
-        font-family: "Syne";
-      }
-      &:not(:last-child) {
-        &::after {
-          content: '>';
-          margin-left: 10px; // Adjust spacing as needed
+        display: inline-flex; // Changed to inline-flex for better internal alignment
+        align-items: center;
+        text-decoration: none; // Remove underline from links
+        color: vars.$text-color; // Default text color for items
+        transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; // Animation for hover
+
+        &:not(.active):hover {
+            transform: translateY(-2px);
+            // box-shadow: 0 4px 8px rgba(0,0,0,0.1); // Optional: subtle shadow on hover
         }
-      }
-  
-      .period-icon {
-        width: 32px; // Adjust size as needed
-        height: 32px; // Adjust size as needed
-        padding: 3px;
-        border-radius: 6px;
-        border: 0px solid #000; // Add a border for better visibility
-        margin-left: 0px; // Adjust spacing as needed
-        img {
-            mix-blend-mode: darken;
+
+        // Special styling for the first text-based breadcrumb item
+        &:first-child {
+            padding: 0.5rem 1rem; // Adjusted padding
+            background-color: vars.$main-color;
+            color: white;
+            font-family: vars.$font-heading; // Use theme heading font
+            font-weight: 700;
+            border-radius: vars.$border-radius-sm;
+            margin-right: 0.5rem; // Space after the first item
+
+            &:hover {
+                background-color: color.adjust(vars.$main-color, $lightness: -5%);
+            }
         }
-        // Gradient colors for each period
-        &.prehistoric {
-          background-color: rgba(vars.$main-color, 0.09);
+
+        // Separator for items, not on the last child
+        &:not(:last-child):not(:first-child) { // Exclude first child from having separator before it
+            &::after {
+                content: '>';
+                margin-left: 0.75rem; // Space after icon before separator
+                margin-right: 0.25rem; // Space after separator before next icon
+                color: vars.$text-color-muted;
+            }
         }
-  
-        &.minoan {
-          background-color: rgba(vars.$main-color, 0.12);
+        // If the first item is the only one, or the one before last, it shouldn't have ::after
+        &:first-child:not(:only-child):not(:nth-last-child(2)) {
+             &::after { // Separator for the first item if it's not the only one and not immediately followed by the last
+                content: '>';
+                margin-left: 0.75rem;
+                color: white; // Separator color for the first item
+            }
         }
-  
-        &.dark-ages {
-          background-color: rgba(vars.$main-color, 0.15);
-        }
-  
-        &.classical {
-          background-color: rgba(vars.$main-color, 0.18);
-        }
-  
-        &.hellenistic {
-          background-color: rgba(vars.$main-color, 0.21);
-        }
-  
-        &.roman {
-          background-color: rgba(vars.$main-color, 0.24);
-        }
-  
-        &.byzantine-i {
-          background-color: rgba(vars.$main-color, 0.27);
-        }
-  
-        &.arab {
-          background-color: rgba(vars.$main-color, 0.30);
-        }
-  
-        &.byzantine-ii {
-          background-color: rgba(vars.$main-color, 0.32);
-        }
-  
-        &.venetian {
-          background-color: rgba(vars.$main-color, 0.34);
-        }
-  
-        &.ottoman {
-          background-color: rgba(vars.$main-color, 0.36);
-        }
-  
-        &.modern {
-          background-color: rgba(vars.$main-color, 0.38);
-        }
-      }
-    }
-    .breadcrumb-item.active {
+
+
         .period-icon {
-            width: 48px; // Adjust size as needed
-            height: 48px; // Adjust size as needed
-            padding: 5px;
-            border-radius: 9px;
-            border: 3px solid #000; // Add a border for better visibility
-            margin-left: 0px; // Adjust spacing as needed
+            width: 38px; // Slightly increased base size
+            height: 38px;
+            padding: 4px;
+            border-radius: vars.$border-radius; // Use theme border-radius
+            border: 2px solid transparent; // Base transparent border for smooth transition
+            display: flex; // For centering image
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease-out, border-color 0.2s ease-out, background-color 0.2s ease-out;
+
             img {
-                mix-blend-mode: darken;
+                display: block; // Remove extra space below image
+                max-width: 100%;
+                height: auto;
+                mix-blend-mode: darken; // Keeping this as per original
+                border-radius: calc(vars.$border-radius - 4px); // Inner radius for image if icon has padding
+            }
+
+            // Hover effect for icons within non-active items
+            &:hover {
+                transform: scale(1.1);
+                border-color: vars.$primary-dark; // Use a theme color for hover border
+            }
+
+            // Gradient colors for each period (existing logic kept)
+            &.prehistoric { background-color: rgba(vars.$main-color, 0.09); }
+            &.minoan { background-color: rgba(vars.$main-color, 0.12); }
+            &.dark-ages { background-color: rgba(vars.$main-color, 0.15); }
+            &.classical { background-color: rgba(vars.$main-color, 0.18); }
+            &.hellenistic { background-color: rgba(vars.$main-color, 0.21); }
+            &.roman { background-color: rgba(vars.$main-color, 0.24); }
+            &.byzantine-i { background-color: rgba(vars.$main-color, 0.27); }
+            &.arab { background-color: rgba(vars.$main-color, 0.30); }
+            &.byzantine-ii { background-color: rgba(vars.$main-color, 0.32); }
+            &.venetian { background-color: rgba(vars.$main-color, 0.34); }
+            &.ottoman { background-color: rgba(vars.$main-color, 0.36); }
+            &.modern { background-color: rgba(vars.$main-color, 0.38); }
+        }
+    }
+
+    // Styling for .active breadcrumb items (applies to the <a> tag)
+    .breadcrumb-item.active {
+        // If the active item is an icon container
+        .period-icon {
+            width: 48px; // Larger size for active icon
+            height: 48px;
+            padding: 5px;
+            border: 3px solid vars.$primary-dark; // Prominent border for active icon
+            transform: scale(1.1); // Slightly larger
+            box-shadow: 0 2px 6px rgba(vars.$primary-dark, 0.3);
+
+            // Optionally, make background more opaque or change it
+            &.prehistoric { background-color: rgba(vars.$main-color, 0.2); }
+            &.minoan { background-color: rgba(vars.$main-color, 0.25); }
+            // ... (adjust other active backgrounds if needed, or remove to keep hover consistency)
+        }
+        // If the active item is the first-child (text link), it already has distinct styling
+        // No additional specific style needed here for &:first-child.active unless desired
+    }
+
+    // Responsive adjustments for mobile
+    @media (max-width: 768px) {
+        padding: 0.5rem;
+        gap: 0.3rem; // Tighter gap
+
+        .breadcrumb-item {
+            margin-bottom: 0.3rem; // Space when items wrap
+
+            &:first-child {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem; // Smaller font for the first item
+                margin-right: 0.3rem;
+            }
+
+            // Hide separators on mobile to prevent clutter when wrapping
+            &:not(:last-child):not(:first-child)::after,
+            &:first-child:not(:only-child):not(:nth-last-child(2))::after {
+                content: ''; // Remove separator
+                margin: 0;
+            }
+
+            .period-icon {
+                width: 28px; // Smaller icons on mobile
+                height: 28px;
+                padding: 3px;
+                border-width: 1px; // Thinner border
+
+                &:hover { // Simplify hover on mobile
+                    transform: none;
+                    border-color: transparent;
+                }
+            }
+        }
+
+        .breadcrumb-item.active {
+            .period-icon {
+                width: 36px; // Adjusted active icon size for mobile
+                height: 36px;
+                padding: 4px;
+                border-width: 2px;
+                box-shadow: 0 1px 4px rgba(vars.$primary-dark, 0.2);
             }
         }
     }
-    @media (max-width: 768px) { // Adjust breakpoint as needed
-        margin: 4px 0px;    
-        .breadcrumb-item {           
-            margin: 0px 5px 5px 0px; // Adjust spacing as needed
-            &:first-child { // Target only the first breadcrumb-item
-                padding: 7px;                
-            }
-        }
-    }
-  }
+}

@@ -186,3 +186,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }
 add_action('wp_enqueue_scripts', 'geotour_add_listing_coordinates_to_body');
+
+
+function enable_block_editor_for_my_cpt( $args, $post_type ) {
+    // Replace 'your_cpt_slug' with the actual slug of your post type.
+    if ( 'timeline' === $post_type ) {
+        
+        
+        if (!in_array('editor', $args['supports'])) {
+            $args['supports'][] = 'editor';
+        }
+    }
+    return $args;
+}
+add_filter( 'register_post_type_args', 'enable_block_editor_for_my_cpt', 20, 2 );
