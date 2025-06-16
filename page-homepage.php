@@ -6,59 +6,6 @@
  * @package Geotour_Mobile_First
  */
 
-// Hierarchical options function (temporary - should be in functions.php)
-function geotour_build_hierarchical_options_temp($terms, $parent_id = 0, $level = 0, $excluded_terms = []) {
-    $output = '';
-    $indent = str_repeat('&mdash;&nbsp;', $level);
-    
-    foreach ($terms as $term) {
-        if ((int)$term->parent === (int)$parent_id) {
-            // Skip if this term is in the excluded list
-            if (in_array($term->slug, $excluded_terms)) {
-                continue;
-            }
-            
-            // Skip if this term is a child of any excluded term
-            if (geotour_is_child_of_excluded_temp($term, $terms, $excluded_terms)) {
-                continue;
-            }
-            
-            $output .= '<option value="' . esc_attr($term->slug) . '">';
-            $output .= $indent . esc_html($term->name);
-            $output .= '</option>';
-            
-            // Recursively add child terms
-            $child_output = geotour_build_hierarchical_options_temp($terms, $term->term_id, $level + 1, $excluded_terms);
-            if (!empty($child_output)) {
-                $output .= $child_output;
-            }
-        }
-    }
-    
-    return $output;
-}
-
-// Helper function to check if a term is a descendant of excluded terms
-function geotour_is_child_of_excluded_temp($term, $all_terms, $excluded_slugs) {
-    if ($term->parent == 0) {
-        return false; // Top level term, not a child
-    }
-    
-    // Find parent term
-    foreach ($all_terms as $parent_term) {
-        if ($parent_term->term_id == $term->parent) {
-            // Check if parent is excluded
-            if (in_array($parent_term->slug, $excluded_slugs)) {
-                return true;
-            }
-            // Recursively check if parent is child of excluded
-            return geotour_is_child_of_excluded_temp($parent_term, $all_terms, $excluded_slugs);
-        }
-    }
-    
-    return false;
-}
-
 get_header(); ?>
 
 <main id="primary" class="site-main homepage homepage-template">
@@ -109,13 +56,10 @@ get_header(); ?>
                                         ]);
                                         
                                         if (!empty($regions) && !is_wp_error($regions)) :
-                                            // Try hierarchical first, fallback to simple
-                                            if (function_exists('geotour_build_hierarchical_options')) {
+                                            // Use the global function directly
+                                            if (function_exists('geotour_build_hierarchical_options')) : // MODIFIED
                                                 echo geotour_build_hierarchical_options($regions, 0);
-                                            } else {
-                                                // Use temporary function
-                                                echo geotour_build_hierarchical_options_temp($regions, 0);
-                                            }
+                                            endif; // ADDED
                                         else :
                                             echo '<option disabled>No regions found</option>';
                                         endif;
@@ -146,13 +90,10 @@ get_header(); ?>
                                                 'services'
                                             ];
                                             
-                                            // Try hierarchical first, fallback to simple
-                                            if (function_exists('geotour_build_hierarchical_options')) {
+                                            // Use the global function directly
+                                            if (function_exists('geotour_build_hierarchical_options')) : // MODIFIED
                                                 echo geotour_build_hierarchical_options($categories, 0, 0, $excluded_categories);
-                                            } else {
-                                                // Use temporary function with exclusions
-                                                echo geotour_build_hierarchical_options_temp($categories, 0, 0, $excluded_categories);
-                                            }
+                                            endif; // ADDED
                                         else :
                                             echo '<option disabled>No categories found</option>';
                                         endif;
@@ -175,6 +116,12 @@ get_header(); ?>
                         </form>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="homepage-content-area">
+            <div class="container">
+                <?php the_content(); ?>
             </div>
         </section>
         
