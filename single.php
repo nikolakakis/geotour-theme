@@ -104,11 +104,8 @@ get_header();
                                         $category_links[] = '<a href="' . esc_url(get_category_link($category->term_id)) . '">' . esc_html($category->name) . '</a>';
                                     }
                                     echo implode(', ', $category_links) . '</p>';
-                                }
+                                }                                
                                 
-                                // Display author
-                                echo '<p><strong>' . __('Author:', 'geotour') . '</strong><br>';
-                                echo '<a href="' . esc_url(get_author_posts_url(get_the_author_meta('ID'))) . '">' . esc_html(get_the_author()) . '</a></p>';
                                 
                                 // Display publish date
                                 echo '<p><strong>' . __('Published:', 'geotour') . '</strong><br>';
