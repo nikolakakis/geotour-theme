@@ -129,7 +129,7 @@ $has_access_info = $siteinfo_pavedroad || $siteinfo_earthroad || $siteinfo_fourw
 $has_contact_info = !empty($contact_title) || !empty($contact_address) || !empty($contact_phone) || !empty($contact_mobile) || !empty($contact_whatsapp) || !empty($contact_website) || !empty($contact_email) || !empty($social_facebook) || !empty($social_twitter) || !empty($social_instagram) || !empty($social_tiktok) || !empty($social_pinterest) || !empty($social_tripadvisor) || !empty($social_youtube) || !empty($social_linkedin);
 
 // Determine if we have any additional info to display
-$has_additional_info = $has_access_info || $has_contact_info;
+$has_additional_info = $has_access_info || $has_contact_info || !empty($archaeological_values) || !empty($beach_values) || !empty($fortification_values) || !empty($religious_values);
 
 // Set CSS class based on content availability
 $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
@@ -438,12 +438,14 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
         <?php endif; ?>
         
         <!-- Weather Forecast Column -->
+        <?php if (!wp_is_mobile()) : ?>
         <div class="details-column details-weather">
             <div class="column-content">
                 <h4 class="section-heading"><?php _e('Weather Forecast', 'geotour'); ?></h4>
                 <div id="openmeteo"></div>
             </div>
         </div>
+        <?php endif; ?>
         
     </div>
 </section>
