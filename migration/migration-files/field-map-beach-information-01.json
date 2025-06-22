@@ -38,5 +38,17 @@
     {
         "old_meta_key": "boldthemes_theme_listing-beachinfo_calm",
         "new_acf_field_name": "beachinfo_calm"
+    },
+     {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_facilities_none",
+        "new_acf_field_name": "beachinfo_facilities_none"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_facilities_basic",
+        "new_acf_field_name": "beachinfo_facilities_basic"
+    },
+    {
+        "old_meta_key": "boldthemes_theme_listing-beachinfo_facilities_organized",
+        "new_acf_field_name": "beachinfo_facilities_organized"
     }
 ]

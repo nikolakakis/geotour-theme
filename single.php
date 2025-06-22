@@ -116,7 +116,7 @@ get_header();
                         
                         <!-- Related Posts -->
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title"><?php _e('Related Posts', 'geotour'); ?></h3>
+                            <h3 class="sidebar-title"><?php _e('Other Posts', 'geotour'); ?></h3>
                             <div class="sidebar-content">
                                 <?php
                                 $related_args = array(
@@ -141,6 +141,11 @@ get_header();
                                 }
                                 ?>
                             </div>
+                        </div>
+                        
+                        <!-- Related Listings Shortcode -->
+                        <div class="sidebar-section">
+                            <?php echo do_shortcode('[related-listings-to-post]'); ?>
                         </div>
                         
                     </div>

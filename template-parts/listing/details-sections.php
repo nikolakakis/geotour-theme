@@ -9,6 +9,93 @@
 // Get the listing ID
 $listing_id = get_the_ID();
 
+// --- Category Specific Fields ---
+
+// Archaeological Site Details
+$archaeological_fields = [
+    'price' => __('Price', 'geotour'),
+    'prices_notes' => __('Price Notes', 'geotour'),
+    'siteinfo_accessrestricted' => __('Access Restricted', 'geotour'),
+    'siteinfo_prehistoric' => __('Prehistoric', 'geotour'),
+    'siteinfo_minoan' => __('Minoan', 'geotour'),
+    'siteinfo_darkages' => __('Dark Ages', 'geotour'),
+    'siteinfo_classical' => __('Classical', 'geotour'),
+    'siteinfo_hellenistic' => __('Hellenistic', 'geotour'),
+    'siteinfo_roman' => __('Roman', 'geotour'),
+    'siteinfo_arab' => __('Arab', 'geotour'),
+    'siteinfo_byzantine' => __('Byzantine', 'geotour'),
+    'siteinfo_venetian' => __('Venetian', 'geotour'),
+    'siteinfo_ottoman' => __('Ottoman', 'geotour'),
+    'siteinfo_modernera' => __('Modern Era', 'geotour'),
+];
+$archaeological_values = [];
+foreach ($archaeological_fields as $key => $label) {
+    $value = get_field($key, $listing_id);
+    if ($value) {
+        $archaeological_values[$key] = ['label' => $label, 'value' => $value];
+    }
+}
+
+// Beach Information
+$beach_fields = [
+    'beachinfo_sand' => __('Sand', 'geotour'),
+    'beachinfo_pebbles' => __('Pebbles', 'geotour'),
+    'beachinfo_rocky_shore' => __('Rocky Shore', 'geotour'),
+    'beachinfo_accessible' => __('Accessible', 'geotour'),
+    'beachinfo_secluded' => __('Secluded', 'geotour'),
+    'beachinfo_notbusy' => __('Not Busy', 'geotour'),
+    'beachinfo_busy' => __('Busy', 'geotour'),
+    'beachinfo_shallow_water' => __('Shallow Water', 'geotour'),
+    'beachinfo_exposed' => __('Exposed to Winds', 'geotour'),
+    'beachinfo_calm' => __('Calm', 'geotour'),
+    'beachinfo_facilities_none' => __('No Facilities', 'geotour'),
+    'beachinfo_facilities_basic' => __('Basic Facilities', 'geotour'),
+    'beachinfo_facilities_organized' => __('Organized', 'geotour'),
+];
+$beach_values = [];
+foreach ($beach_fields as $key => $label) {
+    $value = get_field($key, $listing_id);
+    if ($value) {
+        $beach_values[$key] = ['label' => $label, 'value' => $value];
+    }
+}
+
+// Fortification Details
+$fortification_fields = [
+    'fortificationsiteinfo_roman' => __('Roman', 'geotour'),
+    'fortificationsiteinfo_arab' => __('Arab', 'geotour'),
+    'fortificationsiteinfo_venetian' => __('Venetian', 'geotour'),
+    'fortificationsiteinfo_byzantine' => __('Byzantine', 'geotour'),
+    'fortificationsiteinfo_ottoman' => __('Ottoman', 'geotour'),
+];
+$fortification_values = [];
+foreach ($fortification_fields as $key => $label) {
+    $value = get_field($key, $listing_id);
+    if ($value) {
+        $fortification_values[$key] = ['label' => $label, 'value' => $value];
+    }
+}
+
+// Religious Site Details
+$religious_fields = [
+    'religioninfo_settlement' => __('Settlement', 'geotour'),
+    'religioninfo_venetian' => __('Venetian', 'geotour'),
+    'religioninfo_byzantine' => __('Byzantine', 'geotour'),
+    'religioninfo_ottoman' => __('Ottoman', 'geotour'),
+    'religioninfo_early_christian' => __('Early Christian', 'geotour'),
+    'religioninfo_contemporary' => __('Contemporary', 'geotour'),
+    'religioninfo_opentopublic' => __('Open to Public', 'geotour'),
+    'religioninfo_monastery' => __('Monastery', 'geotour'),
+    'religioninfo_populated' => __('Populated', 'geotour'),
+];
+$religious_values = [];
+foreach ($religious_fields as $key => $label) {
+    $value = get_field($key, $listing_id);
+    if ($value) {
+        $religious_values[$key] = ['label' => $label, 'value' => $value];
+    }
+}
+
 // Get site access information
 $siteinfo_pavedroad = get_field('siteinfo_pavedroad', $listing_id);
 $siteinfo_earthroad = get_field('siteinfo_earthroad', $listing_id);
@@ -112,6 +199,66 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                                 ?>
                             </div>
                         <?php } ?>
+                    </div>
+                    
+                    <!-- Category-specific characteristics -->
+                    <div class="category-characteristics-section">
+                        <?php if (!empty($archaeological_values)) : ?>
+                            <div class="characteristic-group archaeological-details">
+                                <h4 class="section-heading"><?php _e('Archaeological Information', 'geotour'); ?></h4>
+                                <ul class="characteristics-list">
+                                    <?php foreach ($archaeological_values as $key => $field) : ?>
+                                        <li>
+                                            <?php if ($key === 'price' || $key === 'prices_notes') : ?>
+                                                <span class="char-label"><?php echo esc_html($field['label']); ?>:</span>
+                                                <span class="char-value"><?php echo esc_html($field['value']); ?></span>
+                                            <?php else: ?>
+                                                <span class="char-label"><?php echo esc_html($field['label']); ?></span>
+                                            <?php endif; ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($beach_values)) : ?>
+                            <div class="characteristic-group beach-details">
+                                <h4 class="section-heading"><?php _e('Beach Information', 'geotour'); ?></h4>
+                                <ul class="characteristics-list">
+                                    <?php foreach ($beach_values as $field) : ?>
+                                        <li>
+                                            <span class="char-label"><?php echo esc_html($field['label']); ?></span>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($fortification_values)) : ?>
+                            <div class="characteristic-group fortification-details">
+                                <h4 class="section-heading"><?php _e('Fortification Information', 'geotour'); ?></h4>
+                                <ul class="characteristics-list">
+                                    <?php foreach ($fortification_values as $field) : ?>
+                                        <li>
+                                            <span class="char-label"><?php echo esc_html($field['label']); ?></span>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($religious_values)) : ?>
+                            <div class="characteristic-group religious-details">
+                                <h4 class="section-heading"><?php _e('Religious Site Information', 'geotour'); ?></h4>
+                                <ul class="characteristics-list">
+                                    <?php foreach ($religious_values as $field) : ?>
+                                        <li>
+                                            <span class="char-label"><?php echo esc_html($field['label']); ?></span>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     
                     <?php if ($has_access_info) : ?>
@@ -285,11 +432,6 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                     </div>
                 </div>
                 <?php endif; ?>
-                
-                <!-- Future category-specific characteristics will go here -->
-                <div class="category-characteristics">
-                    <!-- Placeholder for category-specific content -->
-                </div>
                 
             </div>
         </div>
