@@ -8,7 +8,7 @@
 
 // 100vw Virtual Tour Section
 .virtual-tour-full-section {
-    width: 100vw;
+    width: 93vw;
     position: relative;
     left: 50%;
     right: 50%;
@@ -61,6 +61,7 @@
         color: vars.$heading-color;
         
         span {
+            display: inline-block;
             color: vars.$primary-color;
         }
     }

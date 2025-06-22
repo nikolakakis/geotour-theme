@@ -6,7 +6,7 @@
 @use '../base/variables' as vars;
 @use 'sass:color';
 
-.geotour-image-grid {
+.content-article .entry-content .geotour-image-grid {
     display: grid;
     grid-template-columns: repeat(var(--grid-columns, 3), 1fr);
     gap: var(--grid-gap, 20px);
