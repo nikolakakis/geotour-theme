@@ -14,7 +14,8 @@
     margin-left: -50vw;
     margin-right: -50vw;
     padding: 7px; // Removed top padding
-    background: color.change(vars.$background-color, $lightness: -2%);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 27px 18px;
+    margin-bottom: 26px;
     
     .listing-details-container {
         
@@ -93,9 +94,9 @@
         }
     }
     .details-weather {
-        display: inline-block;
-        width: 40%;
-        float: right;
+        display: inline-flex;
+        width: 39%;
+        vertical-align: top;
     }
     // Combined column specific styles
     .details-combined {
