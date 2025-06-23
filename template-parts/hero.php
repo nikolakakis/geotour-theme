@@ -63,7 +63,16 @@ if (empty($hero_image)) {
 $hero_title = str_replace(['Category: ', 'Tag: ', 'Author: '], '', $hero_title);
 ?>
 
-<section class="hero-section" <?php if ($hero_image) : ?>style="background-image: url('<?php echo esc_url($hero_image); ?>')"<?php endif; ?>>
+<section class="hero-section">
+    
+    <?php if ($hero_image && !wp_is_mobile()) : ?>
+        <img src="<?php echo esc_url($hero_image); ?>" 
+             alt="<?php echo esc_attr($hero_title); ?>"
+             fetchpriority="high"
+             loading="eager"
+             class="hero-background-image">
+    <?php endif; ?>
+    
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <div class="hero-container">

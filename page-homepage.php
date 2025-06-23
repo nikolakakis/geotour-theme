@@ -14,10 +14,13 @@ get_header(); ?>
         <section class="homepage-hero">
             <?php 
             $hero_image = get_the_post_thumbnail_url(get_the_ID(), 'full');
-            if ($hero_image) : ?>
-                <div class="hero-background" style="background-image: url('<?php echo esc_url($hero_image); ?>');">
-                    <div class="hero-overlay"></div>
-                </div>
+            if ($hero_image && !wp_is_mobile()) : ?>
+                <img src="<?php echo esc_url($hero_image); ?>" 
+                     alt="<?php echo esc_attr(get_the_title()); ?>"
+                     fetchpriority="high"
+                     loading="eager"
+                     class="hero-background-image">
+                <div class="hero-overlay"></div>
             <?php endif; ?>
             
             <div class="hero-content">
