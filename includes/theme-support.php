@@ -68,6 +68,18 @@ function geotour_widgets_init() {
         'before_title'  => '<h3 class="footer-widget-title">',
         'after_title'   => '</h3>',
     ));
+
+    register_sidebar(
+        array(
+            'name'          => esc_html__('Blog Sidebar', 'geotour'),
+            'id'            => 'sidebar-blog',
+            'description'   => esc_html__('Add widgets here to appear in your blog sidebar.', 'geotour'),
+            'before_widget' => '<section id="%1$s" class="widget %2$s sidebar-section">',
+            'after_widget'  => '</section>',
+            'before_title'  => '<h3 class="widget-title sidebar-title">',
+            'after_title'   => '</h3>',
+        )
+    );
 }
 add_action('widgets_init', 'geotour_widgets_init');
 

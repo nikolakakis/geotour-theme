@@ -1,0 +1,134 @@
+// ==========================================================================
+// ARCHIVE ITEM COMPONENT STYLES (BLOG LIST)
+// ==========================================================================
+
+@use '../base/variables' as vars;
+@use 'sass:color';
+
+.archive-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid vars.$border-color;
+    background: white;
+    border-radius: vars.$border-radius-lg;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(vars.$primary-color, 0.05);
+    transition: box-shadow 0.3s ease;
+
+    &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    &:hover {
+        box-shadow: 0 8px 25px rgba(vars.$primary-color, 0.1);
+    }
+
+    @media (min-width: vars.$breakpoint-sm) {
+        flex-direction: row;
+        gap: 2rem;
+    }
+
+    .post-thumbnail {
+        flex-shrink: 0;
+        
+        @media (min-width: vars.$breakpoint-sm) {
+            width: 300px;
+        }
+
+        a {
+            display: block;
+            height: 100%;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+    }
+
+    &:hover .post-thumbnail img {
+        transform: scale(1.05);
+    }
+
+    .post-content {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+
+        @media (min-width: vars.$breakpoint-sm) {
+            padding: 2rem;
+        }
+    }
+
+    .entry-header {
+        margin-bottom: 1rem;
+    }
+
+    .entry-title {
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+
+        a {
+            color: vars.$heading-color;
+            text-decoration: none;
+            background-image: linear-gradient(vars.$primary-color, vars.$primary-color);
+            background-position: 0% 100%;
+            background-repeat: no-repeat;
+            background-size: 0% 2px;
+            transition: background-size .3s;
+
+            &:hover {
+                background-size: 100% 2px;
+            }
+        }
+    }
+
+    .entry-meta {
+        font-size: 0.875rem;
+        color: vars.$text-color-muted;
+
+        .posted-on, .byline {
+            margin-right: 1rem;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            &:hover {
+                color: vars.$primary-color;
+            }
+        }
+    }
+
+    .entry-summary {
+        flex-grow: 1;
+        color: vars.$text-color;
+        line-height: 1.6;
+    }
+
+    .entry-footer {
+        margin-top: 1.5rem;
+        font-size: 0.8rem;
+        color: vars.$text-color-muted;
+
+        .cat-links, .tags-links {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: vars.$primary-color;
+            text-decoration: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}

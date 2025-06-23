@@ -1,63 +1,65 @@
 <?php
 /**
- * Template part for displaying main content area
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ * Template part for displaying main content area with sidebar for blog/archives
  *
  * @package Geotour_Mobile_First
  */
 ?>
 
-<div class="main-container <?php echo (is_archive() || is_home()) ? 'archive-grid' : ''; ?>">
-    <?php echo "<!-- DEBUG: content-main.php loaded. Checking have_posts(). -->"; ?>
-    <?php if (have_posts()) : ?>
-            <?php echo "<!-- DEBUG: have_posts() is true. -->"; ?>
-            <?php if (is_home() && !is_front_page()) : ?>
-                <header class="page-header">
-                    <h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
-                </header>
-            <?php endif; ?>
+<div class="content-wrapper">
+    <div class="content-with-sidebar">
+        
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <?php
+            if (have_posts()) {
 
-            <?php if (is_archive()) : ?>
-                <header class="page-header">
-                    <?php
+                if (is_home() && !is_front_page()) {
+                    echo '<header class="page-header"><h1 class="page-title screen-reader-text">' . esc_html(get_the_title(get_option('page_for_posts'))) . '</h1></header>';
+                }
+
+                if (is_archive()) {
+                    echo '<header class="page-header">';
                     the_archive_title('<h1 class="page-title">', '</h1>');
                     the_archive_description('<div class="archive-description">', '</div>');
-                    ?>
-                </header>
-            <?php endif; ?>
+                    echo '</header>';
+                }
 
-            <?php
-            /* Start the Loop */
-            while (have_posts()) :
-                the_post();
-                echo "<!-- DEBUG: In while loop. Post ID: " . get_the_ID() . ". Post Type: " . get_post_type() . " -->";
-                /*
-                 * Include the Post-Type-specific template for the content.
-                 * If you want to override this in a child theme, then include a file
-                 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
-                 */
-                if (is_singular()) {
-                    echo "<!-- DEBUG: Calling get_template_part for content-single -->";
-                    get_template_part('template-parts/content', 'single');
-                } else {
-                    echo "<!-- DEBUG: Calling get_template_part for content-" . get_post_type() . " -->";
+                /* Start the Loop */
+                while (have_posts()) {
+                    the_post();
                     get_template_part('template-parts/content', get_post_type());
                 }
 
-            endwhile;
-
-           // Previous/next page navigation for archives
-            if (!is_singular()) {
+                // Previous/next page navigation
                 the_posts_navigation(array(
-                    'prev_text' => __('← Older posts', 'geotour'),
-                    'next_text' => __('Newer posts →', 'geotour'),
+                    'prev_text' => __('&larr; Older posts', 'geotour'),
+                    'next_text' => __('Newer posts &rarr;', 'geotour'),
                 ));
+
+            } else {
+                // If no content, include the "No posts found" template.
+                get_template_part('template-parts/content', 'none');
             }
             ?>
-    <?php else : // Corrected PHP syntax for else block
-            echo "<!-- DEBUG: have_posts() is false. Calling content-none. -->";
-            get_template_part('template-parts/content', 'none');
-    endif; ?>
-    <?php echo "<!-- DEBUG: End of content-main.php -->"; ?>
+        </div>
+
+        <!-- Sidebar Area -->
+        <aside class="sidebar-content">
+            <div class="listing-sidebar">
+                <?php if (is_active_sidebar('sidebar-blog')): ?>
+                    <?php dynamic_sidebar('sidebar-blog'); ?>
+                <?php else: ?>
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title"><?php _e('About this Blog', 'geotour'); ?></h3>
+                        <div class="sidebar-content">
+                            <p><?php _e('Add widgets to the "Blog Sidebar" in the Customizer or Appearance > Widgets.', 'geotour'); ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </aside>
+
+    </div>
 </div>
+<?php echo "<!-- DEBUG: End of content-main.php -->"; ?>

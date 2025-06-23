@@ -340,38 +340,85 @@ function geotour_build_hierarchical_options($terms, $parent_id = 0, $level = 0, 
 }
 
 /**
- * Prints HTML with meta information for the current post-date/time and author.
- * This function is created to resolve a fatal error on the blog index page.
+ * Prints HTML with meta information for the current post-date/time.
+ */
+if (!function_exists('geotour_posted_on')) :
+    function geotour_posted_on() {
+        $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+        if (get_the_time('U') !== get_the_modified_time('U')) {
+            $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+        }
+
+        $time_string = sprintf(
+            $time_string,
+            esc_attr(get_the_date(DATE_W3C)),
+            esc_html(get_the_date()),
+            esc_attr(get_the_modified_date(DATE_W3C)),
+            esc_html(get_the_modified_date())
+        );
+
+        $posted_on = sprintf(
+            esc_html_x('Posted on %s', 'post date', 'geotour'),
+            '<a href="' . esc_url(get_permalink()) . '" rel="bookmark">' . $time_string . '</a>'
+        );
+
+        echo '<span class="posted-on">' . $posted_on . '</span>';
+    }
+endif;
+
+/**
+ * Prints HTML with meta information for the current post-date/time.
+ * Simplified to only show creation date.
  */
 function geotour_posted_by() {
-	$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
-	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
-		$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
-	}
+    $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time>';
+    
+    $time_string = sprintf(
+        $time_string,
+        esc_attr(get_the_date(DATE_W3C)),
+        esc_html(get_the_date())
+    );
 
-	$time_string = sprintf(
-		$time_string,
-		esc_attr( get_the_date( DATE_W3C ) ),
-		esc_html( get_the_date() ),
-		esc_attr( get_the_modified_date( DATE_W3C ) ),
-		esc_html( get_the_modified_date() )
-	);
+    $posted_on = sprintf(
+        /* translators: %s: post date. */
+        esc_html_x('Posted on %s', 'post date', 'geotour'),
+        '<a href="' . esc_url(get_permalink()) . '" rel="bookmark">' . $time_string . '</a>'
+    );
 
-	$posted_on = sprintf(
-		/* translators: %s: post date. */
-		esc_html_x( 'Posted on %s', 'post date', 'geotour' ),
-		'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
-	);
-
-	$byline = sprintf(
-		/* translators: %s: post author. */
-		esc_html_x( 'by %s', 'post author', 'geotour' ),
-		'<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
-	);
-
-	echo '<span class="posted-on">' . $posted_on . '</span><span class="byline"> ' . $byline . '</span>';
-
+    echo '<span class="posted-on">' . $posted_on . '</span>';
 }
+
+/**
+ * Prints HTML with meta information for the categories, tags and comments.
+ */
+if (!function_exists('geotour_entry_footer')) :
+    function geotour_entry_footer() {
+        // Only show categories/tags in footer if not already shown in header/meta
+        if ('post' === get_post_type()) {
+            // Only show tags in footer, not categories (to avoid duplicate "Posted in ...")
+            $tags_list = get_the_tag_list('', esc_html_x(', ', 'list item separator', 'geotour'));
+            if ($tags_list) {
+                printf('<span class="tags-links">' . esc_html__('Tagged %1$s', 'geotour') . '</span>', $tags_list); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            }
+        }
+        edit_post_link(
+            sprintf(
+                wp_kses(
+                    /* translators: %s: Name of current post. Only visible to screen readers */
+                    __('Edit <span class="screen-reader-text">%s</span>', 'geotour'),
+                    array(
+                        'span' => array(
+                            'class' => array(),
+                        ),
+                    )
+                ),
+                get_the_title()
+            ),
+            '<span class="edit-link">',
+            '</span>'
+        );
+    }
+endif;
 
 /**
  * Enqueue Google Fonts correctly for performance.
