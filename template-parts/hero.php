@@ -85,17 +85,6 @@ $hero_title = str_replace(['Category: ', 'Tag: ', 'Author: '], '', $hero_title);
                     <?php echo wp_kses_post($hero_subtitle); ?>
                 </div>
             <?php endif; ?>
-            
-            <?php if (is_home() || is_front_page()) : ?>
-                <div class="hero-cta">
-                    <a href="#content" class="hero-cta-button">
-                        <?php esc_html_e('Explore Tours', 'geotour'); ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M7 13l3 3 7-7"></path>
-                        </svg>
-                    </a>
-                </div>
-            <?php endif; ?>
         </div>
     </div>
     
@@ -104,3 +93,4 @@ $hero_title = str_replace(['Category: ', 'Tag: ', 'Author: '], '', $hero_title);
         <div class="scroll-arrow"></div>
     </div>
 </section>
+                    

@@ -223,7 +223,9 @@
         transform: translateX(3px);
     }
 }
-
+.wp-singular.page .hero-scroll-indicator  {
+    bottom: 3rem;
+}
 .hero-scroll-indicator {
     position: absolute;
     bottom: -3rem;
@@ -402,7 +404,7 @@
 // HERO COMPONENT STYLES
 .hero-section {
     position: relative;
-    min-height: 60vh;
+    min-height: 80vh; // Increased from 60vh to 80vh
     display: flex;
     align-items: center;
     justify-content: center;
