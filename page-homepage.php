@@ -30,8 +30,8 @@ get_header(); ?>
                     <?php 
                     // Get Yoast meta description or fall back to excerpt
                     $meta_description = '';
-                    if (class_exists('WPSEO_Meta')) {
-                        $meta_description = get_post_meta(get_the_ID(), '_yoast_wpseo_metadesc', true);
+                    if (function_exists('YoastSEO')) {
+                        $meta_description = YoastSEO()->meta->for_post(get_the_ID())->description;
                     }
                     if (empty($meta_description) && has_excerpt()) {
                         $meta_description = get_the_excerpt();

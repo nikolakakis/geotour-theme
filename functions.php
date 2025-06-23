@@ -30,6 +30,41 @@ require_once GEOTOUR_THEME_DIR . '/includes/scripts-styles.php';
 // Navigation specific helpers (like custom walkers)
 require_once GEOTOUR_THEME_DIR . '/includes/navigation.php';
 
+// --- DEBUGGING THEME TRANSLATION NOTICE ---
+// The "Translation loading ... triggered too early" notice you are seeing on the /blog page
+// is caused by calling a translation function (like __() or _e()) in a file before
+// WordPress has loaded the theme's text domain (which happens at the 'init' action).
+//
+// The most common causes are:
+// 1. In CPT or Taxonomy registration files: Using __() for labels outside of the 'init' hook.
+// 2. In shortcode files: Using __() for a default attribute value in shortcode_atts().
+//
+// The error is not in your template files (like single.php or page.php), but in one of the
+// files included below. Please check 'listing.php' and 'legacy-shortcodes.php' for this pattern.
+//
+// EXAMPLE of what to find and fix in a shortcode file (e.g., legacy-shortcodes.php):
+//
+// WRONG:
+// function my_shortcode_handler( $atts ) {
+//     $atts = shortcode_atts( array(
+//         'title' => __( 'Default Title', 'geotour' ), // This runs when the file is loaded, which is too early.
+//     ), $atts );
+//     return '<h2>' . esc_html( $atts['title'] ) . '</h2>';
+// }
+//
+// CORRECT:
+// function my_shortcode_handler( $atts ) {
+//     $atts = shortcode_atts( array(
+//         'title' => '', // Use an empty string for the default.
+//     ), $atts );
+//
+//     // Set the title and translate it here, inside the function body. This runs at the correct time.
+//     $title = ! empty( $atts['title'] ) ? $atts['title'] : __( 'Default Title', 'geotour' );
+//
+//     return '<h2>' . esc_html( $title ) . '</h2>';
+// }
+// --- END DEBUGGING INFO ---
+
 // Custom post types and taxonomies
 require_once GEOTOUR_THEME_DIR . '/includes/custom-post-types/listing.php';
 // require_once GEOTOUR_THEME_DIR . '/includes/taxonomies/listing-taxonomies.php';
@@ -302,6 +337,40 @@ function geotour_build_hierarchical_options($terms, $parent_id = 0, $level = 0, 
     }
     
     return $output;
+}
+
+/**
+ * Prints HTML with meta information for the current post-date/time and author.
+ * This function is created to resolve a fatal error on the blog index page.
+ */
+function geotour_posted_by() {
+	$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
+		$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+	}
+
+	$time_string = sprintf(
+		$time_string,
+		esc_attr( get_the_date( DATE_W3C ) ),
+		esc_html( get_the_date() ),
+		esc_attr( get_the_modified_date( DATE_W3C ) ),
+		esc_html( get_the_modified_date() )
+	);
+
+	$posted_on = sprintf(
+		/* translators: %s: post date. */
+		esc_html_x( 'Posted on %s', 'post date', 'geotour' ),
+		'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
+	);
+
+	$byline = sprintf(
+		/* translators: %s: post author. */
+		esc_html_x( 'by %s', 'post author', 'geotour' ),
+		'<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
+	);
+
+	echo '<span class="posted-on">' . $posted_on . '</span><span class="byline"> ' . $byline . '</span>';
+
 }
 
 /**

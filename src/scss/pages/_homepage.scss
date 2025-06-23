@@ -154,6 +154,7 @@
                 border-radius: 12px;
                 font-size: 1rem;
                 background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(10px);
                 transition: all 0.3s ease;
                 color: vars.$text-color;
                 width: 95%;

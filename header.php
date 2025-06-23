@@ -23,35 +23,27 @@
         // Fallback for older WordPress versions
         echo '<title>' . wp_get_document_title() . '</title>' . "\n";
     }
-      // Add meta description if not handled by SEO plugin
-    $meta_description = '';
     
-    // Try Yoast SEO first
-    if (class_exists('WPSEO_Frontend')) {
-        $yoast_frontend = WPSEO_Frontend::get_instance();
-        if (method_exists($yoast_frontend, 'metadesc')) {
-            $meta_description = $yoast_frontend->metadesc(false);
+    // The following is an example of how to correctly get the Yoast meta description.
+    // You should find the similar code in your header and replace it.
+    $meta_desc = '';
+    if (function_exists('YoastSEO')) {
+        // This is the new, correct way to get the meta description.
+        $meta_desc = YoastSEO()->meta->for_current_page()->description;
+    }
+    
+    // Fallback if Yoast description is not available.
+    if (empty($meta_desc)) {
+        if (is_singular()) {
+            $meta_desc = get_the_excerpt();
+        } else {
+            $meta_desc = get_bloginfo('description');
         }
     }
-    
-    // Try RankMath
-    if (empty($meta_description) && class_exists('RankMath')) {
-        $meta_description = RankMath\Helper::get_post_meta('description');
-    }
-    
-    // Use custom function if no SEO plugin description
-    if (empty($meta_description) && function_exists('geotour_get_meta_description')) {
-        $meta_description = geotour_get_meta_description();
-    }
-    
-    // Final fallback
-    if (empty($meta_description)) {
-        $meta_description = get_bloginfo('description') ?: __('Explore Crete with GeoTour - your guide to the island\'s treasures.', 'geotour');
-    }
-    
-    // Output meta description if we have one
-    if (!empty($meta_description)) {
-        echo '<meta name="description" content="' . esc_attr(wp_trim_words($meta_description, 25, '...')) . '">' . "\n";
+
+    // Only output the tag if a description exists.
+    if (!empty($meta_desc)) {
+        echo '<meta name="description" content="' . esc_attr(strip_tags($meta_desc)) . '">';
     }
     
     // Add Open Graph tags for better social sharing
