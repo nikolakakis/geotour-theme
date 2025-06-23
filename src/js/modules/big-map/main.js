@@ -14,6 +14,7 @@ export class BigMapUI {
         this.searchTerm = '';
         this.isMobile = window.innerWidth <= 1024; // Track mobile state
         this.sidebarVisible = !this.isMobile; // Visible by default on desktop, hidden on mobile
+        this.initialBoundsFit = false; // Track if we've done initial bounds fitting
         
         // Get URL parameters on initialization
         this.urlParams = new URLSearchParams(window.location.search);
@@ -224,10 +225,11 @@ export class BigMapUI {
             }
         });
         
-        // Fit bounds if we have markers
-        if (this.currentMarkers.length > 0) {
+        // Only fit bounds on initial load, not on every pan/zoom
+        if (this.currentMarkers.length > 0 && !this.initialBoundsFit) {
             const group = new L.featureGroup(this.currentMarkers);
             this.map.fitBounds(group.getBounds().pad(0.1));
+            this.initialBoundsFit = true;
         }
     }
     
@@ -420,13 +422,15 @@ export class BigMapUI {
             console.log('Map bounds changed, fetching new data for bbox:', bbox);
             
             try {
-                this.showSidebarLoading();
+                this.showLoading(true); // Show loading for both map and sidebar
                 const data = await this.fetchListings(bbox);
-                this.updateSidebar(data);
+                this.updateMap(data);    // Update map markers
+                this.updateSidebar(data); // Update sidebar with same data
             } catch (error) {
                 console.error('Error loading data for current view:', error);
+                this.showError('Error loading listings. Please try again.');
             } finally {
-                this.hideSidebarLoading();
+                this.hideLoading();
             }
         }, 1000); // Increased debounce to 1 second to reduce API calls
     }
@@ -548,17 +552,19 @@ export class BigMapUI {
     showLoading(mapOnly = false) {
         this.isLoading = true;
         
-        if (!mapOnly) {
-            const overlay = document.getElementById('map-loading-overlay');
-            if (overlay) {
-                overlay.classList.remove('hidden');
-            }
+        const overlay = document.getElementById('map-loading-overlay');
+        if (overlay) {
+            overlay.classList.remove('hidden');
+        }
+        
+        const sidebarOverlay = document.getElementById('sidebar-loading-overlay');
+        if (sidebarOverlay) {
+            sidebarOverlay.classList.add('active');
         }
         
         const container = document.getElementById('listings-container');
         if (container) {
             container.classList.add('loading');
-            container.innerHTML = '';
         }
         
         const countElement = document.getElementById('results-count');
@@ -575,23 +581,14 @@ export class BigMapUI {
             overlay.classList.add('hidden');
         }
         
+        const sidebarOverlay = document.getElementById('sidebar-loading-overlay');
+        if (sidebarOverlay) {
+            sidebarOverlay.classList.remove('active');
+        }
+        
         const container = document.getElementById('listings-container');
         if (container) {
             container.classList.remove('loading');
-        }
-    }
-    
-    showSidebarLoading() {
-        const overlay = document.getElementById('sidebar-loading-overlay');
-        if (overlay) {
-            overlay.classList.add('active');
-        }
-    }
-    
-    hideSidebarLoading() {
-        const overlay = document.getElementById('sidebar-loading-overlay');
-        if (overlay) {
-            overlay.classList.remove('active');
         }
     }
     

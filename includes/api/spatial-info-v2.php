@@ -150,48 +150,40 @@ function geotour_validate_bbox_v2($param, $request, $key) {
  * Callback function to retrieve listing spatial info for v2.
  */
 function geotour_get_spatial_info_v2(WP_REST_Request $request) {
+    global $wpdb;
+    
     $per_page = $request->get_param('per_page') ?: 500;
     $bbox = $request->get_param('bbox');
     $listing_category = $request->get_param('listing_category');
     $listing_region = $request->get_param('listing_region');
     $listing_tag = $request->get_param('listing_tag');
-    $search = $request->get_param('search'); // New search parameter
+    $search = $request->get_param('search');
 
-    // Base query args
+    // Extract bbox parameters if provided
+    if (!empty($bbox)) {
+        $coords = explode(',', $bbox);
+        $minLng = floatval(trim($coords[0]));
+        $minLat = floatval(trim($coords[1]));
+        $maxLng = floatval(trim($coords[2]));
+        $maxLat = floatval(trim($coords[3]));
+    }
+
+    // Create query args for WP_Query
     $query_args = [
         'post_type' => 'listing',
         'post_status' => 'publish',
-        'posts_per_page' => min($per_page, 999),
+        'posts_per_page' => -1, // Get all posts, we'll filter and limit later
         'meta_query' => [
-            'relation' => 'AND',
             [
                 'key' => 'position',
-                'compare' => 'EXISTS'
+                'compare' => 'EXISTS',
             ]
         ]
     ];
 
-    // Add text search if provided
-    if (!empty($search)) {
-        $search_term = trim($search);
-        
-        // Add search parameter to query
-        $query_args['s'] = $search_term;
-        
-        // Enhance search to include custom fields and taxonomy terms
-        add_filter('posts_search', 'geotour_enhance_listing_search', 10, 2);
-        add_filter('posts_join', 'geotour_search_join_taxonomy', 10, 2);
-        add_filter('posts_where', 'geotour_search_where_taxonomy', 10, 2);
-        add_filter('posts_groupby', 'geotour_search_groupby', 10, 2);
-        
-        // Store search term globally for the filters
-        global $geotour_search_term;
-        $geotour_search_term = $search_term;
-    }
-
-    // Add taxonomy filters (existing code remains the same)
-    $tax_query = ['relation' => 'AND'];
-
+    // Add taxonomy filters
+    $tax_query = [];
+    
     if (!empty($listing_category)) {
         $category_slugs = array_map('trim', explode(',', $listing_category));
         $tax_query[] = [
@@ -222,19 +214,29 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
         ];
     }
 
-    if (count($tax_query) > 1) {
-        $query_args['tax_query'] = $tax_query;
+    if (!empty($tax_query)) {
+        $query_args['tax_query'] = [
+            'relation' => 'AND',
+            ...$tax_query
+        ];
     }
 
-    // Handle bounding box filtering (existing code)
-    if (!empty($bbox)) {
-        $coords = explode(',', $bbox);
-        $minLng = floatval(trim($coords[0]));
-        $minLat = floatval(trim($coords[1]));
-        $maxLng = floatval(trim($coords[2]));
-        $maxLat = floatval(trim($coords[3]));
+    // Add search if provided
+    if (!empty($search)) {
+        $query_args['s'] = trim($search);
+        
+        // Add the filters for enhanced search
+        add_filter('posts_search', 'geotour_enhance_listing_search', 10, 2);
+        add_filter('posts_join', 'geotour_search_join_taxonomy', 10, 2);
+        add_filter('posts_where', 'geotour_search_where_taxonomy', 10, 2);
+        add_filter('posts_groupby', 'geotour_search_groupby', 10, 2);
+        
+        // Store search term globally for the filters
+        global $geotour_search_term;
+        $geotour_search_term = trim($search);
     }
 
+    // Run the query
     $query = new WP_Query($query_args);
     
     // Remove search filters after query
@@ -245,34 +247,42 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
         remove_filter('posts_groupby', 'geotour_search_groupby', 10);
     }
 
+    // Process the results and filter by bounding box
     $data = [];
-
-    // Rest of the function remains the same...
+    $count = 0;
+    
     if ($query->have_posts()) {
         while ($query->have_posts()) {
             $query->the_post();
             $post_id = get_the_ID();
+            
+            // Get position from ACF
             $position = get_field('position', $post_id);
-
+            
             if (empty($position) || !isset($position['lat']) || !isset($position['lng'])) {
                 continue;
             }
-
+            
             $lat = floatval($position['lat']);
             $lng = floatval($position['lng']);
-
-            // Apply bbox filtering at PHP level for precision
+            
+            // Apply bounding box filter
             if (!empty($bbox)) {
                 if ($lat < $minLat || $lat > $maxLat || $lng < $minLng || $lng > $maxLng) {
-                    continue;
+                    continue; // Skip if outside bounding box
                 }
             }
-
+            
+            // Limit to per_page
+            if ($count >= $per_page) {
+                break;
+            }
+            
             // Get taxonomy data
             $categories = get_the_terms($post_id, 'listing-category');
             $regions = get_the_terms($post_id, 'listing-region');
             $tags = get_the_terms($post_id, 'listing-tag');
-
+            
             // Get Yoast meta description
             $meta_description = '';
             if (class_exists('WPSEO_Meta')) {
@@ -281,15 +291,15 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
             if (empty($meta_description)) {
                 $meta_description = get_the_excerpt();
             }
-
+            
             $item = [
                 'id' => $post_id,
                 'title' => get_the_title(),
                 'excerpt' => get_the_excerpt(),
                 'meta_description' => $meta_description,
                 'permalink' => get_permalink(),
-                'latitude' => floatval($position['lat']),
-                'longitude' => floatval($position['lng']),
+                'latitude' => $lat,
+                'longitude' => $lng,
                 'map_icon_url' => geotour_get_listing_map_icon_url($post_id),
                 'categories' => [],
                 'regions' => [],
@@ -297,8 +307,8 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
                 'featured_image' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
                 'featured_image_medium' => get_the_post_thumbnail_url($post_id, 'medium'),
             ];
-
-            // Add category data
+            
+            // Add taxonomy data
             if (!empty($categories) && !is_wp_error($categories)) {
                 foreach ($categories as $category) {
                     $item['categories'][] = [
@@ -308,8 +318,7 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
                     ];
                 }
             }
-
-            // Add region data
+            
             if (!empty($regions) && !is_wp_error($regions)) {
                 foreach ($regions as $region) {
                     $item['regions'][] = [
@@ -319,8 +328,7 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
                     ];
                 }
             }
-
-            // Add tag data
+            
             if (!empty($tags) && !is_wp_error($tags)) {
                 foreach ($tags as $tag) {
                     $item['tags'][] = [
@@ -330,13 +338,20 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
                     ];
                 }
             }
-
+            
             $data[] = $item;
+            $count++;
         }
+        
         wp_reset_postdata();
     }
-
-    return new WP_REST_Response($data, 200);
+    
+    // Add debugging info to response headers
+    $response = new WP_REST_Response($data, 200);
+    $response->header('X-GeoTour-Count', count($data));
+    $response->header('X-GeoTour-BBox', $bbox);
+    
+    return $response;
 }
 
 /**
