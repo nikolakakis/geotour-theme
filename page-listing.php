@@ -7,9 +7,6 @@
  * @package Geotour_Mobile_First
  */
 
-// Prevent caching and force fresh data
-header('Cache-Control: no-cache, must-revalidate');
-
 get_header(); ?>
 
 <div class="big-map-container">

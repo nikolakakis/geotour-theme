@@ -1,13 +1,9 @@
-// filepath: e:\visualstudio\geotour-theme\src\scss\base\_typography.scss
-
 @use '../base/variables' as variables;
 // Import the modern Sass color module
 @use 'sass:color';
 
-// Import Syne and Public Sans from Google Fonts
-// Remember to enqueue these in functions.php for best performance.
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&display=swap');
+// Google Fonts are now enqueued in functions.php for performance.
+// The @import rules have been removed from this file.
 
 // --- BASE TYPOGRAPHY ---
 body {

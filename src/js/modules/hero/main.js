@@ -56,7 +56,8 @@ function handleScrollClick(event) {
     }
 }
 
-// Parallax effect for hero background (on larger screens)
+// Parallax effect for hero background (on larger screens) - REMOVED FOR PERFORMANCE
+/*
 const heroSection = document.querySelector('.hero-section');
 if (heroSection && window.innerWidth >= 1024) {
     let ticking = false;
@@ -77,3 +78,4 @@ if (heroSection && window.innerWidth >= 1024) {
 
     window.addEventListener('scroll', requestParallax, { passive: true });
 }
+*/

@@ -303,3 +303,16 @@ function geotour_build_hierarchical_options($terms, $parent_id = 0, $level = 0, 
     
     return $output;
 }
+
+/**
+ * Enqueue Google Fonts correctly for performance.
+ */
+function geotour_enqueue_google_fonts() {
+    // Preconnect to the font server.
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
+    
+    // Enqueue the fonts stylesheet asynchronously.
+    echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&family=Syne:wght@700;800&display=swap">';
+}
+add_action('wp_head', 'geotour_enqueue_google_fonts');
