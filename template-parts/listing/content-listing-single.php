@@ -26,6 +26,7 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                 $vtour_link = get_field('vtour_link');
                 if ($vtour_link) : ?>
                     <section class="virtual-tour-full-section">
+                        <?php if (!wp_is_mobile()) : ?>
                         <!-- Desktop Virtual Tour -->
                         <div id="geotour-overlay" class="desktop-vtour">
                             <div id="geotour-tour">
@@ -38,7 +39,7 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                                 </div>
                             </div>
                         </div>
-                        
+                        <?php else : ?>
                         <!-- Mobile Virtual Tour -->
                         <div id="geotour-mobile-tour" class="mobile-vtour">
                             <a href="<?php echo esc_url($vtour_link); ?>">
@@ -49,6 +50,7 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                                 <span class="text">Opens Geotour Virtual Tour in the current position</span>
                             </a>
                         </div>
+                        <?php endif; ?>
                     </section>
                 <?php endif; ?>
                 
