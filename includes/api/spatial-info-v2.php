@@ -168,190 +168,199 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
         $maxLat = floatval(trim($coords[3]));
     }
 
-    // Create query args for WP_Query
+    // Create query args for WP_Query - IMPORTANT: Don't use -1 for posts_per_page on production!
     $query_args = [
         'post_type' => 'listing',
         'post_status' => 'publish',
-        'posts_per_page' => -1, // Get all posts, we'll filter and limit later
+        'posts_per_page' => min($per_page * 3, 999), // Use a reasonable limit, not -1
         'meta_query' => [
             [
                 'key' => 'position',
                 'compare' => 'EXISTS',
             ]
-        ]
+        ],
+        'no_found_rows' => true, // Performance optimization - don't need pagination info
+        'update_post_meta_cache' => false, // Don't need to cache meta
+        'update_post_term_cache' => true,  // We do need terms though
     ];
 
-    // Add taxonomy filters
-    $tax_query = [];
-    
-    if (!empty($listing_category)) {
-        $category_slugs = array_map('trim', explode(',', $listing_category));
-        $tax_query[] = [
-            'taxonomy' => 'listing-category',
-            'field' => 'slug',
-            'terms' => $category_slugs,
-            'operator' => 'IN'
-        ];
-    }
-
-    if (!empty($listing_region)) {
-        $region_slugs = array_map('trim', explode(',', $listing_region));
-        $tax_query[] = [
-            'taxonomy' => 'listing-region',
-            'field' => 'slug',
-            'terms' => $region_slugs,
-            'operator' => 'IN'
-        ];
-    }
-
-    if (!empty($listing_tag)) {
-        $tag_slugs = array_map('trim', explode(',', $listing_tag));
-        $tax_query[] = [
-            'taxonomy' => 'listing-tag',
-            'field' => 'slug',
-            'terms' => $tag_slugs,
-            'operator' => 'IN'
-        ];
-    }
-
-    if (!empty($tax_query)) {
-        $query_args['tax_query'] = [
-            'relation' => 'AND',
-            ...$tax_query
-        ];
-    }
-
-    // Add search if provided
+    // Handle search differently to avoid timeout issues
     if (!empty($search)) {
-        $query_args['s'] = trim($search);
+        // For search, we need a more direct approach to avoid timeouts
+        $search_term = trim($search);
         
-        // Add the filters for enhanced search
-        add_filter('posts_search', 'geotour_enhance_listing_search', 10, 2);
-        add_filter('posts_join', 'geotour_search_join_taxonomy', 10, 2);
-        add_filter('posts_where', 'geotour_search_where_taxonomy', 10, 2);
-        add_filter('posts_groupby', 'geotour_search_groupby', 10, 2);
+        // Instead of complex joins, prioritize direct title/content matches
+        $query_args['s'] = $search_term;
         
-        // Store search term globally for the filters
-        global $geotour_search_term;
-        $geotour_search_term = trim($search);
-    }
-
-    // Run the query
-    $query = new WP_Query($query_args);
-    
-    // Remove search filters after query
-    if (!empty($search)) {
-        remove_filter('posts_search', 'geotour_enhance_listing_search', 10);
-        remove_filter('posts_join', 'geotour_search_join_taxonomy', 10);
-        remove_filter('posts_where', 'geotour_search_where_taxonomy', 10);
-        remove_filter('posts_groupby', 'geotour_search_groupby', 10);
-    }
-
-    // Process the results and filter by bounding box
-    $data = [];
-    $count = 0;
-    
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $post_id = get_the_ID();
-            
-            // Get position from ACF
-            $position = get_field('position', $post_id);
-            
-            if (empty($position) || !isset($position['lat']) || !isset($position['lng'])) {
-                continue;
-            }
-            
-            $lat = floatval($position['lat']);
-            $lng = floatval($position['lng']);
-            
-            // Apply bounding box filter
-            if (!empty($bbox)) {
-                if ($lat < $minLat || $lat > $maxLat || $lng < $minLng || $lng > $maxLng) {
-                    continue; // Skip if outside bounding box
-                }
-            }
-            
-            // Limit to per_page
-            if ($count >= $per_page) {
-                break;
-            }
-            
-            // Get taxonomy data
-            $categories = get_the_terms($post_id, 'listing-category');
-            $regions = get_the_terms($post_id, 'listing-region');
-            $tags = get_the_terms($post_id, 'listing-tag');
-            
-            // Get Yoast meta description
-            $meta_description = '';
-            if (class_exists('WPSEO_Meta')) {
-                $meta_description = get_post_meta($post_id, '_yoast_wpseo_metadesc', true);
-            }
-            if (empty($meta_description)) {
-                $meta_description = get_the_excerpt();
-            }
-            
-            $item = [
-                'id' => $post_id,
-                'title' => get_the_title(),
-                'excerpt' => get_the_excerpt(),
-                'meta_description' => $meta_description,
-                'permalink' => get_permalink(),
-                'latitude' => $lat,
-                'longitude' => $lng,
-                'map_icon_url' => geotour_get_listing_map_icon_url($post_id),
-                'categories' => [],
-                'regions' => [],
-                'tags' => [],
-                'featured_image' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
-                'featured_image_medium' => get_the_post_thumbnail_url($post_id, 'medium'),
+        // We'll skip the complex custom search filters that could cause timeouts
+        // Instead, just use WordPress's native search which is more optimized
+    } else {
+        // Only add taxonomy filters for non-search queries or add them differently for search
+        $tax_query = [];
+        
+        if (!empty($listing_category)) {
+            $category_slugs = array_map('trim', explode(',', $listing_category));
+            $tax_query[] = [
+                'taxonomy' => 'listing-category',
+                'field' => 'slug',
+                'terms' => $category_slugs,
+                'operator' => 'IN'
             ];
-            
-            // Add taxonomy data
-            if (!empty($categories) && !is_wp_error($categories)) {
-                foreach ($categories as $category) {
-                    $item['categories'][] = [
-                        'id' => $category->term_id,
-                        'name' => $category->name,
-                        'slug' => $category->slug
-                    ];
+        }
+
+        if (!empty($listing_region)) {
+            $region_slugs = array_map('trim', explode(',', $listing_region));
+            $tax_query[] = [
+                'taxonomy' => 'listing-region',
+                'field' => 'slug',
+                'terms' => $region_slugs,
+                'operator' => 'IN'
+            ];
+        }
+
+        if (!empty($listing_tag)) {
+            $tag_slugs = array_map('trim', explode(',', $listing_tag));
+            $tax_query[] = [
+                'taxonomy' => 'listing-tag',
+                'field' => 'slug',
+                'terms' => $tag_slugs,
+                'operator' => 'IN'
+            ];
+        }
+
+        if (!empty($tax_query)) {
+            $query_args['tax_query'] = [
+                'relation' => 'AND',
+                ...$tax_query
+            ];
+        }
+    }
+    
+    // Set a time limit to prevent server timeouts (10 seconds should be plenty)
+    set_time_limit(10);
+    
+    // Add error handling
+    try {
+        // Run the query
+        $query = new WP_Query($query_args);
+        
+        // Process the results and filter by bounding box
+        $data = [];
+        $count = 0;
+        
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                $post_id = get_the_ID();
+                
+                // Get position from ACF
+                $position = get_field('position', $post_id);
+                
+                if (empty($position) || !isset($position['lat']) || !isset($position['lng'])) {
+                    continue;
                 }
+                
+                $lat = floatval($position['lat']);
+                $lng = floatval($position['lng']);
+                
+                // Apply bounding box filter
+                if (!empty($bbox)) {
+                    if ($lat < $minLat || $lat > $maxLat || $lng < $minLng || $lng > $maxLng) {
+                        continue; // Skip if outside bounding box
+                    }
+                }
+                
+                // Limit to per_page
+                if ($count >= $per_page) {
+                    break;
+                }
+                
+                // Get taxonomy data
+                $categories = get_the_terms($post_id, 'listing-category');
+                $regions = get_the_terms($post_id, 'listing-region');
+                $tags = get_the_terms($post_id, 'listing-tag');
+                
+                // Get Yoast meta description
+                $meta_description = '';
+                if (class_exists('WPSEO_Meta')) {
+                    $meta_description = get_post_meta($post_id, '_yoast_wpseo_metadesc', true);
+                }
+                if (empty($meta_description)) {
+                    $meta_description = get_the_excerpt();
+                }
+                
+                $item = [
+                    'id' => $post_id,
+                    'title' => get_the_title(),
+                    'excerpt' => get_the_excerpt(),
+                    'meta_description' => $meta_description,
+                    'permalink' => get_permalink(),
+                    'latitude' => $lat,
+                    'longitude' => $lng,
+                    'map_icon_url' => geotour_get_listing_map_icon_url($post_id),
+                    'categories' => [],
+                    'regions' => [],
+                    'tags' => [],
+                    'featured_image' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
+                    'featured_image_medium' => get_the_post_thumbnail_url($post_id, 'medium'),
+                ];
+                
+                // Add taxonomy data
+                if (!empty($categories) && !is_wp_error($categories)) {
+                    foreach ($categories as $category) {
+                        $item['categories'][] = [
+                            'id' => $category->term_id,
+                            'name' => $category->name,
+                            'slug' => $category->slug
+                        ];
+                    }
+                }
+                
+                if (!empty($regions) && !is_wp_error($regions)) {
+                    foreach ($regions as $region) {
+                        $item['regions'][] = [
+                            'id' => $region->term_id,
+                            'name' => $region->name,
+                            'slug' => $region->slug
+                        ];
+                    }
+                }
+                
+                if (!empty($tags) && !is_wp_error($tags)) {
+                    foreach ($tags as $tag) {
+                        $item['tags'][] = [
+                            'id' => $tag->term_id,
+                            'name' => $tag->name,
+                            'slug' => $tag->slug
+                        ];
+                    }
+                }
+                
+                $data[] = $item;
+                $count++;
             }
             
-            if (!empty($regions) && !is_wp_error($regions)) {
-                foreach ($regions as $region) {
-                    $item['regions'][] = [
-                        'id' => $region->term_id,
-                        'name' => $region->name,
-                        'slug' => $region->slug
-                    ];
-                }
-            }
-            
-            if (!empty($tags) && !is_wp_error($tags)) {
-                foreach ($tags as $tag) {
-                    $item['tags'][] = [
-                        'id' => $tag->term_id,
-                        'name' => $tag->name,
-                        'slug' => $tag->slug
-                    ];
-                }
-            }
-            
-            $data[] = $item;
-            $count++;
+            wp_reset_postdata();
         }
         
-        wp_reset_postdata();
+        // Add debugging info to response headers
+        $response = new WP_REST_Response($data, 200);
+        $response->header('X-GeoTour-Count', count($data));
+        $response->header('X-GeoTour-Query', json_encode($query_args));
+        
+        return $response;
+        
+    } catch (Exception $e) {
+        // Log the error
+        error_log('GeoTour API Error: ' . $e->getMessage());
+        
+        // Return error response
+        return new WP_REST_Response([
+            'error' => 'An error occurred while processing the request',
+            'message' => $e->getMessage(),
+            'query' => json_encode($query_args)
+        ], 500);
     }
-    
-    // Add debugging info to response headers
-    $response = new WP_REST_Response($data, 200);
-    $response->header('X-GeoTour-Count', count($data));
-    $response->header('X-GeoTour-BBox', $bbox);
-    
-    return $response;
 }
 
 /**
