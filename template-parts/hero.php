@@ -48,8 +48,19 @@ if (is_home() || is_front_page()) {
     } elseif (is_author()) {
         $hero_title = get_the_author();
         $hero_subtitle = get_the_author_meta('description');
+    } elseif (is_post_type_archive()) {
+        // For custom post type archives, get the post type object and use its label
+        $post_type = get_post_type_object(get_post_type());
+        if ($post_type) {
+            $hero_title = $post_type->label; // Use the clean label without any prefixes or HTML
+        } else {
+            // Fallback to the archive title with prefixes and HTML stripped
+            $hero_title = wp_strip_all_tags(get_the_archive_title());
+        }
+        $hero_subtitle = get_the_archive_description();
     } else {
-        $hero_title = get_the_archive_title();
+        // For other archive types, strip all HTML tags
+        $hero_title = wp_strip_all_tags(get_the_archive_title());
         $hero_subtitle = get_the_archive_description();
     }
 }
@@ -60,7 +71,10 @@ if (empty($hero_image)) {
 }
 
 // Clean up title (remove "Category:", "Tag:", etc.)
-$hero_title = str_replace(['Category: ', 'Tag: ', 'Author: '], '', $hero_title);
+$hero_title = str_replace(['Category: ', 'Tag: ', 'Author: ', 'Archives: '], '', $hero_title);
+
+// Remove any remaining HTML tags for safety
+$hero_title = wp_strip_all_tags($hero_title);
 ?>
 
 <section class="hero-section">
@@ -93,4 +107,3 @@ $hero_title = str_replace(['Category: ', 'Tag: ', 'Author: '], '', $hero_title);
         <div class="scroll-arrow"></div>
     </div>
 </section>
-                    

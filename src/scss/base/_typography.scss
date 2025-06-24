@@ -18,48 +18,55 @@ body {
 }
 
 // --- HEADINGS ---
-// Using Syne for all headings for a strong, consistent brand identity.
+// Using Syne for all headings with lighter weights and smaller, harmonious sizing
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: variables.$font-heading;
-    font-weight: 700; // Default bold weight
-    line-height: 1.25;
-    margin: 0 0 1rem 0;
+    font-weight: 400; // Default regular weight
+    line-height: 1.3; // Slightly tighter for better visual balance with Syne
+    margin: 0 0 0.8rem 0; // Reduced margin for better spacing
     color: variables.$heading-color;
 }
 
 h1, .h1 {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 600; // Extra-bold for the main title
-    letter-spacing: -0.02em;
+    font-size: clamp(1.6rem, 3.2vw, 2.2rem); // Reduced from previous sizes
+    font-weight: 600; // Semi-bold for main headings
+    letter-spacing: -0.015em; // Subtle letter spacing
+    margin-bottom: 1rem;
 }
 
 h2, .h2 {
-    font-size: clamp(2rem, 4vw, 3.25rem);
-    font-weight: 600;
-    letter-spacing: -0.015em;
+    font-size: clamp(1.4rem, 2.8vw, 1.8rem); // Reduced from previous sizes
+    font-weight: 600; // Semi-bold for section headings
+    letter-spacing: -0.01em;
+    margin-bottom: 0.9rem;
 }
 
 h3, .h3 {
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    font-weight: 400;
+    font-size: clamp(1.2rem, 2.3vw, 1.5rem); // Reduced from previous sizes
+    font-weight: 400; // Regular weight for better hierarchy
+    margin-bottom: 0.8rem;
 }
 
 h4, .h4 {
-    font-size: clamp(1.35rem, 3vw, 2rem);
-    font-weight: 300;
+    font-size: clamp(1.1rem, 1.9vw, 1.3rem); // Reduced from previous sizes
+    font-weight: 400; // Regular weight
+    margin-bottom: 0.7rem;
 }
 
 h5, .h5 {
-    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
-    font-weight: 200;
+    font-size: clamp(1rem, 1.4vw, 1.15rem); // Reduced from previous sizes
+    font-weight: 300; // Light weight
+    margin-bottom: 0.6rem;
 }
 
 h6, .h6 {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    font-weight: 200;
-    text-transform: uppercase; // Uppercase for a common use-case (e.g., sub-headings)
-    letter-spacing: 0.05em;
+    font-size: clamp(0.9rem, 1.1vw, 1rem); // Reduced from previous sizes
+    font-weight: 300; // Light weight
+    text-transform: uppercase; // Uppercase for distinction
+    letter-spacing: 0.03em; // Subtle letter spacing for caps
+    margin-bottom: 0.5rem;
+    color: variables.$text-color-muted; // Slightly muted for hierarchy
 }
 
 // --- BODY & PARAGRAPH TEXT ---
@@ -157,14 +164,72 @@ small, .small { font-size: 0.875rem; line-height: 1.5; color: variables.$text-co
 
 // Hero section styles
 .hero-title {
+    font-size: clamp(2rem, 3.8vw, 2.8rem) !important; // Reduced from previous size
+    font-weight: 600; // Semi-bold for hero
+    line-height: 1.2;
+    margin-bottom: 1.2rem;
     // UPDATED: Modern way to create a transparent shadow color
     $shadow-color: color.adjust(variables.$primary-dark, $lightness: -10%);
     text-shadow: 2px 2px 8px color.change($shadow-color, $alpha: 0.2);
 }
 
 .hero-subtitle {
-    // Uses lead styles by default
-    color: #fff; // Or #fff if on a dark background
-    text-shadow: none; // Often cleaner without a shadow on subtitles
-    font-size: 1.5rem;
+    font-size: clamp(1rem, 1.8vw, 1.2rem) !important; // Reduced from previous size
+    font-weight: 300; // Light weight for contrast
+    line-height: 1.4;
+    color: #fff;
+    text-shadow: none;
+    margin-bottom: 1rem;
+}
+
+// Listing-specific heading adjustments
+.listing-hero-section .hero-title {
+    font-size: clamp(1.7rem, 3.3vw, 2.5rem) !important; // Reduced from previous size
+}
+
+// Content area heading adjustments for better reading flow
+.content-article, 
+.listing-content,
+.main-content {
+    h1 {
+        font-size: clamp(1.5rem, 2.8vw, 2rem); // Reduced from previous size
+        margin-top: 0;
+        margin-bottom: 1.2rem;
+    }
+    
+    h2 {
+        font-size: clamp(1.3rem, 2.3vw, 1.6rem); // Reduced from previous size
+        margin-top: 2rem; // More space above section headings
+        margin-bottom: 1rem;
+    }
+    
+    h3 {
+        font-size: clamp(1.15rem, 1.8vw, 1.35rem); // Reduced from previous size
+        margin-top: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    h4, h5, h6 {
+        margin-top: 1.2rem;
+    }
+}
+
+// Sidebar heading adjustments
+.sidebar-content,
+.map-sidebar {
+    h1, h2, h3, h4, h5, h6 {
+        font-size: clamp(0.95rem, 1.4vw, 1.1rem); // Reduced from previous size
+        font-weight: 400; // Regular weight for sidebar
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+    }
+    
+    .sidebar-title {
+        font-size: clamp(0.9rem, 1.1vw, 1rem); // Reduced from previous size
+        font-weight: 400; // Regular weight instead of 600
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: variables.$text-color-muted;
+        margin-bottom: 0.75rem;
+    }
 }
