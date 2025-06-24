@@ -552,40 +552,48 @@ export class BigMapUI {
     showLoading(mapOnly = false) {
         this.isLoading = true;
         
-        const overlay = document.getElementById('map-loading-overlay');
-        if (overlay) {
-            overlay.classList.remove('hidden');
+        // Show map loading indicator
+        const mapIndicator = document.getElementById('map-loading-indicator');
+        if (mapIndicator) {
+            mapIndicator.classList.add('active');
         }
         
-        const sidebarOverlay = document.getElementById('sidebar-loading-overlay');
-        if (sidebarOverlay) {
-            sidebarOverlay.classList.add('active');
-        }
-        
-        const container = document.getElementById('listings-container');
-        if (container) {
-            container.classList.add('loading');
-        }
-        
-        const countElement = document.getElementById('results-count');
-        if (countElement) {
-            countElement.textContent = window.geotourBigMap.strings.loadingListings;
+        // Show sidebar loading indicator if not map-only
+        if (!mapOnly) {
+            const sidebarIndicator = document.getElementById('sidebar-loading-indicator');
+            if (sidebarIndicator) {
+                sidebarIndicator.classList.add('active');
+            }
+            
+            // Update text elements
+            const countElement = document.getElementById('results-count');
+            if (countElement) {
+                countElement.textContent = window.geotourBigMap.strings.loadingListings;
+            }
+            
+            const container = document.getElementById('listings-container');
+            if (container) {
+                container.classList.add('loading');
+            }
         }
     }
     
     hideLoading() {
         this.isLoading = false;
         
-        const overlay = document.getElementById('map-loading-overlay');
-        if (overlay) {
-            overlay.classList.add('hidden');
+        // Hide map loading indicator
+        const mapIndicator = document.getElementById('map-loading-indicator');
+        if (mapIndicator) {
+            mapIndicator.classList.remove('active');
         }
         
-        const sidebarOverlay = document.getElementById('sidebar-loading-overlay');
-        if (sidebarOverlay) {
-            sidebarOverlay.classList.remove('active');
+        // Hide sidebar loading indicator
+        const sidebarIndicator = document.getElementById('sidebar-loading-indicator');
+        if (sidebarIndicator) {
+            sidebarIndicator.classList.remove('active');
         }
         
+        // Remove loading class from container
         const container = document.getElementById('listings-container');
         if (container) {
             container.classList.remove('loading');

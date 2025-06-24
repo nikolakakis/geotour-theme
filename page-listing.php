@@ -17,8 +17,18 @@ get_header(); ?>
         </svg>
     </button>
 
-    <!-- Map Loading Overlay -->
-    <div id="map-loading-overlay" class="map-loading-overlay">
+    <!-- NEW: Non-blocking Map Loading Indicator -->
+    <div id="map-loading-indicator" class="map-loading-indicator">
+        <span class="loading-text"><?php _e('Loading map', 'geotour'); ?></span>
+        <div class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <!-- Old Map Loading Overlay (kept for backward compatibility) -->
+    <div id="map-loading-overlay" class="map-loading-overlay hidden">
         <div class="loading-spinner">
             <div class="spinner"></div>
             <p><?php _e('Loading map data...', 'geotour'); ?></p>
@@ -27,6 +37,11 @@ get_header(); ?>
 
     <!-- Sidebar for listings -->
     <div id="map-sidebar" class="map-sidebar">
+        <!-- NEW: Non-blocking Sidebar Loading Indicator -->
+        <div id="sidebar-loading-indicator" class="sidebar-loading-indicator">
+            <div class="progress-bar"></div>
+        </div>
+        
         <div class="sidebar-header">
             <div class="header-nav-controls">
                 <a href="<?php echo esc_url(home_url('/')); ?>" class="home-link" title="<?php _e('Go to Homepage', 'geotour'); ?>">
@@ -85,7 +100,7 @@ get_header(); ?>
                 <!-- Listings will be loaded via AJAX -->
             </div>
             
-            <!-- Sidebar Loading Overlay -->
+            <!-- Old Sidebar Loading Overlay (kept for backward compatibility) -->
             <div id="sidebar-loading-overlay" class="sidebar-loading-overlay">
                 <div class="sidebar-spinner"></div>
             </div>
