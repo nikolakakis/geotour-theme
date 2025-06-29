@@ -1,20 +1,24 @@
-// Big Map UI JavaScript Module
-// Handles the full-screen map with sidebar and AJAX listing loading
-// Uses global Leaflet provided by geotour-crete-maps plugin
+// ==========================================================================
+// BIG MAP UI - MAIN CONTROLLER
+// ==========================================================================
+// Orchestrates all big map components and handles overall functionality
+// Refactored for better organization and maintainability
+
+import { BigMapDataHandler } from './data-handler.js';
+import { BigMapMarkers } from './markers.js';
+import { BigMapSidebar } from './sidebar.js';
+import { BigMapLoadingStates } from './loading.js';
 
 export class BigMapUI {
     constructor() {
         this.map = null;
-        this.markers = {};
-        this.currentMarkers = [];
-        this.sidebar = null;
-        this.isLoading = false;
-        this.lastBounds = null;
-        this.boundsTimeout = null;
         this.searchTerm = '';
-        this.isMobile = window.innerWidth <= 1024; // Track mobile state
-        this.sidebarVisible = !this.isMobile; // Visible by default on desktop, hidden on mobile
-        this.initialBoundsFit = false; // Track if we've done initial bounds fitting
+        
+        // Initialize handlers
+        this.dataHandler = new BigMapDataHandler();
+        this.markersHandler = new BigMapMarkers();
+        this.sidebarHandler = new BigMapSidebar();
+        this.loadingStates = new BigMapLoadingStates();
         
         // Get URL parameters on initialization
         this.urlParams = new URLSearchParams(window.location.search);
@@ -32,89 +36,37 @@ export class BigMapUI {
         // Check if Leaflet is available
         if (typeof L === 'undefined') {
             console.error('Leaflet not found - make sure the geotour-crete-maps plugin is active');
-            this.showError('Map library not loaded. Please contact site administrator.');
+            this.loadingStates.showError('Map library not loaded. Please contact site administrator.');
             return;
         }
         
-        this.sidebar = document.getElementById('map-sidebar');
+        this.sidebarHandler.initialize();
         this.setupEventListeners();
         this.initializeMap();
         this.loadInitialData();
-        this.setupSidebarState(); // Set initial sidebar state
-    }
-    
-    setupSidebarState() {
-        const container = document.querySelector('.big-map-container');
-        const sidebar = this.sidebar;
-        const floatingBtn = document.getElementById('floating-sidebar-toggle');
-        
-        if (this.isMobile) {
-            // Mobile: hidden by default
-            sidebar.classList.remove('open');
-            container.classList.remove('sidebar-open');
-            if (floatingBtn) floatingBtn.style.display = 'block';
-        } else {
-            // Desktop: visible by default
-            sidebar.classList.remove('hidden');
-            if (floatingBtn) floatingBtn.style.display = 'none';
-        }
     }
     
     setupEventListeners() {
-        // Sidebar toggle for all screen sizes
-        const toggleBtn = document.getElementById('sidebar-toggle');
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', () => this.toggleSidebar());
-        }
+        // Map controls
+        document.getElementById('locate-me')?.addEventListener('click', () => {
+            this.markersHandler.locateUser(this.map);
+        });
         
-        // Floating sidebar toggle button
-        const floatingToggleBtn = document.getElementById('floating-sidebar-toggle');
-        if (floatingToggleBtn) {
-            floatingToggleBtn.addEventListener('click', () => this.toggleSidebar());
-        }
+        document.getElementById('fit-bounds')?.addEventListener('click', () => {
+            this.markersHandler.fitBounds(this.map);
+        });
         
-        // Map click to hide sidebar on mobile
-        // This will be added after map initialization
+        document.getElementById('reset-view')?.addEventListener('click', () => {
+            this.resetView();
+        });
         
-        // Window resize handler
+        // Window resize handler for map
         window.addEventListener('resize', () => {
-            const wasMobile = this.isMobile;
-            this.isMobile = window.innerWidth <= 1024;
-            
-            // Reset sidebar state if screen size category changed
-            if (wasMobile !== this.isMobile) {
-                this.setupSidebarState();
-            }
-            
-            // Always resize map on window resize
             if (this.map) {
                 setTimeout(() => {
                     this.map.invalidateSize();
                 }, 100);
             }
-        });
-        
-        // Map controls
-        document.getElementById('locate-me')?.addEventListener('click', () => this.locateUser());
-        document.getElementById('fit-bounds')?.addEventListener('click', () => this.fitBounds());
-        document.getElementById('reset-view')?.addEventListener('click', () => this.resetView());
-        
-        // Filter controls
-        document.querySelectorAll('.remove-filter').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const url = button.getAttribute('href');
-                if (url) {
-                    window.location.href = url;
-                }
-            });
-        });
-        
-        document.querySelectorAll('.clear-filters').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.clearAllFilters();
-            });
         });
     }
     
@@ -146,465 +98,93 @@ export class BigMapUI {
         
         // Add map click event to hide sidebar on mobile
         this.map.on('click', () => {
-            if (this.isMobile && this.sidebarVisible) {
-                this.hideSidebarOnMobile();
+            if (this.sidebarHandler.getIsMobile() && this.sidebarHandler.getSidebarVisibility()) {
+                this.sidebarHandler.hideSidebarOnMobile();
             }
         });
     }
     
     async loadInitialData() {
-        this.showLoading(true);
+        this.loadingStates.showLoading(true);
         
         try {
-            const data = await this.fetchListings();
-            this.updateMap(data);
-            this.updateSidebar(data);
+            const data = await this.dataHandler.fetchListings();
+            this.updateMapAndSidebar(data);
         } catch (error) {
             console.error('Error loading initial data:', error);
-            this.showError(window.geotourBigMap.strings.loadingError);
+            this.loadingStates.showError(window.geotourBigMap.strings.loadingError);
         } finally {
-            this.hideLoading();
+            this.loadingStates.hideLoading();
         }
     }
-    
-    async fetchListings(bbox = null) {
-        const params = new URLSearchParams();
-        
-        // Add bounding box if provided
-        if (bbox) {
-            params.append('bbox', bbox);
-        }
-        
-        // Add URL parameter filters if they exist
-        if (window.geotourBigMap.urlParams.category) {
-            params.append('listing_category', window.geotourBigMap.urlParams.category);
-        }
-        if (window.geotourBigMap.urlParams.region) {
-            params.append('listing_region', window.geotourBigMap.urlParams.region);
-        }
-        if (window.geotourBigMap.urlParams.tag) {
-            params.append('listing_tag', window.geotourBigMap.urlParams.tag);
-        }
-        
-        // Add search parameter if it exists
-        if (window.geotourBigMap.urlParams.search) {
-            params.append('search', window.geotourBigMap.urlParams.search);
-        }
-        
-        const url = `${window.geotourBigMap.apiUrl}?${params.toString()}`;
-        console.log('Fetching listings with filters:', params.toString());
-        
-        const response = await fetch(url, {
-            headers: {
-                'X-WP-Nonce': window.geotourBigMap.nonce
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        return data;
-    }
-    
-    updateMap(listings) {
-        // Clear existing markers
-        this.currentMarkers.forEach(marker => {
-            this.map.removeLayer(marker);
-        });
-        this.currentMarkers = [];
-        
-        // Add new markers
-        listings.forEach(listing => {
-            if (listing.latitude && listing.longitude) {
-                const marker = this.createMarker(listing);
-                this.currentMarkers.push(marker);
-                marker.addTo(this.map);
-            }
-        });
-        
-        // Only fit bounds on initial load, not on every pan/zoom
-        if (this.currentMarkers.length > 0 && !this.initialBoundsFit) {
-            const group = new L.featureGroup(this.currentMarkers);
-            this.map.fitBounds(group.getBounds().pad(0.1));
-            this.initialBoundsFit = true;
-        }
-    }
-    
-    createMarker(listing) {
-        // Create custom icon using the map icon URL from API
-        const icon = L.divIcon({
-            className: 'custom-map-marker',
-            html: `<img src="${listing.map_icon_url}" alt="${listing.title}" class="marker-pin" style="width: 32px; height: 32px;" onerror="this.src='${window.geotourBigMap.defaultIconUrl || '/wp-content/themes/geotour-theme/assets/map-pins/default.svg'}'">`,
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        });
-        
-        const marker = L.marker([listing.latitude, listing.longitude], { icon });
-        
-        // Create popup content
-        const popupContent = this.createPopupContent(listing);
-        marker.bindPopup(popupContent);
-        
-        // Add click event to highlight in sidebar
-        marker.on('click', () => {
-            this.highlightListing(listing.id);
-            
-            // Hide sidebar on mobile when marker is clicked
-            if (this.isMobile) {
-                this.hideSidebarOnMobile();
-            }
-        });
-        
-        return marker;
-    }
-    
-    createPopupContent(listing) {
-        const categories = listing.categories.map(cat => cat.name).join(', ');
-        const regions = listing.regions.map(reg => reg.name).join(', ');
-        
-        return `
-            <div class="map-popup">
-                <h4>${listing.title}</h4>
-                ${listing.featured_image_medium ? `<img src="${listing.featured_image_medium}" alt="${listing.title}" class="popup-image">` : ''}
-                <p>${listing.meta_description || listing.excerpt}</p>
-                ${categories ? `<div class="popup-meta"><strong>Categories:</strong> ${categories}</div>` : ''}
-                ${regions ? `<div class="popup-meta"><strong>Regions:</strong> ${regions}</div>` : ''}
-                <a href="${listing.permalink}" class="popup-link">View Details</a>
-            </div>
-        `;
-    }
-    
-    updateSidebar(listings) {
-        const container = document.getElementById('listings-container');
-        const countElement = document.getElementById('results-count');
-        
-        if (!container || !countElement) return;
-        
-        // Update count
-        const count = listings.length;
-        countElement.textContent = window.geotourBigMap.strings.resultsFound.replace('{count}', count);
-        
-        // Clear container
-        container.innerHTML = '';
-        
-        if (count === 0) {
-            container.innerHTML = `<div class="no-results">${window.geotourBigMap.strings.noResults}</div>`;
-            return;
-        }
-        
-        // Add listings
-        listings.forEach(listing => {
-            const item = this.createListingItem(listing);
-            container.appendChild(item);
-        });
-    }
-    
-    createListingItem(listing) {
-        const item = document.createElement('div');
-        item.className = 'listing-item';
-        item.dataset.listingId = listing.id;
-        
-        const categories = listing.categories.map(cat => 
-            `<span class="meta-tag meta-category" data-filter-type="listing-category" data-filter-value="${cat.slug}">${cat.name}</span>`
-        ).join('');
-        
-        const regions = listing.regions.map(reg => 
-            `<span class="meta-tag meta-region" data-filter-type="listing-region" data-filter-value="${reg.slug}">${reg.name}</span>`
-        ).join('');
-        
-        const tags = listing.tags.map(tag => 
-            `<span class="meta-tag meta-tag-item" data-filter-type="listing-tag" data-filter-value="${tag.slug}">${tag.name}</span>`
-        ).join('');
-        
-        const thumbnailHtml = listing.featured_image 
-            ? `<img src="${listing.featured_image}" alt="${listing.title}" class="listing-thumbnail">`
-            : `<div class="listing-thumbnail"></div>`;
-        
-        item.innerHTML = `
-            ${thumbnailHtml}
-            <div class="listing-content">
-                <div class="listing-title">${listing.title}</div>
-                <div class="listing-description">${listing.meta_description || listing.excerpt}</div>
-                <div class="listing-meta">
-                    ${categories}
-                    ${regions}
-                    ${tags}
-                </div>
-            </div>
-        `;
-        
-        // Add click event for the item itself
-        item.addEventListener('click', (e) => {
-            // Don't trigger if clicking on a meta tag
-            if (!e.target.classList.contains('meta-tag')) {
-                this.highlightListing(listing.id);
-                this.panToListing(listing);
-                
-                // Hide sidebar on mobile after clicking a listing
-                if (this.isMobile) {
-                    this.hideSidebarOnMobile();
-                }
-            }
-        });
-        
-        // Add click events for meta tags (categories, regions, tags)
-        item.querySelectorAll('.meta-tag[data-filter-type]').forEach(tag => {
-            tag.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent item click
-                const filterType = tag.dataset.filterType;
-                const filterValue = tag.dataset.filterValue;
-                this.applyFilter(filterType, filterValue);
-            });
-        });
-        
-        return item;
-    }
-    
-    highlightListing(listingId) {
-        // Remove previous highlights
-        document.querySelectorAll('.listing-item.active').forEach(item => {
-            item.classList.remove('active');
-        });
-        
-        // Add highlight to current item
-        const item = document.querySelector(`[data-listing-id="${listingId}"]`);
-        if (item) {
-            item.classList.add('active');
-            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }
-    
-    panToListing(listing) {
-        if (this.map && listing.latitude && listing.longitude) {
-            // Pan to the listing location
-            this.map.setView([listing.latitude, listing.longitude], Math.max(this.map.getZoom(), 14));
-            
-            // Find and open the corresponding marker popup
-            this.currentMarkers.forEach(marker => {
-                const markerLatLng = marker.getLatLng();
-                // Check if this marker matches the listing coordinates (with small tolerance for floating point precision)
-                if (Math.abs(markerLatLng.lat - listing.latitude) < 0.00001 && 
-                    Math.abs(markerLatLng.lng - listing.longitude) < 0.00001) {
-                    
-                    // Open the popup with a small delay to ensure map panning is complete
-                    setTimeout(() => {
-                        marker.openPopup();
-                    }, 300);
-                }
-            });
-        }
-    }
-    
     
     async onMapMoveEnd() {
-        if (this.isLoading) return;
+        if (this.loadingStates.getLoadingState()) return;
         
-        // Debounce the bounding box updates
-        if (this.boundsTimeout) {
-            clearTimeout(this.boundsTimeout);
-        }
-        
-        this.boundsTimeout = setTimeout(async () => {
-            // Get current bounding box
-            const bounds = this.map.getBounds();
-            const bbox = `${bounds.getWest().toFixed(6)},${bounds.getSouth().toFixed(6)},${bounds.getEast().toFixed(6)},${bounds.getNorth().toFixed(6)}`;
-            
-            // Check if bounds have changed significantly (prevent duplicate calls)
-            if (this.lastBounds && this.lastBounds === bbox) {
-                return;
-            }
-            
-            this.lastBounds = bbox;
-            console.log('Map bounds changed, fetching new data for bbox:', bbox);
-            
-            try {
-                this.showLoading(true); // Show loading for both map and sidebar
-                const data = await this.fetchListings(bbox);
-                this.updateMap(data);    // Update map markers
-                this.updateSidebar(data); // Update sidebar with same data
-            } catch (error) {
-                console.error('Error loading data for current view:', error);
-                this.showError('Error loading listings. Please try again.');
-            } finally {
-                this.hideLoading();
-            }
-        }, 1000); // Increased debounce to 1 second to reduce API calls
-    }
-    
-    toggleSidebar() {
-        const container = document.querySelector('.big-map-container');
-        const sidebar = this.sidebar;
-        const floatingBtn = document.getElementById('floating-sidebar-toggle');
-        
-        if (this.isMobile) {
-            // Mobile behavior: use open/close classes
-            const isOpen = sidebar.classList.contains('open');
-            if (isOpen) {
-                sidebar.classList.remove('open');
-                container.classList.remove('sidebar-open');
-                this.sidebarVisible = false;
-            } else {
-                sidebar.classList.add('open');
-                container.classList.add('sidebar-open');
-                this.sidebarVisible = true;
-            }
-        } else {
-            // Desktop behavior: use hidden class
-            const isHidden = sidebar.classList.contains('hidden');
-            if (isHidden) {
-                sidebar.classList.remove('hidden');
-                this.sidebarVisible = true;
-                if (floatingBtn) floatingBtn.style.display = 'none';
-            } else {
-                sidebar.classList.add('hidden');
-                this.sidebarVisible = false;
-                if (floatingBtn) floatingBtn.style.display = 'block';
-            }
-            
-            // Force map resize after sidebar toggle on desktop
-            setTimeout(() => {
-                if (this.map) {
-                    this.map.invalidateSize();
-                }
-            }, 300); // Wait for CSS transition to complete
+        try {
+            await this.dataHandler.onMapMoveEnd(this.map, (data) => {
+                this.loadingStates.showLoading(true);
+                this.updateMapAndSidebar(data);
+                this.loadingStates.hideLoading();
+            });
+        } catch (error) {
+            console.error('Error loading data for current view:', error);
+            this.loadingStates.showError('Error loading listings. Please try again.');
+            this.loadingStates.hideLoading();
         }
     }
     
-    hideSidebarOnMobile() {
-        if (!this.isMobile) return;
+    updateMapAndSidebar(listings) {
+        // Update map markers
+        this.markersHandler.updateMap(this.map, listings);
         
-        const container = document.querySelector('.big-map-container');
-        const sidebar = this.sidebar;
-        
-        sidebar.classList.remove('open');
-        container.classList.remove('sidebar-open');
-        this.sidebarVisible = false;
-    }
-    
-    locateUser() {
-        if (!navigator.geolocation) {
-            alert('Geolocation is not supported by this browser.');
-            return;
-        }
-        
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                this.map.setView([latitude, longitude], 14);
-                
-                // Add user marker
-                L.marker([latitude, longitude], {
-                    icon: L.divIcon({
-                        className: 'user-location-marker',
-                        html: '<div class="user-marker">📍</div>',
-                        iconSize: [20, 20],
-                        iconAnchor: [10, 10]
-                    })
-                }).addTo(this.map);
-            },
-            (error) => {
-                console.error('Error getting location:', error);
-                alert('Could not get your location. Please check your browser permissions.');
+        // Add click handlers to markers
+        const markers = this.markersHandler.getCurrentMarkers();
+        markers.forEach((marker, index) => {
+            if (listings[index]) {
+                this.markersHandler.addMarkerClickHandler(marker, listings[index].id, (listingId) => {
+                    this.handleMarkerClick(listingId);
+                });
             }
-        );
+        });
+        
+        // Update sidebar
+        this.sidebarHandler.updateSidebar(listings);
+        
+        // Add handlers to listing items
+        listings.forEach(listing => {
+            const item = document.querySelector(`[data-listing-id="${listing.id}"]`);
+            if (item) {
+                this.sidebarHandler.addListingItemHandlers(
+                    item, 
+                    listing,
+                    (listing) => this.handleListingClick(listing),
+                    (filterType, filterValue) => this.handleFilterClick(filterType, filterValue)
+                );
+            }
+        });
     }
     
-    fitBounds() {
-        if (this.currentMarkers.length > 0) {
-            const group = new L.featureGroup(this.currentMarkers);
-            this.map.fitBounds(group.getBounds().pad(0.1));
+    handleMarkerClick(listingId) {
+        this.sidebarHandler.highlightListing(listingId);
+        
+        // Hide sidebar on mobile when marker is clicked
+        if (this.sidebarHandler.getIsMobile()) {
+            this.sidebarHandler.hideSidebarOnMobile();
         }
+    }
+    
+    handleListingClick(listing) {
+        this.sidebarHandler.highlightListing(listing.id);
+        this.markersHandler.panToListing(this.map, listing);
+    }
+    
+    handleFilterClick(filterType, filterValue) {
+        this.sidebarHandler.applyFilter(filterType, filterValue);
     }
     
     resetView() {
         this.map.setView(window.geotourBigMap.defaultCenter, window.geotourBigMap.defaultZoom);
-    }
-    
-    applyFilter(filterType, filterValue) {
-        // Build new URL with filter
-        const url = new URL(window.location);
-        
-        // Add or update the filter parameter
-        url.searchParams.set(filterType, filterValue);
-        
-        // Navigate to the filtered URL
-        window.location.href = url.toString();
-    }
-    
-    removeFilter(filterType) {
-        // Build new URL without specific filter
-        const url = new URL(window.location);
-        url.searchParams.delete(filterType);
-        
-        // Navigate to the URL without this filter
-        window.location.href = url.toString();
-    }
-    
-    clearAllFilters() {
-        // Navigate to clean listing page
-        window.location.href = '/listing';
-    }
-    
-    showLoading(mapOnly = false) {
-        this.isLoading = true;
-        
-        // Show map loading indicator
-        const mapIndicator = document.getElementById('map-loading-indicator');
-        if (mapIndicator) {
-            mapIndicator.classList.add('active');
-        }
-        
-        // Show sidebar loading indicator if not map-only
-        if (!mapOnly) {
-            const sidebarIndicator = document.getElementById('sidebar-loading-indicator');
-            if (sidebarIndicator) {
-                sidebarIndicator.classList.add('active');
-            }
-            
-            // Update text elements
-            const countElement = document.getElementById('results-count');
-            if (countElement) {
-                countElement.textContent = window.geotourBigMap.strings.loadingListings;
-            }
-            
-            const container = document.getElementById('listings-container');
-            if (container) {
-                container.classList.add('loading');
-            }
-        }
-    }
-    
-    hideLoading() {
-        this.isLoading = false;
-        
-        // Hide map loading indicator
-        const mapIndicator = document.getElementById('map-loading-indicator');
-        if (mapIndicator) {
-            mapIndicator.classList.remove('active');
-        }
-        
-        // Hide sidebar loading indicator
-        const sidebarIndicator = document.getElementById('sidebar-loading-indicator');
-        if (sidebarIndicator) {
-            sidebarIndicator.classList.remove('active');
-        }
-        
-        // Remove loading class from container
-        const container = document.getElementById('listings-container');
-        if (container) {
-            container.classList.remove('loading');
-        }
-    }
-    
-    showError(message) {
-        const container = document.getElementById('listings-container');
-        if (container) {
-            container.innerHTML = `<div class="error-message">${message}</div>`;
-        }
     }
 }
 
