@@ -1,0 +1,51 @@
+// ==========================================================================
+// BIG MAP CONTROLS AND INTERACTIONS
+// ==========================================================================
+// Map control buttons and interactive elements
+
+@use '../../base/variables' as vars;
+@use 'sass:color';
+
+// Map controls
+.map-controls {
+    position: absolute;
+    top: 70px; // Moved down from 20px to avoid zoom controls
+    right: 20px;
+    z-index: 1200;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    
+    @media (max-width: 768px) {
+        top: 60px; // Moved down from 10px
+        right: 10px;
+    }
+}
+
+.map-control-btn {
+    width: 44px;
+    height: 44px;
+    background: white;
+    border: 1px solid color.change(vars.$primary-color, $alpha: 0.2);
+    border-radius: 8px;
+    color: vars.$primary-color;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px color.change(vars.$primary-color, $alpha: 0.1);
+    
+    &:hover {
+        background: vars.$primary-color;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px color.change(vars.$primary-color, $alpha: 0.3);
+    }
+    
+    svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+    }
+}

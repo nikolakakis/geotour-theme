@@ -1,0 +1,144 @@
+// ==========================================================================
+// BIG MAP LISTINGS CONTAINER
+// ==========================================================================
+// Styles for the listings display in sidebar
+
+@use '../../base/variables' as vars;
+@use 'sass:color';
+
+.listings-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+    
+    .listing-item {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid color.change(vars.$primary-color, $alpha: 0.05);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        gap: 1rem;
+        
+        &:hover {
+            background: color.change(vars.$primary-color, $alpha: 0.05);
+            transform: translateX(4px);
+        }
+        
+        &.active {
+            background: color.change(vars.$primary-color, $alpha: 0.1);
+            border-left: 4px solid vars.$primary-color;
+        }
+        
+        .listing-thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: color.change(vars.$primary-color, $alpha: 0.1);
+            flex-shrink: 0;
+            
+            // Placeholder when no image
+            &::before {
+                content: '📍';
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                font-size: 1.5rem;
+                color: vars.$primary-color;
+            }
+        }
+        
+        .listing-content {
+            flex: 1;
+            min-width: 0; // Allow content to shrink
+        }
+        
+        .listing-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: vars.$heading-color;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            
+            // Truncate long titles
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .listing-description {
+            font-size: 0.85rem;
+            color: vars.$text-color-muted;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+            
+            // Limit to 2 lines
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2; // Standard property
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .listing-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            
+            .meta-tag {
+                background: color.change(vars.$primary-color, $alpha: 0.1);
+                color: vars.$primary-color;
+                padding: 0.2rem 0.5rem;
+                border-radius: 12px;
+                font-size: 0.7rem;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                
+                // Make taxonomy tags clickable
+                &[data-filter-type] {
+                    cursor: pointer;
+                    
+                    &:hover {
+                        background: vars.$primary-color;
+                        color: white;
+                        transform: translateY(-1px);
+                        box-shadow: 0 2px 4px color.change(vars.$primary-color, $alpha: 0.3);
+                    }
+                }
+                
+                // Different colors for different taxonomy types
+                &.meta-category {
+                    background: color.change(#059669, $alpha: 0.1); // emerald
+                    color: #059669;
+                    
+                    &:hover {
+                        background: #059669;
+                        color: white;
+                    }
+                }
+                
+                &.meta-region {
+                    background: color.change(#dc2626, $alpha: 0.1); // red
+                    color: #dc2626;
+                    
+                    &:hover {
+                        background: #dc2626;
+                        color: white;
+                    }
+                }
+                
+                &.meta-tag-item {
+                    background: color.change(#7c3aed, $alpha: 0.1); // violet
+                    color: #7c3aed;
+                    
+                    &:hover {
+                        background: #7c3aed;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}

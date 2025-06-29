@@ -1,0 +1,46 @@
+// ==========================================================================
+// BIG MAP CONTAINER STYLES
+// ==========================================================================
+// Main container and layout styles for the full-screen map interface
+
+@use '../../base/variables' as vars;
+@use 'sass:color';
+
+// Main container - full viewport
+.big-map-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    overflow: hidden;
+    
+    // Container adjustments when sidebar is hidden
+    .map-sidebar.hidden ~ .big-map {
+        width: 100vw;
+        left: 0;
+    }
+    
+    // Mobile sidebar behavior
+    @media (max-width: 1024px) {
+        &.sidebar-open {
+            .map-sidebar {
+                transform: translateX(0);
+            }
+        }
+    }
+}
+
+// Main map
+.big-map {
+    flex: 1;
+    position: relative;
+    transition: all 0.3s ease;
+    
+    .leaflet-container {
+        width: 100%;
+        height: 100%;
+    }
+}

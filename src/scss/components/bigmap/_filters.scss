@@ -1,0 +1,185 @@
+// ==========================================================================
+// BIG MAP FILTERS AND RESULTS
+// ==========================================================================
+// Filter display and results section styles
+
+@use '../../base/variables' as vars;
+@use 'sass:color';
+
+// Results section
+.sidebar-results {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative; // For loading overlay
+}
+
+// Active filters display
+.active-filters {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid color.change(vars.$primary-color, $alpha: 0.1);
+    background: color.change(vars.$primary-color, $alpha: 0.02);
+    
+    .filters-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        
+        span {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: vars.$heading-color;
+        }
+        
+        .clear-filters {
+            font-size: 0.8rem;
+            color: vars.$primary-color;
+            text-decoration: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+            
+            &:hover {
+                background: color.change(vars.$primary-color, $alpha: 0.1);
+                text-decoration: none;
+            }
+        }
+    }
+    
+    .filter-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        
+        .filter-tag {
+            background: vars.$primary-color;
+            color: white;
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            
+            &.filter-category {
+                background: #059669; // emerald-600
+            }
+            
+            &.filter-region {
+                background: #dc2626; // red-600
+            }
+            
+            &.filter-tag {
+                background: #7c3aed; // violet-600
+            }
+            
+            .remove-filter {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 1.1rem;
+                line-height: 1;
+                opacity: 0.8;
+                transition: opacity 0.2s ease;
+                
+                &:hover {
+                    opacity: 1;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+// Results header
+.results-header {
+    padding: 1rem 1.5rem;
+    background: color.change(vars.$background-color, $alpha: 0.3);
+    border-bottom: 1px solid color.change(vars.$primary-color, $alpha: 0.1);
+    
+    #results-count {
+        font-weight: 600;
+        color: vars.$heading-color;
+        font-size: 0.9rem;
+    }
+}
+
+// Search box styles
+.map-search-box {
+    position: relative;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    input[type="text"] {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        
+        &:focus {
+            outline: none;
+            border-color: var(--primary-color, #22a575);
+        }
+    }
+
+    button {
+        padding: 8px 12px;
+        background: var(--primary-color, #22a575);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 36px;
+        
+        &:hover {
+            background: var(--primary-color-dark, #1e8a66);
+        }
+
+        &#map-search-clear {
+            background: #dc3545;
+            min-width: 30px;
+            
+            &:hover {
+                background: #c82333;
+            }
+        }
+    }
+}
+
+// Error and empty states
+.error-message,
+.no-results {
+    padding: 2rem;
+    text-align: center;
+    color: vars.$text-color-muted;
+    font-style: italic;
+}
+
+.no-results {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+
+    button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background: var(--primary-color, #22a575);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        
+        &:hover {
+            background: var(--primary-color-dark, #1e8a66);
+        }
+    }
+}

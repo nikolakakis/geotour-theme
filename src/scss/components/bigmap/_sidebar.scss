@@ -1,0 +1,184 @@
+// ==========================================================================
+// BIG MAP SIDEBAR STYLES
+// ==========================================================================
+// Sidebar layout, header, and responsive behavior
+
+@use '../../base/variables' as vars;
+@use 'sass:color';
+
+// Sidebar
+.map-sidebar {
+    width: 400px;
+    background: white;
+    border-right: 1px solid color.change(vars.$primary-color, $alpha: 0.1);
+    display: flex;
+    flex-direction: column;
+    z-index: 1100;
+    box-shadow: 4px 0 15px color.change(vars.$primary-color, $alpha: 0.1);
+    transition: transform 0.3s ease;
+    
+    // Hide sidebar when toggled (all screen sizes)
+    &.hidden {
+        transform: translateX(-100%);
+    }
+    
+    @media (max-width: 1024px) {
+        width: 350px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        transform: translateX(-100%); // Hidden by default on mobile
+        
+        &.open {
+            transform: translateX(0);
+        }
+        
+        &.hidden {
+            transform: translateX(-100%);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        width: 100vw;
+        max-width: 400px;
+    }
+    
+    @media (max-width: 480px) {
+        width: 320px;
+    }
+}
+
+// Sidebar header
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid color.change(vars.$primary-color, $alpha: 0.1);
+    background: linear-gradient(135deg, vars.$primary-color, vars.$primary-light);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .header-nav-controls {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        
+        .home-link {
+            background: rgba(white, 0.1);
+            border: 1px solid rgba(white, 0.2);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            
+            svg {
+                width: 18px;
+                height: 18px;
+                fill: currentColor;
+            }
+            
+            &:hover {
+                background: rgba(white, 0.2);
+                transform: translateY(-1px);
+            }
+        }
+    }
+    
+    h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        flex: 1;
+        text-align: center;
+        
+        @media (max-width: 480px) {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+// Sidebar toggle button
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    display: block; // Always visible instead of display: none
+    
+    svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+        transition: transform 0.2s ease;
+    }
+    
+    &:hover {
+        background: color.change(white, $alpha: 0.1);
+        
+        svg {
+            transform: translateX(-2px);
+        }
+    }
+}
+
+// Floating sidebar toggle button for all screen sizes
+.floating-sidebar-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1300;
+    background: vars.$primary-color;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(vars.$primary-color, 0.4);
+    transition: all 0.3s ease;
+    display: none;
+    
+    svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+    }
+    
+    &:hover {
+        background: color.change(vars.$primary-color, $lightness: -10%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(vars.$primary-color, 0.5);
+        
+        svg {
+            transform: translateX(2px);
+        }
+    }
+    
+    // Show when sidebar is hidden on desktop OR when on mobile
+    @media (max-width: 1024px) {
+        display: block;
+    }
+    
+    // Show on desktop when sidebar is hidden
+    @media (min-width: 1025px) {
+        .map-sidebar.hidden ~ & {
+            display: block;
+        }
+    }
+    
+    // Hide when sidebar is open on mobile
+    .big-map-container.sidebar-open & {
+        @media (max-width: 1024px) {
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+}
