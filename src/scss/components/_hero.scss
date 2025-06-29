@@ -21,6 +21,37 @@
         rgba(variables.$primary-dark, 0.9)
     );
     
+    // Parallax-optimized hero background image (similar to homepage)
+    .hero-background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        // Make image taller than container for parallax movement - stronger effect
+        height: 140%;
+        object-fit: cover;
+        object-position: center;
+        z-index: 1;
+        
+        // Initial transform state for parallax
+        transform: translateY(0);
+        will-change: transform; // Hint to browser for GPU optimization
+        
+        @media (max-width: 768px) {
+            // Disable parallax on mobile for better performance
+            height: 100%;
+            transform: none;
+            will-change: auto;
+        }
+        
+        // Respect user's motion preferences
+        @media (prefers-reduced-motion: reduce) {
+            transform: none !important;
+            will-change: auto;
+            height: 100%;
+        }
+    }
+    
     // Adjust for different screen sizes
     @media (min-width: 768px) {
         min-height: 80vh;

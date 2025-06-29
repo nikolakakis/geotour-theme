@@ -8,6 +8,7 @@ import { initializeHero } from './modules/hero/main.js';
 import { initializeAllMaps } from './modules/maps/main.js';
 import { initializeGallery } from './modules/gallery/main.js';
 import { BigMapUI } from './modules/big-map/main.js';
+import { HeroParallax } from './modules/hero/parallax.js';
 
 // Check if Leaflet is available globally (from plugin)
 if (typeof L !== 'undefined') {
@@ -60,4 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+// Initialize homepage parallax effect
+initializeHomepageParallax();
 });
