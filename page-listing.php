@@ -3,21 +3,19 @@
  * Template Name: Listing Map
  * Template for the Listing Map UI
  * Full-screen map with sidebar for spatial navigation
- *
+ * page-listing.php
  * @package Geotour_Mobile_First
  */
 
 get_header(); ?>
 
 <div class="big-map-container">
-    <!-- Floating Sidebar Toggle Button -->
     <button id="floating-sidebar-toggle" class="floating-sidebar-toggle" title="<?php _e('Show listings', 'geotour'); ?>">
         <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
         </svg>
     </button>
 
-    <!-- NEW: Non-blocking Map Loading Indicator -->
     <div id="map-loading-indicator" class="map-loading-indicator">
         <span class="loading-text"><?php _e('Loading map', 'geotour'); ?></span>
         <div class="dots-container">
@@ -27,7 +25,6 @@ get_header(); ?>
         </div>
     </div>
 
-    <!-- Old Map Loading Overlay (kept for backward compatibility) -->
     <div id="map-loading-overlay" class="map-loading-overlay hidden">
         <div class="loading-spinner">
             <div class="spinner"></div>
@@ -35,9 +32,7 @@ get_header(); ?>
         </div>
     </div>
 
-    <!-- Sidebar for listings -->
     <div id="map-sidebar" class="map-sidebar">
-        <!-- NEW: Non-blocking Sidebar Loading Indicator -->
         <div id="sidebar-loading-indicator" class="sidebar-loading-indicator">
             <div class="progress-bar"></div>
         </div>
@@ -58,9 +53,7 @@ get_header(); ?>
             </button>
         </div>
         
-        <!-- Results -->
         <div class="sidebar-results">
-            <!-- Active Filters Display -->
             <?php 
             $active_filters = array();
             if (!empty($_GET['listing-category'])) {
@@ -97,22 +90,17 @@ get_header(); ?>
                 <span id="results-count"><?php _e('Loading...', 'geotour'); ?></span>
             </div>
             <div id="listings-container" class="listings-container">
-                <!-- Listings will be loaded via AJAX -->
-            </div>
+                </div>
             
-            <!-- Old Sidebar Loading Overlay (kept for backward compatibility) -->
             <div id="sidebar-loading-overlay" class="sidebar-loading-overlay">
                 <div class="sidebar-spinner"></div>
             </div>
         </div>
     </div>
     
-    <!-- Map Container -->
     <div id="big-map" class="big-map">
-        <!-- Map will be initialized here -->
-    </div>
+        </div>
     
-    <!-- Map Controls -->
     <div class="map-controls">
         <button id="locate-me" class="map-control-btn" title="<?php _e('Find my location', 'geotour'); ?>">
             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -137,12 +125,13 @@ get_header(); ?>
 <script>
 // Pass PHP data to JavaScript
 window.geotourBigMap = {
-    apiUrl: '<?php echo esc_js(rest_url('geotour/v2/spatial-info')); ?>',
+    // 1. UPDATED API URL
+    apiUrl: '<?php echo esc_js(rest_url('geotour/v3/spatial-info')); ?>',
     nonce: '<?php echo wp_create_nonce('wp_rest'); ?>',
     defaultCenter: [35.2401, 24.8093], // Heraklion, Crete
     defaultZoom: 10,
     defaultIconUrl: 'data:image/svg+xml;base64,<?php echo base64_encode('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3b82f6"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>'); ?>',
-    // URL parameters for filtering
+    // 2. UPDATED URL PARAMS (using new v3 keys)
     urlParams: {
         category: '<?php echo esc_js(isset($_GET['listing-category']) ? sanitize_text_field($_GET['listing-category']) : ''); ?>',
         region: '<?php echo esc_js(isset($_GET['listing-region']) ? sanitize_text_field($_GET['listing-region']) : ''); ?>',
