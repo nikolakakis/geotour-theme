@@ -36,17 +36,24 @@
             object-fit: cover;
             background: color.change(vars.$primary-color, $alpha: 0.1);
             flex-shrink: 0;
+            position: relative;
             
-            // Placeholder when no image
+            // Placeholder when no image - Styled "G" for Geotour
             &::before {
-                content: '📍';
+                content: 'G';
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 width: 100%;
                 height: 100%;
-                font-size: 1.5rem;
-                color: vars.$primary-color;
+                font-family: vars.$font-heading; // Use Syne font
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: vars.$primary-dark;
+                text-shadow: 
+                    0 1px 2px color.change(vars.$primary-dark, $alpha: 0.3),
+                    0 2px 4px color.change(vars.$primary-dark, $alpha: 0.1);
+                letter-spacing: 0;
             }
         }
         
