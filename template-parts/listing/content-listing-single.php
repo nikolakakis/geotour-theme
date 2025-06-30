@@ -90,6 +90,9 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                     );
                     ?>
                 </footer>
+                
+                <!-- Cretan Timeline Display -->
+                <div id="cretan-timeline-display"></div>
 
             </article>
         </div>
