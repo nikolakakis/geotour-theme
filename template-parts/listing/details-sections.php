@@ -212,8 +212,10 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                                             <?php if ($key === 'price' || $key === 'prices_notes') : ?>
                                                 <span class="char-label"><?php echo esc_html($field['label']); ?>:</span>
                                                 <span class="char-value"><?php echo esc_html($field['value']); ?></span>
-                                            <?php else: ?>
+                                            <?php elseif ($key === 'siteinfo_accessrestricted') : ?>
                                                 <span class="char-label"><?php echo esc_html($field['label']); ?></span>
+                                            <?php else: ?>
+                                                <a class="char-label" href="/listing/?acffield=<?php echo urlencode(strtolower($field['label'])); ?>"><?php echo esc_html($field['label']); ?></a>
                                             <?php endif; ?>
                                         </li>
                                     <?php endforeach; ?>
@@ -225,9 +227,9 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                             <div class="characteristic-group beach-details">
                                 <h4 class="section-heading"><?php _e('Beach Information', 'geotour'); ?></h4>
                                 <ul class="characteristics-list">
-                                    <?php foreach ($beach_values as $field) : ?>
+                                    <?php foreach ($beach_values as $key => $field) : ?>
                                         <li>
-                                            <span class="char-label"><?php echo esc_html($field['label']); ?></span>
+                                            <a class="char-label" href="/listing/?acffield=<?php echo urlencode(strtolower($field['label'])); ?>"><?php echo esc_html($field['label']); ?></a>
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>
@@ -238,9 +240,9 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                             <div class="characteristic-group fortification-details">
                                 <h4 class="section-heading"><?php _e('Fortification Information', 'geotour'); ?></h4>
                                 <ul class="characteristics-list">
-                                    <?php foreach ($fortification_values as $field) : ?>
+                                    <?php foreach ($fortification_values as $key => $field) : ?>
                                         <li>
-                                            <span class="char-label"><?php echo esc_html($field['label']); ?></span>
+                                            <a class="char-label" href="/listing/?acffield=<?php echo urlencode(strtolower($field['label'])); ?>"><?php echo esc_html($field['label']); ?></a>
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>
@@ -251,9 +253,13 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                             <div class="characteristic-group religious-details">
                                 <h4 class="section-heading"><?php _e('Religious Site Information', 'geotour'); ?></h4>
                                 <ul class="characteristics-list">
-                                    <?php foreach ($religious_values as $field) : ?>
+                                    <?php foreach ($religious_values as $key => $field) : ?>
                                         <li>
-                                            <span class="char-label"><?php echo esc_html($field['label']); ?></span>
+                                            <?php if ($key === 'religioninfo_settlement') : ?>
+                                                <span class="char-label"><?php echo esc_html($field['label']); ?></span>
+                                            <?php else: ?>
+                                                <a class="char-label" href="/listing/?acffield=<?php echo urlencode(strtolower($field['label'])); ?>"><?php echo esc_html($field['label']); ?></a>
+                                            <?php endif; ?>
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>
@@ -310,7 +316,7 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                     <!-- Contact Name -->
                     <?php if (!empty($contact_title)) : ?>
                     <div class="contact-name">
-                        <strong><?php echo esc_html($contact_title); ?></strong>
+                        <a href="/listing/?acffield=contact"><strong><?php echo esc_html($contact_title); ?></strong></a>
                     </div>
                     <?php endif; ?>
                     
