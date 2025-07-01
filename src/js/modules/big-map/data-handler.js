@@ -92,6 +92,10 @@ export class BigMapDataHandler {
         if (window.geotourBigMap.urlParams.search) {
             params.append('search', window.geotourBigMap.urlParams.search);
         }
+        // Add acffield filter if present
+        if (window.geotourBigMap.urlParams.acffield) {
+            params.append('acffield', window.geotourBigMap.urlParams.acffield);
+        }
         // --- END V3 API CHANGES ---
 
         const url = `${window.geotourBigMap.apiUrl}?${params.toString()}`;
