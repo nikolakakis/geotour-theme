@@ -18,7 +18,7 @@
     padding: 3rem 0;
     margin-top: 2rem;
     margin-bottom: 2rem;
-    z-index: 1; // Lower than menu z-index
+    
 }
 
 // Desktop Virtual Tour
@@ -31,7 +31,7 @@
     border-radius: vars.$border-radius-lg;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     position: relative;
-    z-index: 1;
+    
     
     // Show on desktop/tablet only
     @media (min-width: 800px) and (min-height: 600px) {
