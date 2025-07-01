@@ -13,6 +13,7 @@ export class BigMapUI {
     constructor() {
         this.map = null;
         this.searchTerm = '';
+        this.focusListingId = null; // NEW: Track which listing to focus after repopulation
         
         // Initialize handlers
         this.dataHandler = new BigMapDataHandler();
@@ -163,6 +164,15 @@ export class BigMapUI {
                 );
             }
         });
+        
+        // NEW: After repopulation, open popup if focusListingId is set
+        if (this.focusListingId) {
+            const focusListing = listings.find(l => l.id == this.focusListingId);
+            if (focusListing) {
+                this.markersHandler.panToListing(this.map, focusListing);
+            }
+            this.focusListingId = null;
+        }
     }
     
     handleMarkerClick(listingId) {
@@ -176,6 +186,7 @@ export class BigMapUI {
     
     handleListingClick(listing) {
         this.sidebarHandler.highlightListing(listing.id);
+        this.focusListingId = listing.id; // NEW: Remember to open this popup after repopulation
         this.markersHandler.panToListing(this.map, listing);
     }
     
