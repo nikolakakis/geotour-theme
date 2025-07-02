@@ -203,63 +203,41 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                     
                     <!-- Category-specific characteristics -->
                     <div class="category-characteristics-section">
-                        <?php if (!empty($archaeological_values)) : ?>
-                            <div class="characteristic-group archaeological-details">
-                                <h4 class="section-heading"><?php _e('Archaeological Information', 'geotour'); ?></h4>
+                        <?php
+                        // Merge all values into one array, preserving order and uniqueness by label
+                        $all_values = array_merge(
+                            $archaeological_values,
+                            $beach_values,
+                            $fortification_values,
+                            $religious_values
+                        );
+                        $seen_labels = [];
+                        ?>
+                        <?php if (!empty($all_values)) : ?>
+                            <div class="characteristic-group all-details">
+                                <h4 class="section-heading"><?php _e('Details', 'geotour'); ?></h4>
                                 <ul class="characteristics-list">
-                                    <?php foreach ($archaeological_values as $key => $field) : ?>
+                                    <?php foreach ($all_values as $key => $field) :
+                                        $label_lc = strtolower($field['label']);
+                                        if (in_array($label_lc, $seen_labels)) continue;
+                                        $seen_labels[] = $label_lc;
+                                    ?>
                                         <li>
-                                            <?php if ($key === 'price' || $key === 'prices_notes') : ?>
-                                                <span class="char-label"><?php echo esc_html($field['label']); ?>:</span>
-                                                <span class="char-value"><?php echo esc_html($field['value']); ?></span>
-                                            <?php elseif ($key === 'siteinfo_accessrestricted') : ?>
-                                                <span class="char-label"><?php echo esc_html($field['label']); ?></span>
-                                            <?php else: ?>
-                                                <a class="char-label" href="/listing/?acffield=<?php echo urlencode(strtolower($field['label'])); ?>"><?php echo esc_html($field['label']); ?></a>
-                                            <?php endif; ?>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
-
-                        <?php if (!empty($beach_values)) : ?>
-                            <div class="characteristic-group beach-details">
-                                <h4 class="section-heading"><?php _e('Beach Information', 'geotour'); ?></h4>
-                                <ul class="characteristics-list">
-                                    <?php foreach ($beach_values as $key => $field) : ?>
-                                        <li>
-                                            <a class="char-label" href="/listing/?acffield=<?php echo urlencode(strtolower($field['label'])); ?>"><?php echo esc_html($field['label']); ?></a>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
-
-                        <?php if (!empty($fortification_values)) : ?>
-                            <div class="characteristic-group fortification-details">
-                                <h4 class="section-heading"><?php _e('Fortification Information', 'geotour'); ?></h4>
-                                <ul class="characteristics-list">
-                                    <?php foreach ($fortification_values as $key => $field) : ?>
-                                        <li>
-                                            <a class="char-label" href="/listing/?acffield=<?php echo urlencode(strtolower($field['label'])); ?>"><?php echo esc_html($field['label']); ?></a>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
-
-                        <?php if (!empty($religious_values)) : ?>
-                            <div class="characteristic-group religious-details">
-                                <h4 class="section-heading"><?php _e('Religious Site Information', 'geotour'); ?></h4>
-                                <ul class="characteristics-list">
-                                    <?php foreach ($religious_values as $key => $field) : ?>
-                                        <li>
-                                            <?php if ($key === 'religioninfo_settlement') : ?>
-                                                <span class="char-label"><?php echo esc_html($field['label']); ?></span>
-                                            <?php else: ?>
-                                                <a class="char-label" href="/listing/?acffield=<?php echo urlencode(strtolower($field['label'])); ?>"><?php echo esc_html($field['label']); ?></a>
-                                            <?php endif; ?>
+                                            <?php
+                                            // Archaeological fields: no link for price, prices_notes, siteinfo_accessrestricted
+                                            // Religious fields: no link for religioninfo_settlement
+                                            $no_link_keys = ['price', 'prices_notes', 'siteinfo_accessrestricted', 'religioninfo_settlement'];
+                                            if (in_array($key, $no_link_keys)) {
+                                                if ($key === 'price' || $key === 'prices_notes') {
+                                                    echo '<span class="char-label">' . esc_html($field['label']) . ':</span> ';
+                                                    echo '<span class="char-value">' . esc_html($field['value']) . '</span>';
+                                                } else {
+                                                    echo '<span class="char-label">' . esc_html($field['label']) . '</span>';
+                                                }
+                                            } else {
+                                                echo '<a class="char-label" href="/listing/?acffield=' . urlencode($label_lc) . '">' . esc_html($field['label']) . '</a>';
+                                            }
+                                            ?>
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>
