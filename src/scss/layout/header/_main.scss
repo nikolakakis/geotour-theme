@@ -38,7 +38,7 @@ body {
 .main-header {
     background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
     height: 150px; // Higher for narrow screens
-    position: relative; // Not sticky on narrow screens
+    position: absolute;
     width: 100%;
     top: 0;
     left: 0;
@@ -103,7 +103,9 @@ body {
         align-items: center;
         justify-content: space-between;
         position: relative;
-        z-index: 1;
+        z-index: 1001; // Ensure header is above fullscreen menu
+        background: none;
+        // Always visible on all screens
 
         @media (min-width: 640px) {
             padding-left: 1.5rem;
@@ -186,6 +188,7 @@ body {
     .header-right-section {
         display: flex;
         align-items: center;
+        z-index: 1002; // Ensure hamburger is above fullscreen menu
     }
 }
 
