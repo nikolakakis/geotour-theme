@@ -241,7 +241,6 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>
-                                <?php echo do_shortcode('[population_chart]'); ?>
                             </div>
                         <?php endif; ?>
                     </div>

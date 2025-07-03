@@ -8,12 +8,9 @@
 
 // 100vw Virtual Tour Section
 .virtual-tour-full-section {
-    width: 93vw;
+    
     position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    
     background: linear-gradient(135deg, vars.$background-color 0%, #f8f9fa 100%);
     padding: 3rem 0;
     margin-top: 2rem;
