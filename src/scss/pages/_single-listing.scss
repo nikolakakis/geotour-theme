@@ -57,12 +57,16 @@
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
+    overflow-x: hidden; // Prevent horizontal overflow
     
     height: 60vh;
     
     .map-container {
         height: 100%;
         position: relative;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
     }
     
     .listing-excerpt-overlay {
@@ -127,6 +131,7 @@
     margin-left: -50vw;
     margin-right: -50vw;
     margin: 2rem -50vw; // Add margin top/bottom and use negative margins for 100vw
+    overflow-x: hidden; // Prevent horizontal overflow
     
     background: color.change(vars.$background-color, $lightness: -1%);
     border-top: 1px solid color.change(vars.$primary-color, $alpha: 0.1);
@@ -135,13 +140,16 @@
     .custom-map-container {
         min-height: 400px; // Minimum height for map
         position: relative;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
         
         // Ensure map content fills properly
         > div,
         .geotour-map-container,
         .map-container {
             width: 100%;
-            
+            max-width: 100%;
         }
         
         // Style for embedded maps

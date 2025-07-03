@@ -37,12 +37,138 @@
 // Global overflow prevention
 html, body {
     overflow-x: hidden;
+    max-width: 100vw;
+    position: relative;
+}
+
+// Ensure all elements respect viewport bounds
+* {
+    box-sizing: border-box;
+}
+
+// Prevent any element from exceeding viewport width
+*,
+*:before,
+*:after {
     max-width: 100%;
 }
-html, body {
+
+// Additional overflow prevention for common problematic elements
+img,
+video,
+iframe,
+embed,
+object {
+    max-width: 100%;
+    height: auto;
+}
+
+// Prevent text from causing overflow
+pre,
+code {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+// Ensure form elements don't overflow
+input,
+textarea,
+select,
+button {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+// IMPORTANT: Leaflet-specific overrides to prevent our global styles from breaking maps
+.leaflet-container,
+.leaflet-popup,
+.leaflet-popup-content-wrapper,
+.leaflet-popup-content,
+.leaflet-control,
+.leaflet-marker-icon,
+.leaflet-div-icon {
+    max-width: none !important; // Override our global max-width constraint
+    box-sizing: content-box !important; // Leaflet expects content-box
+}
+
+.leaflet-popup-content {
+    width: auto !important;
+    min-width: 250px !important; // Ensure minimum popup width
+    max-width: 350px !important; // Reasonable maximum width
+}
+
+// Additional Leaflet protection - ensure maps work properly regardless of our global styles
+.leaflet-container * {
+    max-width: none !important;
+}
+
+// Ensure Leaflet markers and controls aren't affected
+.leaflet-marker-icon,
+.leaflet-div-icon,
+.leaflet-control,
+.leaflet-control * {
+    max-width: none !important;
+    box-sizing: content-box !important;
+}
+
+// Protect Leaflet popup components specifically
+.leaflet-popup,
+.leaflet-popup *,
+.leaflet-tooltip,
+.leaflet-tooltip * {
+    max-width: none !important;
+}
+
+// But keep our responsive images within popups
+.leaflet-popup .popup-image {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+// Utility classes for proper 100vw sections
+.full-width-section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
     overflow-x: hidden;
-    max-width: 100%;
+    
+    // Ensure all children respect the container bounds
+    * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    // Fix for nested containers
+    .container,
+    .content-wrapper,
+    .inner-container {
+        width: 100%;
+        max-width: 100%;
+        padding-left: clamp(1rem, 2.5vw, 2rem);
+        padding-right: clamp(1rem, 2.5vw, 2rem);
+        margin-left: auto;
+        margin-right: auto;
+        overflow-x: hidden;
+    }
 }
+
+// Specific fixes for flexbox that can cause overflow
+.listing-search-form,
+.big-map-container,
+.listing-details-container {
+    min-width: 0; // Critical for flex children
+    overflow-x: hidden;
+}
+
+// Debug class - remove after fixing
+.debug-overflow {
+    outline: 2px solid red !important;
+    overflow-x: hidden !important;
+}
+
 // @use 'components/buttons';
 // @use 'components/cards';
 
