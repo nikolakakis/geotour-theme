@@ -11,9 +11,12 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
 }
 
 @media (max-width: 1024px) {        
-    .main-header .header-center-section {            
-        left: calc(50% - 100px) !important;
-        top: 35% !important;
+    .main-header {
+      height: 120px !important;
+      .header-center-section {            
+          left: calc(50% - 100px) !important;
+          top: 25% !important;
+      }
     }
 }
 
@@ -23,7 +26,7 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
     height: 40px; // Example value
     position: fixed; // Or absolute, depending on desired placement
     top: 0px; // Example value
-    right: 20px; // Example value
+    right: 00px; // Example value
     background: transparent;
     border: none;
     cursor: pointer;

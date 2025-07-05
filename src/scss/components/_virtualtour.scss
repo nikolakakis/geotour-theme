@@ -113,7 +113,7 @@
     text-align: center;
     position: relative;
     z-index: 1;
-    
+    min-height: 145px;
     // Show on mobile/small screens only
     @media (max-width: 799px), (max-height: 599px) {
         display: block;
@@ -126,23 +126,27 @@
     a {
         text-decoration: none;
         color: inherit;
-        
+        position: absolute;
+        right: 0;
+        width: 35%;
         &:hover {
             opacity: 0.8;
         }
     }
     
     .vrgirl {
-        width: 60px;
+        width: 66px;
         height: auto;
         margin-bottom: 1rem;
         border-radius: vars.$border-radius;
+        padding: 10px;
     }
     
     .text-link {
         display: block;
         margin-top: 1rem;
-        
+        left: 0;
+        width: 60%;
         .mobiletitle {
             display: block;
             font-family: vars.$font-heading;
@@ -151,7 +155,9 @@
             color: vars.$primary-color;
             margin-bottom: 0.5rem;
         }
-        
+         span.mobiletitle {
+            display: inline-block;
+         }
         .text {
             display: block;
             font-size: 0.9rem;

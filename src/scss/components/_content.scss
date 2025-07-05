@@ -6,6 +6,7 @@
 #page {
     margin-top: -180px;
 }
+
 .content-article {
     margin-bottom: 3rem;
     padding: 0 40px 0 10px;
@@ -343,6 +344,12 @@
             content: '✏';
             margin-right: 0.5rem;
         }
+    }
+}
+
+@media (max-width: vars.$breakpoint-md) {
+    .content-article {    
+        padding: 0 5px 0 5px;
     }
 }
 
