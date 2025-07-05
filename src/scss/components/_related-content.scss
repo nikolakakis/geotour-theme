@@ -1,52 +1,6 @@
 @use '../base/variables' as vars;
 @use 'sass:color';
 
-// Styles for .single-post .related-listings
-.single-post {
-    .related-listings {
-        &__listing {
-            padding: 5px;
-            transition: all 0.3s ease-in-out;
-            background-color: rgba(vars.$primary-color, 0.05);
-            box-shadow: rgba(vars.$primary-color, 0.3) 0px 0px 6px;
-            clear: both;
-            min-height: 60px;
-            margin: 3px 0px;
-            border-radius: vars.$border-radius-sm; // Added border-radius
-
-            &:hover {
-                background-color: white;
-                box-shadow: rgba(vars.$primary-color, 0.1) 0px 0px 2px;
-            }
-
-            .related-listing-link a {
-                font-family: vars.$font-heading; // Use theme heading font
-                font-size: 1rem;
-                font-weight: 600;
-                color: vars.$heading-color; // Use theme heading color
-                text-decoration: none;
-
-                &:hover {
-                    color: vars.$primary-color;
-                }
-            }
-
-            .related-listing-thumb {
-                width: 80px;
-                height: 80px;
-                float: left;
-                margin-right: 10px;
-
-                img { // Ensure image within thumb is responsive and fits well
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    border-radius: vars.$border-radius-sm;
-                }
-            }
-        }
-    }
-}
 
 // Styles for .single-listing .related-posts-list
 .single-listing {
