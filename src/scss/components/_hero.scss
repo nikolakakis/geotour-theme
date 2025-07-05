@@ -143,7 +143,7 @@
 
 .hero-title {
     // Typography styles are defined in _typography.scss
-    margin-top: 4rem;
+    margin-top: 12rem;
     margin-bottom: 1rem;
     opacity: 0;
     animation: fadeInUp 1s ease-out 0.3s forwards;
@@ -154,6 +154,7 @@
     z-index: 3; // Moved up
     
     @media (min-width: 768px) {
+        margin-top: 4rem;
         margin-bottom: 1.5rem;
         text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8), 
                      2px 2px 6px rgba(0, 0, 0, 0.6);
@@ -272,12 +273,13 @@
     
     // Add background blur for better visibility
     &::before {
-        content: '';
+        content: ' ';
         position: absolute;
-        top: -15px;
-        left: -15px;
+        top: -10px;
+        left: -14px;
         right: -15px;
         bottom: -15px;
+        padding: 15px;
         background: rgba(0, 0, 0, 0.1);
         border-radius: 50%;
         backdrop-filter: blur(3px);

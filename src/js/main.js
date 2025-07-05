@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-// Initialize homepage parallax effect
-initializeHomepageParallax();
+    // Initialize homepage parallax effect using the imported HeroParallax class
+    if (typeof HeroParallax !== 'undefined') {
+        new HeroParallax();
+    }
 });

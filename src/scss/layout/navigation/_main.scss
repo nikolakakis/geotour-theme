@@ -12,8 +12,8 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
 
 @media (max-width: 1024px) {        
     .main-header .header-center-section {            
-        left: 27% !important;
-        top: 25% !important;
+        left: calc(50% - 100px) !important;
+        top: 35% !important;
     }
 }
 
