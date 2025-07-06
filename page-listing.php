@@ -68,13 +68,24 @@ get_header(); ?>
                 $term = get_term_by('slug', sanitize_text_field($_GET['listing-tag']), 'listing-tag');
                 if ($term) $active_filters[] = array('type' => 'tag', 'name' => $term->name, 'slug' => $term->slug);
             }
-            
-            if (!empty($active_filters)) : ?>
+            $current_search = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
+            ?>
             <div class="active-filters">
                 <div class="filters-header">
                     <span><?php _e('Filtered by:', 'geotour'); ?></span>
                     <a href="/listing" class="clear-filters"><?php _e('Clear all', 'geotour'); ?></a>
                 </div>
+                
+                <div class="map-search-box">
+                    <input type="text" id="map-search-input" placeholder="<?php _e('Search listings...', 'geotour'); ?>" value="<?php echo esc_attr($current_search); ?>">
+                    <button type="button" id="map-search-apply" title="<?php _e('Apply search', 'geotour'); ?>">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <?php if (!empty($active_filters)) : ?>
                 <div class="filter-tags">
                     <?php foreach ($active_filters as $filter) : ?>
                         <span class="filter-tag filter-<?php echo esc_attr($filter['type']); ?>">
@@ -83,8 +94,8 @@ get_header(); ?>
                         </span>
                     <?php endforeach; ?>
                 </div>
+                <?php endif; ?>
             </div>
-            <?php endif; ?>
             
             <div class="results-header">
                 <span id="results-count"><?php _e('Loading...', 'geotour'); ?></span>
@@ -145,7 +156,10 @@ window.geotourBigMap = {
         resultsFound: '<?php _e('{count} listings found', 'geotour'); ?>',
         loadingListings: '<?php _e('Loading listings...', 'geotour'); ?>',
         filteredBy: '<?php _e('Filtered by:', 'geotour'); ?>',
-        clearFilters: '<?php _e('Clear filters', 'geotour'); ?>'
+        clearFilters: '<?php _e('Clear filters', 'geotour'); ?>',
+        searchPlaceholder: '<?php _e('Search listings...', 'geotour'); ?>',
+        applySearch: '<?php _e('Apply search', 'geotour'); ?>',
+        clearSearch: '<?php _e('Clear search', 'geotour'); ?>'
     }
 };
 </script>

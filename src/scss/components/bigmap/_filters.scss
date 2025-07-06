@@ -155,6 +155,62 @@
     }
 }
 
+// Search box styles
+.map-search-box {
+    position: relative;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    input[type="text"] {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid color.change(vars.$primary-color, $alpha: 0.3);
+        border-radius: 4px;
+        font-size: 14px;
+        
+        &:focus {
+            outline: none;
+            border-color: vars.$primary-color;
+            box-shadow: 0 0 0 2px color.change(vars.$primary-color, $alpha: 0.1);
+        }
+    }
+
+    button {
+        padding: 8px 12px;
+        background: vars.$primary-color;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 36px;
+        transition: background-color 0.2s ease;
+        
+        &:hover {
+            background: color.change(vars.$primary-color, $lightness: -10%);
+        }
+
+        &#map-search-clear {
+            background: #dc3545;
+            min-width: 30px;
+            
+            &:hover {
+                background: #c82333;
+            }
+        }
+        
+        svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+    }
+}
+
 // Error and empty states
 .error-message,
 .no-results {

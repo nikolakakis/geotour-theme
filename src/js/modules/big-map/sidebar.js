@@ -14,6 +14,8 @@ export class BigMapSidebar {
         this.sidebar = document.getElementById('map-sidebar');
         this.setupSidebarState();
         this.setupEventListeners();
+        this.setupSearchEventListeners();
+        this.addSearchToFilters();
         
         // Window resize handler
         window.addEventListener('resize', () => {
@@ -85,6 +87,9 @@ export class BigMapSidebar {
         // Update count
         const count = listings.length;
         countElement.textContent = window.geotourBigMap.strings.resultsFound.replace('{count}', count);
+        
+        // Update search input if it exists
+        this.updateSearchInput();
         
         // Clear container
         container.innerHTML = '';
@@ -242,5 +247,94 @@ export class BigMapSidebar {
     
     getIsMobile() {
         return this.isMobile;
+    }
+    
+    // Search functionality methods
+    updateSearchInput() {
+        const searchInput = document.getElementById('map-search-input');
+        if (searchInput) {
+            const currentSearch = new URLSearchParams(window.location.search).get('search') || '';
+            if (searchInput.value !== currentSearch) {
+                searchInput.value = currentSearch;
+            }
+        }
+    }
+    
+    createSearchInput() {
+        const currentSearch = new URLSearchParams(window.location.search).get('search') || '';
+        
+        const searchContainer = document.createElement('div');
+        searchContainer.className = 'map-search-box';
+        searchContainer.innerHTML = `
+            <input type="text" id="map-search-input" placeholder="${window.geotourBigMap.strings.searchPlaceholder || 'Search listings...'}" value="${currentSearch}">
+            <button type="button" id="map-search-apply" title="${window.geotourBigMap.strings.applySearch || 'Apply search'}">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                    <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                </svg>
+            </button>
+        `;
+        
+        return searchContainer;
+    }
+    
+    setupSearchEventListeners() {
+        // Apply search
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#map-search-apply')) {
+                const input = document.getElementById('map-search-input');
+                if (input) {
+                    this.applySearch(input.value.trim());
+                }
+            }
+        });
+        
+        // Enter key support
+        document.addEventListener('keypress', (e) => {
+            if (e.target.id === 'map-search-input' && e.key === 'Enter') {
+                this.applySearch(e.target.value.trim());
+            }
+        });
+    }
+    
+    applySearch(searchTerm) {
+        const url = new URL(window.location);
+        
+        if (searchTerm) {
+            url.searchParams.set('search', searchTerm);
+        } else {
+            url.searchParams.delete('search');
+        }
+        
+        window.location.href = url.toString();
+    }
+    
+    addSearchToFilters() {
+        // Always add search input since it's now always visible
+        // Find or create the active-filters section
+        let activeFiltersSection = document.querySelector('.active-filters');
+        if (!activeFiltersSection) {
+            // Create the active-filters section if it doesn't exist
+            activeFiltersSection = document.createElement('div');
+            activeFiltersSection.className = 'active-filters';
+            activeFiltersSection.innerHTML = `
+                <div class="filters-header">
+                    <span>${window.geotourBigMap.strings.filteredBy}</span>
+                    <a href="/listing" class="clear-filters">${window.geotourBigMap.strings.clearFilters}</a>
+                </div>
+            `;
+            
+            // Insert before results-header
+            const resultsHeader = document.querySelector('.results-header');
+            if (resultsHeader) {
+                resultsHeader.parentNode.insertBefore(activeFiltersSection, resultsHeader);
+            }
+        }
+        
+        // Add search input to the active filters if it doesn't exist
+        const filtersHeader = activeFiltersSection.querySelector('.filters-header');
+        if (filtersHeader && !document.getElementById('map-search-input')) {
+            const searchContainer = this.createSearchInput();
+            filtersHeader.insertAdjacentElement('afterend', searchContainer);
+        }
     }
 }

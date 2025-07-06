@@ -6,8 +6,12 @@ This guide explains how to implement maps in the Geotour WordPress theme. The th
 ### Big Map Files
 - `page-listing.php` - Main template (Template Name: Listing Map)
 - `src/js/modules/big-map/main.js` - BigMapUI class and functionality
-- `src/scss/components/_big-map.scss` - Full-screen map styling
-- `includes/api/spatial-info-v2.php` - REST API endpoint for spatial data
+- `src/js/modules/big-map/data-handler.js` - API calls and data transformation
+- `src/js/modules/big-map/sidebar.js` - Sidebar functionality and search
+- `src/js/modules/big-map/markers.js` - Marker management
+- `src/js/modules/big-map/loading.js` - Loading states
+- `src/scss/components/bigmap/_index.scss` - Full-screen map styling
+- `includes/api/spatial-info-v3.php` - REST API endpoint for spatial data
 
 ### Modified Files
 - `src/js/modules/maps/main.js` - Simplified to raster tiles, regular map handling
@@ -40,6 +44,7 @@ This guide explains how to implement maps in the Geotour WordPress theme. The th
 - AJAX-powered listing loading based on map bounds
 - Mobile-responsive sidebar toggle
 - Real-time filtering by category, region, tag, and search
+- Always-visible search input with enter key support
 - Custom map markers with popups
 - Spatial filtering via REST API
 - Mobile-optimized interaction
@@ -62,35 +67,47 @@ This guide explains how to implement maps in the Geotour WordPress theme. The th
 
 ### Architecture
 The Big Map is a sophisticated full-screen mapping interface that combines:
-- **Frontend:** Leaflet.js with custom UI components
-- **Backend:** WordPress REST API (`/wp-json/geotour/v2/spatial-info`)
+- **Frontend:** Leaflet.js with modular JavaScript components
+- **Backend:** WordPress REST API (`/wp-json/geotour/v3/spatial-info`)
 - **Data Flow:** AJAX-powered real-time filtering and loading
 
 ### Key Files
 ```
 page-listing.php                           # Main template
-src/js/modules/big-map/main.js            # BigMapUI class and logic
-src/scss/components/_big-map.scss         # All styling
-includes/api/spatial-info-v2.php          # REST API endpoint
+src/js/modules/big-map/main.js            # BigMapUI orchestrator
+src/js/modules/big-map/sidebar.js         # Sidebar and search functionality
+src/js/modules/big-map/data-handler.js    # API integration and data transformation
+src/js/modules/big-map/markers.js         # Map marker management
+src/js/modules/big-map/loading.js         # Loading states
+src/scss/components/bigmap/_index.scss    # Modular styling
+includes/api/spatial-info-v3.php          # REST API endpoint
 ```
 
 ### JavaScript Class Structure
 ```javascript
 class BigMapUI {
-    constructor()          // Initialize with mobile detection
+    constructor()          // Initialize handlers and mobile detection
     init()                // Setup map and event listeners
     initializeMap()       // Create Leaflet map instance
-    fetchListings(bbox)   // AJAX calls to REST API
-    updateMap(listings)   // Add/remove markers
-    updateSidebar(listings) // Populate sidebar with results
-    toggleSidebar()       // Handle responsive sidebar behavior
+    updateMapAndSidebar() // Coordinate map and sidebar updates
+}
+
+class BigMapDataHandler {
+    fetchListings(bbox)   // AJAX calls to v3 REST API
+    onMapMoveEnd()        // Handle bounding box updates
+}
+
+class BigMapSidebar {
+    updateSidebar()       // Populate sidebar with results
+    setupSearchEventListeners() // Handle search functionality
+    applySearch()         // Update URL with search parameters
 }
 ```
 
 ### REST API Integration
-- **Endpoint:** `geotour/v2/spatial-info`
-- **Filters:** bbox, listing_category, listing_region, listing_tag, search
-- **Response:** GeoJSON-like format with listing metadata
+- **Endpoint:** `geotour/v3/spatial-info`
+- **Filters:** bbox, category, region, tag, search, acffield
+- **Response:** Flat array format with listing metadata
 - **Authentication:** WordPress nonce for security
 
 ### Mobile Responsiveness
@@ -226,6 +243,12 @@ initializeGeotourMap('map-id', mapData);
 /listing?listing-category=museums&listing-region=heraklion&search=history
 ```
 
+### ✅ Use Always-Visible Search Input
+```javascript
+// DO THIS - Search input is always present, no conditional display needed
+// Users can search even when no search term is active
+```
+
 ### ✅ Follow Naming Conventions
 ```html
 <!-- DO THIS - Use theme CSS classes for regular maps -->
@@ -350,10 +373,10 @@ Modify the regular map module at:
 `src/js/modules/maps/main.js`
 
 ### For Styling
-- Big Map: `src/scss/components/_big-map.scss`
+- Big Map: `src/scss/components/bigmap/_index.scss`
 - Regular Maps: `src/scss/components/_maps.scss`
 
 ### For API Modifications
-Backend endpoint: `includes/api/spatial-info-v2.php`
+Backend endpoint: `includes/api/spatial-info-v3.php`
 
 Always test changes across different devices and browsers, especially the responsive behavior of the Big Map interface.
