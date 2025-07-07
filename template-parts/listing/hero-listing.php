@@ -39,7 +39,7 @@ if ($regions && !is_wp_error($regions)) {
 
 <section class="hero-section listing-hero-section">
     
-    <?php if ($hero_image && !wp_is_mobile()) : ?>
+    <?php if ($hero_image) : ?>
         <img src="<?php echo esc_url($hero_image); ?>" 
              alt="<?php echo esc_attr($listing_title); ?>"
              fetchpriority="high"

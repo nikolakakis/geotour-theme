@@ -79,7 +79,7 @@ $hero_title = wp_strip_all_tags($hero_title);
 
 <section class="hero-section">
     
-    <?php if ($hero_image && !wp_is_mobile()) : ?>
+    <?php if ($hero_image) : ?>
         <img src="<?php echo esc_url($hero_image); ?>" 
              alt="<?php echo esc_attr($hero_title); ?>"
              fetchpriority="high"

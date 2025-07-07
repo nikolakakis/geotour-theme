@@ -460,10 +460,7 @@
         // Prevent layout shift
         aspect-ratio: 16/9;
         
-        @media (max-width: 768px) {
-            // Hide on mobile for better performance
-            display: none;
-        }
+        
     }
     
     .hero-overlay {
