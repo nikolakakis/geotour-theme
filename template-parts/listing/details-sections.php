@@ -15,6 +15,7 @@ $listing_id = get_the_ID();
 $archaeological_fields = [
     'price' => __('Price', 'geotour'),
     'prices_notes' => __('Price Notes', 'geotour'),
+    'opening_hours_notes' => __('Opening Hours Notes', 'geotour'),
     'siteinfo_accessrestricted' => __('Access Restricted', 'geotour'),
     'siteinfo_prehistoric' => __('Prehistoric', 'geotour'),
     'siteinfo_minoan' => __('Minoan', 'geotour'),
@@ -224,13 +225,16 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                                     ?>
                                         <li>
                                             <?php
-                                            // Archaeological fields: no link for price, prices_notes, siteinfo_accessrestricted
+                                            // Archaeological fields: no link for price, prices_notes, opening_hours_notes, siteinfo_accessrestricted
                                             // Religious fields: no link for religioninfo_settlement
-                                            $no_link_keys = ['price', 'prices_notes', 'siteinfo_accessrestricted', 'religioninfo_settlement'];
+                                            $no_link_keys = ['price', 'prices_notes', 'opening_hours_notes', 'siteinfo_accessrestricted', 'religioninfo_settlement'];
                                             if (in_array($key, $no_link_keys)) {
-                                                if ($key === 'price' || $key === 'prices_notes') {
+                                                if ($key === 'price') {
                                                     echo '<span class="char-label">' . esc_html($field['label']) . ':</span> ';
                                                     echo '<span class="char-value">' . esc_html($field['value']) . '</span>';
+                                                } elseif ($key === 'prices_notes' || $key === 'opening_hours_notes') {
+                                                    echo '<span class="char-label">' . esc_html($field['label']) . ':</span> ';
+                                                    echo '<span class="char-value">' . wp_kses_post($field['value']) . '</span>';
                                                 } else {
                                                     echo '<span class="char-label">' . esc_html($field['label']) . '</span>';
                                                 }
