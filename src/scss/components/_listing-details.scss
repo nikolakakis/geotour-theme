@@ -197,10 +197,17 @@
                 display: inline-flex;
                 align-items: center;
                 border: 1px solid color.change(vars.$primary-color, $alpha: 0.2);
+                .char-label    {
+                        font-weight: 600;
+                        color: vars.$heading-color;
+                    }
 
-                .char-value {
-                    font-weight: 600;
-                    margin-left: 0.5rem;
+                .char-value p {
+                    line-height: 1rem;
+                    font-size: 0.8rem;
+                    margin-bottom: 0;
+                    padding: 0;
+                    margin-left: 1.5rem;
                     color: vars.$heading-color;
                 }
             }
