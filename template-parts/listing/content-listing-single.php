@@ -56,7 +56,7 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                 
                 <!-- Nearest listings grid shortcode (100vw) -->
                 <section class="nearest-listings-full-section">
-                    <?php echo do_shortcode('[nearest-listings-grid]'); ?>
+                    <?php echo do_shortcode('[listings-grid type="nearest" limit="12"]'); ?>
                 </section>
                 
                 <footer class="entry-footer">
