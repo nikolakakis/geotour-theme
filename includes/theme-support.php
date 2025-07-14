@@ -1,8 +1,7 @@
 <?php
 /**
  * Theme Setup and Support
- * 
- * @package Geotour_Mobile_First
+ * * @package Geotour_Mobile_First
  */
 
 if (!defined('ABSPATH')) {
@@ -13,9 +12,6 @@ if (!defined('ABSPATH')) {
  * Theme setup function
  */
 function geotour_theme_setup() {
-    // Make theme available for translation
-    load_theme_textdomain('geotour', GEOTOUR_THEME_DIR . '/languages');
-
     // Add theme support features
     add_theme_support('post-thumbnails');
     add_theme_support('html5', array(
@@ -44,6 +40,16 @@ function geotour_theme_setup() {
     add_image_size('listing-card', 600, 400, true);
 }
 add_action('after_setup_theme', 'geotour_theme_setup');
+
+/**
+ * Load theme textdomain correctly.
+ */
+function geotour_load_textdomain() {
+    // Make theme available for translation
+    load_theme_textdomain('geotour', GEOTOUR_THEME_DIR . '/languages');
+}
+add_action('init', 'geotour_load_textdomain');
+
 
 /**
  * Register widget areas
