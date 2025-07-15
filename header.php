@@ -50,7 +50,7 @@
     if (is_singular()) {
         $post_id = get_the_ID();
         echo '<meta property="og:title" content="' . esc_attr(get_the_title($post_id)) . '">' . "\n";
-        echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+        echo '<meta property="og:description" content="' . esc_attr($meta_desc) . '">' . "\n";
         echo '<meta property="og:url" content="' . esc_attr(get_permalink($post_id)) . '">' . "\n";
         echo '<meta property="og:type" content="article">' . "\n";
         

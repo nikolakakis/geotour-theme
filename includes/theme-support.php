@@ -38,17 +38,11 @@ function geotour_theme_setup() {
     add_image_size('listing-thumbnail', 400, 300, true);
     add_image_size('listing-hero', 1200, 600, true);
     add_image_size('listing-card', 600, 400, true);
-}
-add_action('after_setup_theme', 'geotour_theme_setup');
-
-/**
- * Load theme textdomain correctly.
- */
-function geotour_load_textdomain() {
-    // Make theme available for translation
+    
+    // Load theme textdomain - moved here for better timing
     load_theme_textdomain('geotour', GEOTOUR_THEME_DIR . '/languages');
 }
-add_action('init', 'geotour_load_textdomain');
+add_action('after_setup_theme', 'geotour_theme_setup');
 
 
 /**
