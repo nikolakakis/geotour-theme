@@ -298,7 +298,7 @@ $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
                     <!-- Contact Name -->
                     <?php if (!empty($contact_title)) : ?>
                     <div class="contact-name">
-                        <a href="/listing/?acffield=contact"><strong><?php echo esc_html($contact_title); ?></strong></a>
+                        <a href="/cultural-associations-contacts/"><strong><?php echo esc_html($contact_title); ?></strong></a>
                     </div>
                     <?php endif; ?>
                     
