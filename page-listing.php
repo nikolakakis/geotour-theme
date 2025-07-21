@@ -140,6 +140,13 @@ get_header(); ?>
     </div>
     
     <div class="toolbar-actions">
+        <!-- NEW: Add Zoom to Route button -->
+        <button id="zoom-to-route" class="toolbar-btn" title="<?php _e('Zoom to Route', 'geotour'); ?>">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14M12,10H10V12H9V10H7V9H9V7H10V9H12V10Z"/>
+            </svg>
+        </button>
+        
         <button id="preview-route" class="toolbar-btn" title="<?php _e('Preview Route on Map', 'geotour'); ?>">
             <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/>
