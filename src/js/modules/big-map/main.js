@@ -8,6 +8,7 @@ import { BigMapDataHandler } from './data-handler.js';
 import { BigMapMarkers } from './markers.js';
 import { BigMapSidebar } from './sidebar.js';
 import { BigMapLoadingStates } from './loading.js';
+import { BigMapRoutePreview } from './route-preview.js';
 
 export class BigMapUI {
     constructor() {
@@ -20,6 +21,7 @@ export class BigMapUI {
         this.markersHandler = new BigMapMarkers();
         this.sidebarHandler = new BigMapSidebar();
         this.loadingStates = new BigMapLoadingStates();
+        this.routePreview = new BigMapRoutePreview('5b3ce3597851110001cf624858bc89595fdf4f0eb8df2464c0e8e135'); // Using your API key
         
         // Get URL parameters on initialization
         this.urlParams = new URLSearchParams(window.location.search);
@@ -45,6 +47,14 @@ export class BigMapUI {
         this.setupEventListeners();
         this.initializeMap();
         this.loadInitialData();
+        
+        // Set up event handlers for the route toolbar
+        this.setupRouteToolbarEvents();
+        
+        // Initialize route preview when map is available
+        if (this.map) {
+            this.routePreview.init(this.map);
+        }
     }
     
     setupEventListeners() {
@@ -73,6 +83,32 @@ export class BigMapUI {
         // Route change event listener
         document.addEventListener('routeChanged', (e) => {
             this.handleRouteChange(e.detail);
+        });
+    }
+    
+    setupRouteToolbarEvents() {
+        // Clear route button
+        document.getElementById('clear-route')?.addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear all route stops?')) {
+                this.clearRoute();
+            }
+        });
+        
+        // Other toolbar buttons (placeholders for now)
+        document.getElementById('preview-route')?.addEventListener('click', () => {
+            this.previewRoute();
+        });
+        
+        document.getElementById('export-google-maps')?.addEventListener('click', () => {
+            this.exportToGoogleMaps();
+        });
+        
+        document.getElementById('export-geojson')?.addEventListener('click', () => {
+            this.exportToGeoJSON();
+        });
+        
+        document.getElementById('copy-shareable-link')?.addEventListener('click', () => {
+            this.copyShareableLink();
         });
     }
     
@@ -116,6 +152,9 @@ export class BigMapUI {
         try {
             const data = await this.dataHandler.fetchListings();
             this.updateMapAndSidebar(data);
+            
+            // Initialize toolbar visibility on first load
+            this.updateRouteToolbar(data);
         } catch (error) {
             console.error('Error loading initial data:', error);
             this.loadingStates.showError(window.geotourBigMap.strings.loadingError);
@@ -170,6 +209,9 @@ export class BigMapUI {
             }
         });
         
+        // Update route toolbar visibility
+        this.updateRouteToolbar(listings);
+        
         // NEW: After repopulation, open popup if focusListingId is set
         if (this.focusListingId) {
             const focusListing = listings.find(l => l.id == this.focusListingId);
@@ -213,6 +255,9 @@ export class BigMapUI {
             // Update map and sidebar
             this.updateMapAndSidebar(data);
             
+            // Update toolbar
+            this.updateRouteToolbar(data);
+            
             // If requested, zoom to route extent
             if (options.shouldZoomToRoute) {
                 this.zoomToRouteExtent(data);
@@ -252,6 +297,134 @@ export class BigMapUI {
             const group = new L.featureGroup(routeMarkers);
             this.map.fitBounds(group.getBounds().pad(0.1));
         }
+    }
+    
+    updateRouteToolbar(listings) {
+        // Get toolbar elements
+        const toolbar = document.getElementById('route-planner-toolbar');
+        const routeCount = document.getElementById('route-count');
+        
+        if (!toolbar || !routeCount) {
+            console.error('Route toolbar elements not found');
+            return;
+        }
+        
+        // Filter route listings
+        const routeListings = listings.filter(listing => listing.route_order);
+        const routePointsCount = routeListings.length;
+        
+        console.log('Updating toolbar visibility:', { routePointsCount, routeListings });
+        
+        if (routePointsCount > 0) {
+            // Show toolbar by removing hidden class
+            toolbar.classList.remove('hidden');
+            
+            // Update count text
+            const countText = routePointsCount === 1 
+                ? `${routePointsCount} stop selected`
+                : `${routePointsCount} stops selected`;
+            routeCount.textContent = countText;
+            
+            console.log('Toolbar should now be visible');
+        } else {
+            // Hide toolbar by adding hidden class
+            toolbar.classList.add('hidden');
+            console.log('Toolbar hidden - no route points');
+        }
+    }
+    
+    // Route toolbar functionality methods
+    clearRoute() {
+        const url = new URL(window.location);
+        url.searchParams.delete('route_listings');
+        
+        // Update URL without reload
+        window.history.replaceState({}, '', url.toString());
+        
+        // Update global params
+        window.geotourBigMap.urlParams.route_listings = '';
+        
+        // Trigger AJAX refresh
+        const refreshEvent = new CustomEvent('routeChanged', {
+            detail: {
+                shouldZoomToRoute: false // Don't zoom when clearing
+            }
+        });
+        document.dispatchEvent(refreshEvent);
+    }
+    
+    // Placeholder methods for future implementation
+    previewRoute() {
+        // Get all listings with route_order property
+        const allListings = this.dataHandler.getCurrentListings();
+        
+        if (!allListings || allListings.length === 0) {
+            alert('No listings data available.');
+            return;
+        }
+        
+        // Filter for route listings only and sort them by route_order
+        const routeListings = allListings
+            .filter(listing => listing.route_order)
+            .sort((a, b) => parseInt(a.route_order) - parseInt(b.route_order));
+        
+        if (routeListings.length < 2) {
+            alert('You need at least 2 stops to preview a route.');
+            return;
+        }
+        
+        console.log('Drawing route between', routeListings.length, 'stops');
+        
+        // Show loading state
+        this.loadingStates.showLoading(true);
+        
+        // Preview the route
+        this.routePreview.drawRoute(routeListings)
+            .then(result => {
+                if (result.success) {
+                    // Show route metadata in the preview info section
+                    const previewInfo = document.getElementById('route-preview-info');
+                    if (previewInfo) {
+                        let metadataHTML = `<strong>Distance:</strong> ${result.distanceFormatted}<br>`;
+                        
+                        if (result.drivingCarUsed) {
+                            metadataHTML += `<strong>Duration:</strong> ${result.durationFormatted}<br>`;
+                        }
+                        
+                        metadataHTML += `<strong>Transport:</strong> ${result.profilesFormatted}`;
+                        
+                        previewInfo.innerHTML = metadataHTML;
+                        previewInfo.classList.remove('hidden');
+                    }
+                } else {
+                    alert(result.message || 'Failed to draw route. Please try again.');
+                    // Hide preview info if there was an error
+                    document.getElementById('route-preview-info')?.classList.add('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error previewing route:', error);
+                alert('An error occurred while drawing the route. Please try again.');
+                document.getElementById('route-preview-info')?.classList.add('hidden');
+            })
+            .finally(() => {
+                this.loadingStates.hideLoading();
+            });
+    }
+    
+    exportToGoogleMaps() {
+        // TODO: Implement Google Maps export
+        console.log('Export to Google Maps clicked - functionality to be implemented');
+    }
+    
+    exportToGeoJSON() {
+        // TODO: Implement GeoJSON export
+        console.log('Export to GeoJSON clicked - functionality to be implemented');
+    }
+    
+    copyShareableLink() {
+        // TODO: Implement shareable link copy
+        console.log('Copy shareable link clicked - functionality to be implemented');
     }
 }
 

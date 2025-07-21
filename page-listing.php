@@ -133,7 +133,53 @@ get_header(); ?>
     </div>
 </div>
 
-<script>
+<!-- Route Planner Toolbar - Positioned outside the main container -->
+<div id="route-planner-toolbar" class="route-planner-toolbar hidden">
+    <div class="toolbar-header">
+        <?php _e('Route Planner', 'geotour'); ?>
+    </div>
+    
+    <div class="toolbar-actions">
+        <button id="preview-route" class="toolbar-btn" title="<?php _e('Preview Route on Map', 'geotour'); ?>">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/>
+            </svg>
+        </button>
+        
+        <button id="export-google-maps" class="toolbar-btn" title="<?php _e('Export to Google Maps', 'geotour'); ?>">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/>
+            </svg>
+        </button>
+        
+        <button id="export-geojson" class="toolbar-btn" title="<?php _e('Export to GeoJSON', 'geotour'); ?>">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+            </svg>
+        </button>
+        
+        <button id="copy-shareable-link" class="toolbar-btn" title="<?php _e('Copy Shareable Link', 'geotour'); ?>">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.9,12C3.9,10.29 5.29,8.9 7,8.9H11V7H7A5,5 0 0,0 2,12A5,5 0 0,0 7,17H11V15.1H7C5.29,15.1 3.9,13.71 3.9,12M8,13H16V11H8V13M17,7H13V8.9H17C18.71,8.9 20.1,10.29 20.1,12C20.1,13.71 18.71,15.1 17,15.1H13V17H17A5,5 0 0,0 22,12A5,5 0 0,0 17,7Z"/>
+            </svg>
+        </button>
+        
+        <button id="clear-route" class="toolbar-btn clear-btn" title="<?php _e('Clear Route', 'geotour'); ?>">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+            </svg>
+        </button>
+    </div>
+    
+    <div class="toolbar-info">
+        <div class="route-stats">
+            <span id="route-count"><?php _e('0 stops selected', 'geotour'); ?></span>
+        </div>
+        <div id="route-preview-info" class="route-preview-info hidden">
+            <!-- Route preview information will be displayed here -->
+        </div>
+    </div>
+</div><script>
 // Pass PHP data to JavaScript
 window.geotourBigMap = {
     // 1. UPDATED API URL

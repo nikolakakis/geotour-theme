@@ -34,6 +34,9 @@
 @use 'pages/homepage' as page-homepage; // Homepage with search form (namespaced to avoid conflict)
 @use 'pages/404' as error-page; // 404 error page styles
 
+// Import the toolbar component
+@use  "components/bigmap/toolbar";
+
 // Global overflow prevention
 html, body {
     overflow-x: hidden;

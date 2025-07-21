@@ -16,6 +16,11 @@
     z-index: 1000;
     display: flex;
     overflow: hidden;
+    
+    // Ensure proper box sizing
+    * {
+        box-sizing: border-box;
+    }
 }
 
 // Loading overlay
@@ -515,6 +520,8 @@
     flex: 1;
     position: relative;
     transition: all 0.3s ease;
+    width: 100%;
+    height: 100vh;
     
     .leaflet-container {
         width: 100%;
@@ -572,6 +579,148 @@
         width: 20px;
         height: 20px;
         fill: currentColor;
+    }
+}
+
+// Route Planner Toolbar
+.route-planner-toolbar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1300;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px color.change(vars.$primary-color, $alpha: 0.2);
+    border: 2px solid color.change(vars.$primary-color, $alpha: 0.15);
+    padding: 1.25rem;
+    min-width: 360px;
+    max-width: 90vw;
+    transition: all 0.3s ease;
+    
+    &.hidden {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-50%) translateY(20px);
+        pointer-events: none;
+    }
+    
+    @media (max-width: 768px) {
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        transform: none;
+        min-width: auto;
+        max-width: none;
+        padding: 1rem;
+        
+        &.hidden {
+            transform: translateY(20px);
+        }
+    }
+    
+    .toolbar-header {
+        margin-bottom: 1rem;
+        text-align: center;
+        
+        h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            color: vars.$primary-color;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    }
+    
+    .toolbar-actions {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        
+        @media (max-width: 480px) {
+            gap: 0.5rem;
+        }
+    }
+    
+    .toolbar-btn {
+        width: 48px;
+        height: 48px;
+        background: vars.$primary-color;
+        border: 1px solid color.change(vars.$primary-color, $alpha: 0.3);
+        border-radius: 8px;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        position: relative;
+        
+        svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+        
+        &:hover {
+            background: vars.$primary-dark;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px color.change(vars.$primary-color, $alpha: 0.35);
+        }
+        
+        &.clear-btn {
+            border-color: color.change(#dc2626, $alpha: 0.3);
+            color: white;
+            background: #dc2626;
+            
+            &:hover {
+                background: #b91c1c;
+                color: white;
+                box-shadow: 0 4px 12px color.change(#dc2626, $alpha: 0.35);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            width: 42px;
+            height: 42px;
+            
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+    
+    .toolbar-info {
+        text-align: center;
+        
+        .route-stats {
+            font-size: 0.85rem;
+            color: vars.$text-color-muted;
+            font-weight: 500;
+            
+            #route-count {
+                color: vars.$primary-color;
+                font-weight: 600;
+            }
+        }
+        
+        .route-preview-info {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: color.change(vars.$primary-color, $alpha: 0.05);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: vars.$text-color;
+            
+            &.hidden {
+                display: none;
+            }
+        }
     }
 }
 

@@ -8,6 +8,7 @@ export class BigMapDataHandler {
         this.isLoading = false;
         this.lastBounds = null;
         this.boundsTimeout = null;
+        this.currentListings = []; // Store the current listings data
     }
 
     /**
@@ -122,6 +123,9 @@ export class BigMapDataHandler {
         // Transform the v3 data to the structure the app expects
         const transformedData = this._transformV3Data(rawData);
 
+        // Store the current listings
+        this.currentListings = transformedData;
+
         return transformedData;
     }
 
@@ -165,5 +169,11 @@ export class BigMapDataHandler {
 
     getLoadingState() {
         return this.isLoading;
+    }
+
+    // Add this method to the BigMapDataHandler class
+    getCurrentListings() {
+        // Return the most recently fetched listings
+        return this.currentListings || [];
     }
 }
