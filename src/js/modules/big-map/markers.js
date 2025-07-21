@@ -53,16 +53,15 @@ export class BigMapMarkers {
     }
     
     createPopupContent(listing) {
-        const categories = listing.categories.map(cat => cat.name).join(', ');
-        const regions = listing.regions.map(reg => reg.name).join(', ');
+        //const categories = listing.categories.map(cat => cat.name).join(', ');
+        //const regions = listing.regions.map(reg => reg.name).join(', ');
         
         return `
             <div class="map-popup">
                 <h4>${listing.title}</h4>
                 ${listing.featured_image_medium ? `<img src="${listing.featured_image_medium}" alt="${listing.title}" class="popup-image">` : ''}
-                <p>${listing.meta_description || listing.excerpt}</p>
-                ${categories ? `<div class="popup-meta"><strong>Categories:</strong> ${categories}</div>` : ''}
-                ${regions ? `<div class="popup-meta"><strong>Regions:</strong> ${regions}</div>` : ''}
+                <p>${listing.meta_description || listing.excerpt}</p>                
+          
                 <a href="${listing.permalink}" class="popup-link">View Details</a>
             </div>
         `;
