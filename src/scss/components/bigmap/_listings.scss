@@ -158,6 +158,61 @@
                 }
             }
         }
+        
+        .listing-route-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid color.change(vars.$primary-color, $alpha: 0.1);
+            
+            .route-stop-number {
+                background: vars.$primary-color;
+                color: white;
+                padding: 0.2rem 0.5rem;
+                border-radius: 12px;
+                font-size: 0.7rem;
+                font-weight: 600;
+            }
+            
+            .route-action-btn {
+                background: none;
+                border: 1px solid color.change(vars.$primary-color, $alpha: 0.3);
+                color: vars.$primary-color;
+                padding: 0.3rem;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+                width: 28px;
+                height: 28px;
+                
+                svg {
+                    width: 14px;
+                    height: 14px;
+                    fill: currentColor;
+                }
+                
+                &:hover {
+                    background: vars.$primary-color;
+                    color: white;
+                    transform: scale(1.1);
+                }
+                
+                &.remove-from-route {
+                    border-color: color.change(#dc2626, $alpha: 0.3);
+                    color: #dc2626;
+                    
+                    &:hover {
+                        background: #dc2626;
+                        color: white;
+                    }
+                }
+            }
+        }
     }
 
     // Style for listings that are part of a route

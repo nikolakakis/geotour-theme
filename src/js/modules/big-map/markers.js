@@ -49,6 +49,28 @@ export class BigMapMarkers {
         const popupContent = this.createPopupContent(listing);
         marker.bindPopup(popupContent);
         
+        // Add event listeners for route buttons after popup opens
+        marker.on('popupopen', (e) => {
+            const popup = e.popup;
+            const popupElement = popup.getElement();
+            
+            // Add click handlers for route action buttons
+            const routeButtons = popupElement.querySelectorAll('.route-action-btn');
+            routeButtons.forEach(btn => {
+                btn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    
+                    const listingId = btn.dataset.listingId;
+                    if (btn.classList.contains('add-to-route')) {
+                        this.addToRoute(listingId);
+                    } else if (btn.classList.contains('remove-from-route')) {
+                        this.removeFromRoute(listingId);
+                    }
+                });
+            });
+        });
+        
         return marker;
     }
     
@@ -56,12 +78,38 @@ export class BigMapMarkers {
         //const categories = listing.categories.map(cat => cat.name).join(', ');
         //const regions = listing.regions.map(reg => reg.name).join(', ');
         
+        // Route order and action buttons
+        let routeSection = '';
+        if (listing.route_order) {
+            routeSection = `
+                <div class="popup-route-info">
+                    <span class="route-order">Route Stop #${listing.route_order}</span>
+                    <button class="route-action-btn remove-from-route" data-listing-id="${listing.id}" title="Remove from route">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19,13H5V11H19V13Z"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+        } else {
+            routeSection = `
+                <div class="popup-route-info">
+                    <button class="route-action-btn add-to-route" data-listing-id="${listing.id}" title="Add to route">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                        </svg>
+                        Add to Route
+                    </button>
+                </div>
+            `;
+        }
+        
         return `
             <div class="map-popup">
                 <h4>${listing.title}</h4>
                 ${listing.featured_image_medium ? `<img src="${listing.featured_image_medium}" alt="${listing.title}" class="popup-image">` : ''}
-                <p>${listing.meta_description || listing.excerpt}</p>                
-          
+                <p>${listing.meta_description || listing.excerpt}</p>
+                ${routeSection}
                 <a href="${listing.permalink}" class="popup-link">View Details</a>
             </div>
         `;
@@ -131,5 +179,60 @@ export class BigMapMarkers {
     
     getCurrentMarkers() {
         return this.currentMarkers;
+    }
+    
+    // Route management methods
+    addToRoute(listingId) {
+        const url = new URL(window.location);
+        const currentRoute = url.searchParams.get('route_listings') || '';
+        const routeIds = currentRoute ? currentRoute.split(',') : [];
+        
+        // Add the new listing ID if not already present
+        if (!routeIds.includes(listingId.toString())) {
+            routeIds.push(listingId);
+            url.searchParams.set('route_listings', routeIds.join(','));
+            
+            // Update URL without reload
+            window.history.replaceState({}, '', url.toString());
+            
+            // Update global params
+            window.geotourBigMap.urlParams.route_listings = routeIds.join(',');
+            
+            // Trigger AJAX refresh
+            this.refreshMapData();
+        }
+    }
+    
+    removeFromRoute(listingId) {
+        const url = new URL(window.location);
+        const currentRoute = url.searchParams.get('route_listings') || '';
+        const routeIds = currentRoute ? currentRoute.split(',') : [];
+        
+        // Remove the listing ID
+        const filteredIds = routeIds.filter(id => id !== listingId.toString());
+        
+        if (filteredIds.length > 0) {
+            url.searchParams.set('route_listings', filteredIds.join(','));
+            window.geotourBigMap.urlParams.route_listings = filteredIds.join(',');
+        } else {
+            url.searchParams.delete('route_listings');
+            window.geotourBigMap.urlParams.route_listings = '';
+        }
+        
+        // Update URL without reload
+        window.history.replaceState({}, '', url.toString());
+        
+        // Trigger AJAX refresh
+        this.refreshMapData();
+    }
+    
+    refreshMapData() {
+        // Dispatch custom event to trigger map refresh
+        const refreshEvent = new CustomEvent('routeChanged', {
+            detail: {
+                shouldZoomToRoute: true
+            }
+        });
+        document.dispatchEvent(refreshEvent);
     }
 }

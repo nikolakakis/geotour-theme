@@ -82,6 +82,77 @@
         color: vars.$text-color;
     }
     
+    .popup-route-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        padding: 0.5rem;
+        background: color.change(vars.$primary-color, $alpha: 0.05);
+        border-radius: 6px;
+        border: 1px solid color.change(vars.$primary-color, $alpha: 0.1);
+        
+        .route-order {
+            background: vars.$primary-color;
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .route-action-btn {
+            background: none;
+            border: 1px solid color.change(vars.$primary-color, $alpha: 0.3);
+            color: vars.$primary-color;
+            padding: 0.4rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            width: 32px;
+            height: 32px;
+            
+            svg {
+                width: 16px;
+                height: 16px;
+                fill: currentColor;
+            }
+            
+            &:hover {
+                background: vars.$primary-color;
+                color: white;
+                transform: scale(1.1);
+            }
+            
+            &.remove-from-route {
+                border-color: color.change(#dc2626, $alpha: 0.3);
+                color: #dc2626;
+                
+                &:hover {
+                    background: #dc2626;
+                    color: white;
+                }
+            }
+            
+            &.add-to-route {
+                width: auto;
+                padding: 0.4rem 0.8rem;
+                border-radius: 16px;
+                font-size: 0.8rem;
+                font-weight: 500;
+                gap: 0.3rem;
+                
+                svg {
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+        }
+    }
+    
     .popup-meta {
         margin-bottom: 0.5rem;
         font-size: 0.8rem;

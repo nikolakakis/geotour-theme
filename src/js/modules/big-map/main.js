@@ -69,6 +69,11 @@ export class BigMapUI {
                 }, 100);
             }
         });
+        
+        // Route change event listener
+        document.addEventListener('routeChanged', (e) => {
+            this.handleRouteChange(e.detail);
+        });
     }
     
     initializeMap() {
@@ -196,6 +201,57 @@ export class BigMapUI {
     
     resetView() {
         this.map.setView(window.geotourBigMap.defaultCenter, window.geotourBigMap.defaultZoom);
+    }
+    
+    async handleRouteChange(options = {}) {
+        try {
+            this.loadingStates.showLoading(true);
+            
+            // Fetch fresh data with updated route
+            const data = await this.dataHandler.fetchListings();
+            
+            // Update map and sidebar
+            this.updateMapAndSidebar(data);
+            
+            // If requested, zoom to route extent
+            if (options.shouldZoomToRoute) {
+                this.zoomToRouteExtent(data);
+            }
+            
+        } catch (error) {
+            console.error('Error refreshing route data:', error);
+            this.loadingStates.showError('Error updating route. Please try again.');
+        } finally {
+            this.loadingStates.hideLoading();
+        }
+    }
+    
+    zoomToRouteExtent(listings) {
+        // Filter listings that are part of the route
+        const routeListings = listings.filter(listing => listing.route_order);
+        
+        if (routeListings.length === 0) {
+            // No route listings, return to default view
+            this.resetView();
+            return;
+        }
+        
+        if (routeListings.length === 1) {
+            // Single route listing, center on it
+            const listing = routeListings[0];
+            this.map.setView([listing.latitude, listing.longitude], 14);
+            return;
+        }
+        
+        // Multiple route listings, fit bounds to include all
+        const routeMarkers = this.markersHandler.getCurrentMarkers().filter((marker, index) => {
+            return listings[index] && listings[index].route_order;
+        });
+        
+        if (routeMarkers.length > 0) {
+            const group = new L.featureGroup(routeMarkers);
+            this.map.fitBounds(group.getBounds().pad(0.1));
+        }
     }
 }
 
