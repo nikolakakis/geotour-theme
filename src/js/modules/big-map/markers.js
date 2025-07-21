@@ -36,7 +36,7 @@ export class BigMapMarkers {
     createMarker(listing) {
         // Create custom icon using the map icon URL from API
         const icon = L.divIcon({
-            className: 'custom-map-marker',
+            className: `custom-map-marker ${listing.route_order ? 'is-route-listing' : ''}`,
             html: `<img src="${listing.map_icon_url}" alt="${listing.title}" class="marker-pin" style="width: 32px; height: 32px;" onerror="this.src='${window.geotourBigMap.defaultIconUrl || '/wp-content/themes/geotour-theme/assets/map-pins/default.svg'}'">`,
             iconSize: [32, 32],
             iconAnchor: [16, 32],

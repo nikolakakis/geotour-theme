@@ -110,6 +110,11 @@ export class BigMapSidebar {
         const item = document.createElement('div');
         item.className = 'listing-item';
         item.dataset.listingId = listing.id;
+
+        // Add a class if the listing is part of a route
+        if (listing.route_order) {
+            item.classList.add('is-route-listing');
+        }
         
         const categories = listing.categories.map(cat => 
             `<span class="meta-tag meta-category" data-filter-type="listing-category" data-filter-value="${cat.slug}">${cat.name}</span>`

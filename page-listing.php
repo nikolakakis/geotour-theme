@@ -148,7 +148,8 @@ window.geotourBigMap = {
         region: '<?php echo esc_js(isset($_GET['listing-region']) ? sanitize_text_field($_GET['listing-region']) : ''); ?>',
         tag: '<?php echo esc_js(isset($_GET['listing-tag']) ? sanitize_text_field($_GET['listing-tag']) : ''); ?>',
         search: '<?php echo esc_js(isset($_GET['search']) ? sanitize_text_field($_GET['search']) : ''); ?>',
-        acffield: '<?php echo esc_js(isset($_GET['acffield']) ? sanitize_text_field($_GET['acffield']) : ''); ?>'
+        acffield: '<?php echo esc_js(isset($_GET['acffield']) ? sanitize_text_field($_GET['acffield']) : ''); ?>',
+        route_listings: '<?php echo esc_js(isset($_GET['route_listings']) ? sanitize_text_field($_GET['route_listings']) : ''); ?>'
     },
     strings: {
         loadingError: '<?php _e('Error loading map data. Please try again.', 'geotour'); ?>',

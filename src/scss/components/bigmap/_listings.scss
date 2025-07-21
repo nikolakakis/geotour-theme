@@ -159,4 +159,14 @@
             }
         }
     }
+
+    // Style for listings that are part of a route
+    .listing-item.is-route-listing {
+        background: color.change(vars.$primary-color, $alpha: 0.15);
+        border-left: 4px solid vars.$primary-dark;
+
+        &:hover {
+            background: color.change(vars.$primary-color, $alpha: 0.2);
+        }
+    }
 }

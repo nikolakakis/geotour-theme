@@ -62,7 +62,9 @@ export class BigMapDataHandler {
                 regions: regions,
                 tags: tags,
                 featured_image: item.image_url,
-                featured_image_medium: item.image_url // Use same image for both sizes
+                featured_image_medium: item.image_url, // Use same image for both sizes
+                // Add route_order property if it exists
+                route_order: item.route_order || null
             };
         });
     }
@@ -95,6 +97,10 @@ export class BigMapDataHandler {
         // Add acffield filter if present
         if (window.geotourBigMap.urlParams.acffield) {
             params.append('acffield', window.geotourBigMap.urlParams.acffield);
+        }
+        // Add route_listings filter if present
+        if (window.geotourBigMap.urlParams.route_listings) {
+            params.append('route_listings', window.geotourBigMap.urlParams.route_listings);
         }
         // --- END V3 API CHANGES ---
 
