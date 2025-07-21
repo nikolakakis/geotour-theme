@@ -137,7 +137,7 @@ export class BigMapSidebar {
         if (listing.route_order) {
             routeSection = `
                 <div class="listing-route-info">
-                    <span class="route-stop-number">Stop #${listing.route_order}</span>
+                    <span class="route-stop-number clickable" data-listing-id="${listing.id}" data-current-order="${listing.route_order}" title="Click to change order">Stop #${listing.route_order}</span>
                     <button class="route-action-btn remove-from-route" data-listing-id="${listing.id}" title="Remove from route">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M19,13H5V11H19V13Z"/>
@@ -208,6 +208,16 @@ export class BigMapSidebar {
                 } else if (btn.classList.contains('remove-from-route')) {
                     this.removeFromRoute(listingId);
                 }
+            });
+        });
+        
+        // Add click event for route stop number reordering
+        item.querySelectorAll('.route-stop-number.clickable').forEach(stopNumber => {
+            stopNumber.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent item click
+                const listingId = stopNumber.dataset.listingId;
+                const currentOrder = parseInt(stopNumber.dataset.currentOrder);
+                this.showReorderDialog(listingId, currentOrder);
             });
         });
     }
@@ -435,5 +445,128 @@ export class BigMapSidebar {
             }
         });
         document.dispatchEvent(refreshEvent);
+    }
+    
+    showReorderDialog(listingId, currentOrder) {
+        // Get current route to determine max order
+        const currentRoute = new URLSearchParams(window.location.search).get('route_listings') || '';
+        const routeIds = currentRoute ? currentRoute.split(',') : [];
+        const maxOrder = routeIds.length;
+        
+        const newOrder = prompt(
+            `Change stop order for this location:\n\nCurrent position: ${currentOrder}\nTotal stops: ${maxOrder}\n\nEnter new position (1-${maxOrder}):`, 
+            currentOrder
+        );
+        
+        if (newOrder === null) return; // User cancelled
+        
+        const newOrderNum = parseInt(newOrder);
+        if (isNaN(newOrderNum) || newOrderNum < 1 || newOrderNum > maxOrder || newOrderNum === currentOrder) {
+            if (newOrderNum !== currentOrder) {
+                alert('Please enter a valid position number between 1 and ' + maxOrder);
+            }
+            return;
+        }
+        
+        this.reorderRoute(listingId, currentOrder, newOrderNum, routeIds);
+    }
+    
+    reorderRoute(listingId, currentOrder, newOrder, routeIds) {
+        // Create a mapping of current positions to listing IDs
+        const orderMap = {};
+        routeIds.forEach((id, index) => {
+            orderMap[index + 1] = id;
+        });
+        
+        // Remove the item being moved
+        delete orderMap[currentOrder];
+        
+        // Create new order array
+        const newOrderArray = [];
+        
+        // Fill positions, shifting as needed
+        for (let i = 1; i <= routeIds.length; i++) {
+            if (i === newOrder) {
+                // Insert the moved item at new position
+                newOrderArray[i - 1] = listingId;
+            } else if (currentOrder < newOrder) {
+                // Moving forward: shift items back to fill the gap
+                if (i > currentOrder && i <= newOrder) {
+                    newOrderArray[i - 1] = orderMap[i];
+                } else if (i > newOrder) {
+                    newOrderArray[i - 1] = orderMap[i];
+                } else {
+                    newOrderArray[i - 1] = orderMap[i];
+                }
+            } else {
+                // Moving backward: shift items forward to make room
+                if (i >= newOrder && i < currentOrder) {
+                    newOrderArray[i - 1] = orderMap[i];
+                } else if (i < newOrder) {
+                    newOrderArray[i - 1] = orderMap[i];
+                } else {
+                    newOrderArray[i - 1] = orderMap[i];
+                }
+            }
+        }
+        
+        // Rebuild the route array with correct ordering
+        const reorderedIds = [];
+        for (let i = 1; i <= routeIds.length; i++) {
+            if (i === newOrder) {
+                reorderedIds.push(listingId);
+            } else {
+                // Find what should go in position i
+                let idForPosition = null;
+                if (currentOrder < newOrder) {
+                    // Moving forward
+                    if (i < currentOrder) {
+                        idForPosition = orderMap[i];
+                    } else if (i > currentOrder && i <= newOrder) {
+                        idForPosition = orderMap[i];
+                    } else if (i > newOrder) {
+                        idForPosition = orderMap[i];
+                    }
+                } else {
+                    // Moving backward  
+                    if (i < newOrder) {
+                        idForPosition = orderMap[i];
+                    } else if (i >= newOrder && i < currentOrder) {
+                        idForPosition = orderMap[i];
+                    } else if (i > currentOrder) {
+                        idForPosition = orderMap[i];
+                    }
+                }
+                
+                if (idForPosition) {
+                    reorderedIds.push(idForPosition);
+                }
+            }
+        }
+        
+        // Simple approach: rebuild array by inserting at new position
+        const finalIds = [...routeIds];
+        
+        // Remove the item from its current position
+        const itemIndex = finalIds.findIndex(id => id === listingId);
+        if (itemIndex !== -1) {
+            finalIds.splice(itemIndex, 1);
+        }
+        
+        // Insert at new position (convert to 0-based index)
+        finalIds.splice(newOrder - 1, 0, listingId);
+        
+        // Update URL and refresh
+        const url = new URL(window.location);
+        url.searchParams.set('route_listings', finalIds.join(','));
+        
+        // Update URL without reload
+        window.history.replaceState({}, '', url.toString());
+        
+        // Update global params
+        window.geotourBigMap.urlParams.route_listings = finalIds.join(',');
+        
+        // Trigger AJAX refresh
+        this.refreshMapData();
     }
 }

@@ -69,6 +69,19 @@ export class BigMapMarkers {
                     }
                 });
             });
+            
+            // Add click handlers for route order reordering
+            const routeOrders = popupElement.querySelectorAll('.route-order.clickable');
+            routeOrders.forEach(orderSpan => {
+                orderSpan.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    
+                    const listingId = orderSpan.dataset.listingId;
+                    const currentOrder = parseInt(orderSpan.dataset.currentOrder);
+                    this.showReorderDialog(listingId, currentOrder);
+                });
+            });
         });
         
         return marker;
@@ -83,7 +96,7 @@ export class BigMapMarkers {
         if (listing.route_order) {
             routeSection = `
                 <div class="popup-route-info">
-                    <span class="route-order">Route Stop #${listing.route_order}</span>
+                    <span class="route-order clickable" data-listing-id="${listing.id}" data-current-order="${listing.route_order}" title="Click to change order">Route Stop #${listing.route_order}</span>
                     <button class="route-action-btn remove-from-route" data-listing-id="${listing.id}" title="Remove from route">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M19,13H5V11H19V13Z"/>
@@ -234,5 +247,56 @@ export class BigMapMarkers {
             }
         });
         document.dispatchEvent(refreshEvent);
+    }
+    
+    showReorderDialog(listingId, currentOrder) {
+        // Get current route to determine max order
+        const currentRoute = new URLSearchParams(window.location.search).get('route_listings') || '';
+        const routeIds = currentRoute ? currentRoute.split(',') : [];
+        const maxOrder = routeIds.length;
+        
+        const newOrder = prompt(
+            `Change stop order for this location:\n\nCurrent position: ${currentOrder}\nTotal stops: ${maxOrder}\n\nEnter new position (1-${maxOrder}):`, 
+            currentOrder
+        );
+        
+        if (newOrder === null) return; // User cancelled
+        
+        const newOrderNum = parseInt(newOrder);
+        if (isNaN(newOrderNum) || newOrderNum < 1 || newOrderNum > maxOrder || newOrderNum === currentOrder) {
+            if (newOrderNum !== currentOrder) {
+                alert('Please enter a valid position number between 1 and ' + maxOrder);
+            }
+            return;
+        }
+        
+        this.reorderRoute(listingId, currentOrder, newOrderNum, routeIds);
+    }
+    
+    reorderRoute(listingId, currentOrder, newOrder, routeIds) {
+        // Simple approach: rebuild array by inserting at new position
+        const finalIds = [...routeIds];
+        
+        // Remove the item from its current position
+        const itemIndex = finalIds.findIndex(id => id === listingId);
+        if (itemIndex !== -1) {
+            finalIds.splice(itemIndex, 1);
+        }
+        
+        // Insert at new position (convert to 0-based index)
+        finalIds.splice(newOrder - 1, 0, listingId);
+        
+        // Update URL and refresh
+        const url = new URL(window.location);
+        url.searchParams.set('route_listings', finalIds.join(','));
+        
+        // Update URL without reload
+        window.history.replaceState({}, '', url.toString());
+        
+        // Update global params
+        window.geotourBigMap.urlParams.route_listings = finalIds.join(',');
+        
+        // Trigger AJAX refresh
+        this.refreshMapData();
     }
 }

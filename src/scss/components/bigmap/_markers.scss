@@ -99,6 +99,17 @@
             border-radius: 15px;
             font-size: 0.8rem;
             font-weight: 600;
+            
+            &.clickable {
+                cursor: pointer;
+                transition: all 0.2s ease;
+                
+                &:hover {
+                    background: vars.$primary-dark;
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 4px color.change(vars.$primary-color, $alpha: 0.3);
+                }
+            }
         }
         
         .route-action-btn {
