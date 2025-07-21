@@ -57,7 +57,7 @@ $map_2d_custom_url = get_field('acf_2d_leaflet_map_url', $post_id);
 
 // Base URLs
 $google_maps_base_url = 'https://www.google.com/maps?q=';
-$route_planner_base_url = 'https://www.geotour.gr/timeline/route-planner/?routelistings=';
+$route_planner_base_url = 'https://www.geotour.gr/listing/?route_listings=';
 $cesium_3d_map_base_url = 'https://tour.geotour.gr/3dmap/'; // Base for Cesium
 
 ?>
