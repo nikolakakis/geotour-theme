@@ -5,7 +5,7 @@
  * Main functions file - acts as a loader for organized includes
  * 
  * @package Geotour_Mobile_First
- * @version 1.0.0
+ * @version 1.4.0.3
  */
 
 // Prevent direct access
