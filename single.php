@@ -14,7 +14,10 @@ get_header();
         <div class="content-wrapper">
             <?php
             // Check if sidebar should be hidden
-            $hide_sidebar = get_field('hide_sidebar') || get_post_meta(get_the_ID(), '_hide_sidebar', true);
+            // Only use ACF field, ignore legacy meta field
+            $acf_hide_sidebar = get_field('hide_sidebar');
+            // Convert to proper boolean: true means hide, false/null means show
+            $hide_sidebar = ($acf_hide_sidebar === true || $acf_hide_sidebar === 1 || $acf_hide_sidebar === '1');
             $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
             ?>
             
