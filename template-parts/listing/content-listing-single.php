@@ -56,22 +56,26 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                         <!-- Desktop Virtual Tour -->
                         <div id="geotour-overlay" class="desktop-vtour">
                             <div id="geotour-tour">
-                                <img class="vrgirl" src="https://www.geotour.gr/wp-content/uploads/2024/06/VRgirl.webp" alt="VR Girl" />
+                                <img class="vrgirl" src="https://www.geotour.gr/wp-content/uploads/2024/06/VRgirl.webp" alt="Virtual Reality Girl - Geotour VR Experience" />
                                 <h3 class="geotour-title"><span>G</span>eotour Virtual Tour</h3>
                                 <p>Drag the mouse to change the field of view of the virtual tour, or use a VR headset to roam to Crete in an alternative way!</p>
                                 <div class="geotour-vtour">
                                     <span>You can open the tour in fullscreen by double clicking (or double tap with fingers) on it! Double click again to exit the fullscreen mode.</span>
-                                    <iframe src="<?php echo esc_url($vtour_link); ?>" allowfullscreen></iframe>
+                                    <iframe src="<?php echo esc_url($vtour_link); ?>" 
+                                            title="<?php echo esc_attr(sprintf(__('Virtual Tour of %s', 'geotour'), get_the_title())); ?>" 
+                                            allowfullscreen></iframe>
                                 </div>
                             </div>
                         </div>
                         <?php else : ?>
                         <!-- Mobile Virtual Tour -->
                         <div id="geotour-mobile-tour" class="mobile-vtour">
-                            <a href="<?php echo esc_url($vtour_link); ?>">
-                                <img class="vrgirl" src="https://www.geotour.gr/wp-content/uploads/2024/06/VRgirl.webp" alt="VR Girl" />
+                            <a href="<?php echo esc_url($vtour_link); ?>" 
+                               aria-label="<?php echo esc_attr(sprintf(__('Open Virtual Tour of %s', 'geotour'), get_the_title())); ?>">
+                                <img class="vrgirl" src="https://www.geotour.gr/wp-content/uploads/2024/06/VRgirl.webp" alt="Virtual Reality Girl - Geotour VR Experience" />
                             </a>
-                            <a class="text-link" href="<?php echo esc_url($vtour_link); ?>">
+                            <a class="text-link" href="<?php echo esc_url($vtour_link); ?>"
+                               aria-label="<?php echo esc_attr(sprintf(__('Launch Virtual Tour of %s', 'geotour'), get_the_title())); ?>">
                                 <span class="mobiletitle">G</span>eotour Virtual Tour
                                 <span class="text">Opens Geotour Virtual Tour in the current position</span>
                             </a>
@@ -210,9 +214,9 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                             echo '<div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 1rem;">';
                             
                                 // Image
-                                echo '<a href="' . esc_url($post_permalink) . '" style="display: block; flex-shrink: 0;">';
+                                echo '<a href="' . esc_url($post_permalink) . '" style="display: block; flex-shrink: 0;" aria-label="' . esc_attr(sprintf(__('Read more about %s', 'geotour'), $post_title)) . '">';
                                 echo '<img src="' . esc_url($thumbnail_url ? $thumbnail_url : $placeholder_url) . '" ';
-                                echo 'alt="' . esc_attr($post_title) . '" ';
+                                echo 'alt="' . esc_attr($thumbnail_url ? sprintf(__('Featured image for %s', 'geotour'), $post_title) : __('No image available', 'geotour')) . '" ';
                                 echo 'style="width: 48px; height: 48px; object-fit: cover; border-radius: 6px;">';
                                 echo '</a>';
                                 

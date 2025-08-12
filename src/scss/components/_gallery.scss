@@ -132,6 +132,14 @@
     --fancybox-bg: rgba(13, 26, 38, 0.95);
     --fancybox-color: #{vars.$dark-text-primary};
     --fancybox-accent-color: #{vars.$primary-color};
+    
+
+
+
+    .is-modern .f-thumbs__slide {
+        width: auto;
+    }
+
 }
 
 .fancybox__caption {
