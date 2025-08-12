@@ -23,6 +23,29 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                 <div id="listing-content" class="entry-content">
                     <?php the_content(); ?>
                 </div>
+                
+                <!-- Viator Activities Section (100vw) -->
+                <?php
+                // Get coordinates from ACF position field
+                $position_data = get_field('position');
+                $viator_lat = null;
+                $viator_lng = null;
+                
+                if ($position_data && isset($position_data['markers']) && !empty($position_data['markers'])) {
+                    $marker = $position_data['markers'][0];
+                    $viator_lat = isset($marker['lat']) ? floatval($marker['lat']) : null;
+                    $viator_lng = isset($marker['lng']) ? floatval($marker['lng']) : null;
+                }
+                
+                // Get keywords from ACF field
+                $viator_keywords = get_field('viator_keywords');
+                
+                // Only display if we have coordinates and keywords
+                if ($viator_lat && $viator_lng && !empty($viator_keywords)) : ?>
+                    <section class="viator-activities-full-section">
+                        <?php echo do_shortcode('[viator_activities count="24" lat="' . $viator_lat . '" lng="' . $viator_lng . '" keyword="' . esc_attr($viator_keywords) . '" min_rating="3"]'); ?>
+                    </section>
+                <?php endif; ?>
                     
                 <!-- Virtual Tour Section (100vw) -->
                 <?php
