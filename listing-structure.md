@@ -29,6 +29,7 @@
       - Google Maps link
       - Route Planner link
       - 3D Map link
+      - Virtual Tour link (conditional)
       - 3D Video Path link (conditional)
       - 3D Tour link (conditional)
 
