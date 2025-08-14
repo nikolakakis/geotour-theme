@@ -31,7 +31,9 @@
 
 // Page specific styles
 @use 'pages/single-listing'; // Single listing page (MOST IMPORTANT)
-@use 'pages/homepage' as page-homepage; // Homepage with search form (namespaced to avoid conflict)
+// Pages
+@use 'pages/homepage';
+@use 'pages/search';
 @use 'pages/404' as error-page; // 404 error page styles
 
 // Import the toolbar component

@@ -233,3 +233,33 @@ function geotour_get_meta_description() {
     
     return $meta_description;
 }
+
+/**
+ * Get search results count by post type
+ * 
+ * @param string $search_query The search query
+ * @return array Array of post types and their counts
+ */
+function geotour_get_search_results_by_type($search_query) {
+    if (empty($search_query)) {
+        return array();
+    }
+    
+    $post_types = array('post', 'listing', 'page');
+    $results = array();
+    
+    foreach ($post_types as $post_type) {
+        $query = new WP_Query(array(
+            'post_type' => $post_type,
+            'post_status' => 'publish',
+            's' => $search_query,
+            'posts_per_page' => -1,
+            'fields' => 'ids' // Only get IDs for performance
+        ));
+        
+        $results[$post_type] = $query->found_posts;
+        wp_reset_postdata();
+    }
+    
+    return $results;
+}
