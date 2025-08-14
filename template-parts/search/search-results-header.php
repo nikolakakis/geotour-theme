@@ -48,15 +48,70 @@ $post_type_counts = geotour_get_search_results_by_type($search_query);
                     <h3 class="breakdown-title"><?php _e('Results by Content Type:', 'geotour'); ?></h3>
                     <ul class="content-type-counts">
                         <?php foreach ($post_type_counts as $post_type => $count) : 
-                            if ($count > 0) :
-                                $post_type_object = get_post_type_object($post_type);
-                                $post_type_name = $post_type_object ? $post_type_object->labels->name : ucfirst($post_type);
+                            if ($count > 0 && $post_type !== 'listing_pois') :
+                                
+                                // Handle special display for listings
+                                if ($post_type === 'listing') {
+                                    $pois_count = isset($post_type_counts['listing_pois']) ? $post_type_counts['listing_pois'] : 0;
+                                    $all_listings_url = add_query_arg('search', urlencode($search_query), home_url('/listing/'));
+                                    $pois_listings_url = add_query_arg(array(
+                                        'listing-category' => 'pois',
+                                        'search' => urlencode($search_query)
+                                    ), home_url('/listing/'));
+                        ?>
+                            <li class="content-type-item content-type-listing">
+                                <div class="listing-breakdown">
+                                    <div class="listing-total">
+                                        <a href="<?php echo esc_url($all_listings_url); ?>" class="content-type-link">
+                                            <span class="content-type-name"><?php _e('Listings', 'geotour'); ?></span>
+                                            <span class="content-type-count"><?php echo absint($count); ?></span>
+                                        </a>
+                                    </div>
+                                    <?php if ($pois_count > 0) : ?>
+                                    <div class="listing-pois">
+                                        <a href="<?php echo esc_url($pois_listings_url); ?>" class="content-type-link pois-link">
+                                            <span class="content-type-name"><?php _e('POIs', 'geotour'); ?></span>
+                                            <span class="content-type-count"><?php echo absint($pois_count); ?></span>
+                                        </a>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
+                            </li>
+                        <?php
+                                } else {
+                                    // Handle other post types
+                                    $post_type_object = get_post_type_object($post_type);
+                                    if ($post_type_object) {
+                                        $post_type_name = $post_type_object->labels->name;
+                                    } else {
+                                        // Handle custom post types that might not be registered properly
+                                        switch ($post_type) {
+                                            case 'people':
+                                                $post_type_name = __('People', 'geotour');
+                                                break;
+                                            case 'photos':
+                                                $post_type_name = __('Photos', 'geotour');
+                                                break;
+                                            case 'events':
+                                                $post_type_name = __('Events', 'geotour');
+                                                break;
+                                            case 'timeline':
+                                                $post_type_name = __('Timeline', 'geotour');
+                                                break;
+                                            case 'accommodation':
+                                                $post_type_name = __('Accommodation', 'geotour');
+                                                break;
+                                            default:
+                                                $post_type_name = ucwords(str_replace(array('-', '_'), ' ', $post_type));
+                                        }
+                                    }
                         ?>
                             <li class="content-type-item content-type-<?php echo esc_attr($post_type); ?>">
                                 <span class="content-type-name"><?php echo esc_html($post_type_name); ?></span>
                                 <span class="content-type-count"><?php echo absint($count); ?></span>
                             </li>
                         <?php 
+                                }
                             endif;
                         endforeach; ?>
                     </ul>

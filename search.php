@@ -41,10 +41,39 @@ $search_query = get_search_query();
                         endwhile;
                         
                         // Pagination
-                        the_posts_navigation(array(
-                            'prev_text' => __('← Previous Results', 'geotour'),
-                            'next_text' => __('Next Results →', 'geotour'),
-                        ));
+                        echo '<nav class="search-pagination" aria-label="' . esc_attr__('Search results pages', 'geotour') . '">';
+                        
+                        $pagination_args = array(
+                            'prev_text' => '<span aria-hidden="true">←</span> ' . __('Previous Results', 'geotour'),
+                            'next_text' => __('Next Results', 'geotour') . ' <span aria-hidden="true">→</span>',
+                            'before_page_number' => '<span class="screen-reader-text">' . __('Page', 'geotour') . ' </span>',
+                            'mid_size' => 2,
+                            'end_size' => 1,
+                        );
+                        
+                        // Use paginate_links for better pagination
+                        $pagination = paginate_links(array_merge($pagination_args, array(
+                            'total' => $wp_query->max_num_pages,
+                            'current' => max(1, get_query_var('paged')),
+                            'format' => '?paged=%#%',
+                            'add_args' => array('s' => get_search_query()),
+                            'type' => 'array'
+                        )));
+                        
+                        if ($pagination) {
+                            echo '<ul class="pagination-list">';
+                            foreach ($pagination as $page_link) {
+                                echo '<li class="pagination-item">' . $page_link . '</li>';
+                            }
+                            echo '</ul>';
+                        }
+                        
+                        // Fallback to simple navigation if paginate_links fails
+                        if (!$pagination) {
+                            the_posts_navigation($pagination_args);
+                        }
+                        
+                        echo '</nav>';
                         ?>
                     </div>
                     

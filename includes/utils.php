@@ -245,7 +245,17 @@ function geotour_get_search_results_by_type($search_query) {
         return array();
     }
     
-    $post_types = array('post', 'listing', 'page');
+    // Get all public post types that support search
+    $post_types = get_post_types(array(
+        'public' => true,
+        'exclude_from_search' => false
+    ), 'names');
+    
+    // Remove attachment from search as it's not typically what users want
+    if (isset($post_types['attachment'])) {
+        unset($post_types['attachment']);
+    }
+    
     $results = array();
     
     foreach ($post_types as $post_type) {
@@ -257,7 +267,34 @@ function geotour_get_search_results_by_type($search_query) {
             'fields' => 'ids' // Only get IDs for performance
         ));
         
-        $results[$post_type] = $query->found_posts;
+        $count = $query->found_posts;
+        if ($count > 0) {
+            $results[$post_type] = $count;
+        }
+        wp_reset_postdata();
+    }
+    
+    // Get special counts for listings if they exist
+    if (isset($results['listing']) && $results['listing'] > 0) {
+        // Count listings in POIs category
+        $pois_query = new WP_Query(array(
+            'post_type' => 'listing',
+            'post_status' => 'publish',
+            's' => $search_query,
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'listing-category',
+                    'field' => 'slug',
+                    'terms' => 'pois'
+                )
+            ),
+            'posts_per_page' => -1,
+            'fields' => 'ids'
+        ));
+        
+        if ($pois_query->found_posts > 0) {
+            $results['listing_pois'] = $pois_query->found_posts;
+        }
         wp_reset_postdata();
     }
     

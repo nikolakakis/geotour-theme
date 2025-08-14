@@ -188,6 +188,136 @@
                     min-width: 24px;
                     text-align: center;
                 }
+                
+                // Special styling for listing breakdown
+                &.content-type-listing {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 0.5rem;
+                    padding: 0.75rem 1rem;
+                    
+                    .listing-breakdown {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.5rem;
+                        
+                        .listing-total,
+                        .listing-pois {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            
+                            .content-type-link {
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                text-decoration: none;
+                                color: inherit;
+                                width: 100%;
+                                transition: all 0.3s ease;
+                                
+                                &:hover {
+                                    transform: translateX(4px);
+                                    
+                                    .content-type-count {
+                                        background: vars.$primary-dark;
+                                    }
+                                }
+                                
+                                &.pois-link {
+                                    font-size: 0.85rem;
+                                    opacity: 0.9;
+                                    
+                                    .content-type-name {
+                                        color: vars.$accent-color-earth;
+                                    }
+                                    
+                                    .content-type-count {
+                                        background: vars.$accent-color-earth;
+                                        font-size: 0.75rem;
+                                    }
+                                    
+                                    &:hover .content-type-count {
+                                        background: color.adjust(vars.$accent-color-earth, $lightness: -10%);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                                // Different colors for different post types
+                &.content-type-people {
+                    background: color.change(#8b5cf6, $alpha: 0.1);
+                    
+                    .content-type-name {
+                        color: #8b5cf6;
+                    }
+                    
+                    .content-type-count {
+                        background: #8b5cf6;
+                    }
+                }
+                
+                &.content-type-photos {
+                    background: color.change(#f59e0b, $alpha: 0.1);
+                    
+                    .content-type-name {
+                        color: #f59e0b;
+                    }
+                    
+                    .content-type-count {
+                        background: #f59e0b;
+                    }
+                }
+                
+                &.content-type-events {
+                    background: color.change(#ef4444, $alpha: 0.1);
+                    
+                    .content-type-name {
+                        color: #ef4444;
+                    }
+                    
+                    .content-type-count {
+                        background: #ef4444;
+                    }
+                }
+                
+                &.content-type-timeline {
+                    background: color.change(#06b6d4, $alpha: 0.1);
+                    
+                    .content-type-name {
+                        color: #06b6d4;
+                    }
+                    
+                    .content-type-count {
+                        background: #06b6d4;
+                    }
+                }
+                
+                &.content-type-accommodation {
+                    background: color.change(#84cc16, $alpha: 0.1);
+                    
+                    .content-type-name {
+                        color: #84cc16;
+                    }
+                    
+                    .content-type-count {
+                        background: #84cc16;
+                    }
+                }
+                
+                &.content-type-page {
+                    background: color.change(#7c3aed, $alpha: 0.15);
+                    
+                    .content-type-name {
+                        color: #7c3aed;
+                    }
+                    
+                    .content-type-count {
+                        background: #7c3aed;
+                    }
+                }
             }
         }
     }
@@ -232,6 +362,7 @@
         }
     }
 }
+   
 
 // ==========================================================================
 // SEARCH RESULTS CONTENT
@@ -586,5 +717,106 @@
     }
     60% {
         transform: translateY(-5px) rotate(-45deg);
+    }
+}
+
+// ==========================================================================
+// SEARCH PAGINATION
+// ==========================================================================
+
+.search-pagination {
+    margin: 3rem 0;
+    text-align: center;
+    
+    .pagination-list {
+        list-style: none;
+        padding: 0;
+        display: inline-flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        
+        .pagination-item {
+            a,
+            span {
+                display: block;
+                padding: 0.75rem 1rem;
+                border: 1px solid color.change(vars.$primary-color, $alpha: 0.2);
+                border-radius: vars.$border-radius;
+                text-decoration: none;
+                color: vars.$primary-color;
+                font-weight: 500;
+                min-width: 44px; // Touch target
+                transition: all 0.3s ease;
+                
+                &:hover {
+                    background: vars.$primary-color;
+                    color: white;
+                    border-color: vars.$primary-color;
+                    transform: translateY(-2px);
+                }
+            }
+            
+            // Current page
+            .current {
+                background: vars.$primary-color;
+                color: white;
+                border-color: vars.$primary-color;
+            }
+            
+            // Dots separator
+            .dots {
+                color: vars.$text-color-muted;
+                border: none;
+                
+                &:hover {
+                    background: none;
+                    color: vars.$text-color-muted;
+                    transform: none;
+                }
+            }
+            
+            // Previous/Next buttons
+            a[rel="prev"],
+            a[rel="next"] {
+                padding: 0.75rem 1.5rem;
+                background: color.change(vars.$primary-color, $alpha: 0.1);
+                
+                &:hover {
+                    background: vars.$primary-color;
+                    color: white;
+                }
+            }
+        }
+    }
+    
+    // Fallback simple navigation
+    .nav-links {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        
+        .nav-previous,
+        .nav-next {
+            a {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.5rem;
+                background: vars.$primary-color;
+                color: white;
+                text-decoration: none;
+                border-radius: vars.$border-radius;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                
+                &:hover {
+                    background: vars.$primary-dark;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px color.change(vars.$primary-color, $alpha: 0.3);
+                }
+            }
+        }
     }
 }
