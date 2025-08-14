@@ -19,3 +19,15 @@
   animation: fadeInSlideUp 0.4s ease forwards;
   animation-delay: $delay;
 }
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: rotate(45deg) translateX(0) translateY(0);
+    }
+    40% {
+        transform: rotate(45deg) translateX(-10px) translateY(-10px);
+    }
+    60% {
+        transform: rotate(45deg) translateX(-5px) translateY(-5px);
+    }
+}
