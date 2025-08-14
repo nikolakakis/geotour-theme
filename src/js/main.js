@@ -10,6 +10,9 @@ import { initializeGallery } from './modules/gallery/main.js';
 import { BigMapUI } from './modules/big-map/main.js';
 import { HeroParallax } from './modules/hero/parallax.js';
 
+// Import accessibility improvements
+import './accessibility.js';
+
 // Check if Leaflet is available globally (from plugin)
 if (typeof L !== 'undefined') {
     console.log('Leaflet found from plugin, version:', L.version);

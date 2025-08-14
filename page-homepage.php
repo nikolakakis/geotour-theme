@@ -31,7 +31,7 @@ get_header(); ?>
                             <!-- Region Select -->
                             <div class="search-field">
                                 <label for="listing-region"><?php _e('Region', 'geotour'); ?></label>
-                                <select name="listing-region" id="listing-region">
+                                                                        <select name="listing-region" id="listing-region" aria-label="<?php esc_attr_e('Select a region to filter listings', 'geotour'); ?>">
                                     <option value=""><?php _e('All Regions', 'geotour'); ?></option>
                                     <?php
                                     $regions = get_terms([
@@ -49,7 +49,7 @@ get_header(); ?>
                             <!-- Category Select -->
                             <div class="search-field">
                                 <label for="listing-category"><?php _e('Category', 'geotour'); ?></label>
-                                <select name="listing-category" id="listing-category">
+                                <select name="listing-category" id="listing-category" aria-label="<?php esc_attr_e('Select a category to filter listings', 'geotour'); ?>">
                                     <option value=""><?php _e('All Categories', 'geotour'); ?></option>
                                     <?php
                                     $categories = get_terms([
@@ -74,9 +74,9 @@ get_header(); ?>
                             <!-- Text Search -->
                             <div class="search-field search-text">
                                 <label for="search-text"><?php _e('Search', 'geotour'); ?></label>
-                                <input type="text" name="search" id="search-text" placeholder="<?php _e('Keywords...', 'geotour'); ?>">
+                                <input type="text" name="search" id="search-text" placeholder="<?php _e('Keywords...', 'geotour'); ?>" aria-label="<?php esc_attr_e('Enter keywords to search listings', 'geotour'); ?>">
                             </div>
-                            <button type="submit" class="search-submit" title="<?php _e('Explore Map', 'geotour'); ?>">
+                            <button type="submit" class="search-submit" title="<?php _e('Explore Map', 'geotour'); ?>" aria-label="<?php esc_attr_e('Submit search and explore map', 'geotour'); ?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg>
                             </button>
                         </form>
@@ -90,9 +90,9 @@ get_header(); ?>
                             <!-- Text Search -->
                             <div class="search-field search-text">
                                 <label for="website-search-text" class="screen-reader-text"><?php _e('Search the website', 'geotour'); ?></label>
-                                <input type="search" name="s" id="website-search-text" placeholder="<?php _e('Search articles, people, photos...', 'geotour'); ?>">
+                                <input type="search" name="s" id="website-search-text" placeholder="<?php _e('Search articles, people, photos...', 'geotour'); ?>" aria-label="<?php esc_attr_e('Search website content', 'geotour'); ?>">
                             </div>
-                            <button type="submit" class="search-submit" title="<?php _e('Search Website', 'geotour'); ?>">
+                            <button type="submit" class="search-submit" title="<?php _e('Search Website', 'geotour'); ?>" aria-label="<?php esc_attr_e('Submit website search', 'geotour'); ?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
                                 </svg>
