@@ -21,6 +21,10 @@ get_header(); ?>
                 <div class="container">
                     <h1 class="hero-title"><?php bloginfo('name'); ?></h1>
                     <p class="hero-description"><?php bloginfo('description'); ?></p>
+                    
+                    <!-- Listings Search -->
+                    <h2 class="search-section-title"><?php _e('Search Listings', 'geotour'); ?></h2>
+                    <p class="search-section-description"><?php _e('Explore points of interest on the interactive map', 'geotour'); ?></p>
                     <!-- Modern Search Form -->
                     <div class="homepage-search-form">
                         <form method="get" action="<?php echo esc_url(home_url('/listing')); ?>" class="listing-search-form">
@@ -74,6 +78,24 @@ get_header(); ?>
                             </div>
                             <button type="submit" class="search-submit" title="<?php _e('Explore Map', 'geotour'); ?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Website Search -->
+                    <h2 class="search-section-title"><?php _e('Search Website', 'geotour'); ?></h2>
+                    <p class="search-section-description"><?php _e('Find articles, people, photos and all content', 'geotour'); ?></p>
+                    <div class="homepage-search-form">
+                        <form method="get" action="<?php echo esc_url(home_url('/')); ?>" class="listing-search-form">
+                            <!-- Text Search -->
+                            <div class="search-field search-text">
+                                <label for="website-search-text" class="screen-reader-text"><?php _e('Search the website', 'geotour'); ?></label>
+                                <input type="search" name="s" id="website-search-text" placeholder="<?php _e('Search articles, people, photos...', 'geotour'); ?>">
+                            </div>
+                            <button type="submit" class="search-submit" title="<?php _e('Search Website', 'geotour'); ?>">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                </svg>
                             </button>
                         </form>
                     </div>
