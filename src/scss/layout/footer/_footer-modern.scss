@@ -176,6 +176,32 @@ $footer-divider: #3a3a3a;
                 }
             }
         }
+        
+        .gemi-number {
+            font-size: 0.75rem;
+            color: rgba($footer-text, 0.6);
+            margin-top: 0.5rem;
+            font-weight: 400;
+            opacity: 0.8;
+            margin: 0;
+            
+            @media (min-width: 768px) {
+                margin-top: 0.25rem;
+                font-size: 0.7rem;
+            }
+            
+            @media (min-width: 1024px) {
+                display: inline;
+                margin-top: 0;
+                margin-left: 1rem;
+                
+                &::before {
+                    content: "•";
+                    margin-right: 0.5rem;
+                    color: rgba($footer-text, 0.4);
+                }
+            }
+        }
     }
     
     // Social Links
