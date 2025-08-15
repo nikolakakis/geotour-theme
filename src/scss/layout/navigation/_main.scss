@@ -62,7 +62,7 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(variables.$main-color, 0.95); // Corrected: Use variables.$main-color
+    background: rgba(variables.$main-color, 1); // Corrected: Use variables.$main-color
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -190,7 +190,7 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
   position: relative;
   display: inline-block; // Ensure it takes space
   cursor: pointer; // Indicate clickable
-  padding: 4px;
+  padding: 14px;
   &::before, &::after {
     content: '';
     position: absolute;
