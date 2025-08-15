@@ -134,6 +134,7 @@ $is_english = ($current_lang === 'en');
                         </a>
                     <?php endif; ?>
                 </p>
+                <p class="gemi-number">Αριθμός ΓΕΜΗ 185790727000</p>
             </div>
             <div class="social-links">
                 <?php

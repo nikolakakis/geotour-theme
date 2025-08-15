@@ -178,22 +178,26 @@ function geotour_enqueue_theme_assets() {
 }
 add_action('wp_enqueue_scripts', 'geotour_enqueue_theme_assets');
 
-// Add type="module" to the main Vite-generated JavaScript file
+// Add type="module" and defer to the main Vite-generated JavaScript file
 function geotour_add_type_module_to_script($tag, $handle, $src) {
     $module_handles = ['geotour-vite-main-js', 'geotour-main-js']; 
 
     if (in_array($handle, $module_handles)) {
-        // If type="module" is already correctly set, do nothing.
+        // If type="module" is already correctly set, do nothing for type.
         if (strpos($tag, 'type="module"') !== false) {
+            // But still check for defer
+            if (strpos($tag, 'defer') === false) {
+                $tag = str_replace('<script', '<script defer', $tag);
+            }
             return $tag;
         }
 
         // Remove any existing type="text/javascript" or other type attributes.
         $tag = preg_replace('/\s+type=(["\'])(?:(?!\1).)*\1/', '', $tag);
 
-        // Add type="module"
+        // Add type="module" and defer
         if (strpos($tag, 'type=') === false) {
-            $tag = str_replace('<script', '<script type="module"', $tag);
+            $tag = str_replace('<script', '<script type="module" defer', $tag);
         }
     }
     return $tag;
@@ -212,3 +216,78 @@ function geotour_add_crossorigin_to_dev_script($tag, $handle, $src) {
     return $tag;
 }
 // add_filter('script_loader_tag', 'geotour_add_crossorigin_to_dev_script', 10, 3); // Uncomment if CORS issues arise with Vite dev server
+
+/**
+ * Defer non-critical scripts for better LCP performance
+ * This is much safer than deferring jQuery
+ */
+function geotour_defer_non_critical_scripts($tag, $handle, $src) {
+    // Scripts that can be safely deferred (add more as needed)
+    $scripts_to_defer = array(
+        'geotour-main-js',
+        'geotour-vite-main-js',
+        'wp-embed',
+        'comment-reply'
+    );
+    
+    // Don't defer in admin or during AJAX
+    if (is_admin() || wp_doing_ajax()) {
+        return $tag;
+    }
+    
+    // Check if this script should be deferred
+    if (in_array($handle, $scripts_to_defer)) {
+        // Only add defer if it's not already there
+        if (strpos($tag, 'defer') === false) {
+            $tag = str_replace('<script', '<script defer', $tag);
+        }
+    }
+    
+    return $tag;
+}
+add_filter('script_loader_tag', 'geotour_defer_non_critical_scripts', 5, 3);
+
+/**
+ * Additional LCP optimizations for critical resource preloading
+ */
+function geotour_preload_critical_resources() {
+    // Preload hero images with high priority
+    if (is_front_page() || is_home()) {
+        $homepage_id = get_option('page_on_front');
+        if ($homepage_id) {
+            $hero_image = get_the_post_thumbnail_url($homepage_id, 'full');
+            if ($hero_image) {
+                echo '<link rel="preload" as="image" href="' . esc_url($hero_image) . '" fetchpriority="high">' . "\n";
+            }
+        }
+    } elseif (is_singular()) {
+        // Preload featured images on single posts/pages
+        $featured_image = get_the_post_thumbnail_url(get_the_ID(), 'full');
+        if ($featured_image) {
+            echo '<link rel="preload" as="image" href="' . esc_url($featured_image) . '" fetchpriority="high">' . "\n";
+        }
+    }
+    
+    // Preload Google Fonts
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+    
+    // Preload critical CSS if you have inline critical CSS
+    $vite_assets = geotour_get_vite_assets();
+    if (!empty($vite_assets['manifest'])) {
+        $manifest = $vite_assets['manifest'];
+        $base_uri = $vite_assets['base_uri'];
+        
+        // Look for main CSS file to preload
+        $css_entry_keys = ['src/js/main.js', 'main.js', 'index.html'];
+        foreach ($css_entry_keys as $key) {
+            if (isset($manifest[$key]['css'])) {
+                foreach ($manifest[$key]['css'] as $css_asset) {
+                    echo '<link rel="preload" as="style" href="' . esc_url($base_uri . $css_asset) . '">' . "\n";
+                    break 2; // Only preload the first critical CSS file
+                }
+            }
+        }
+    }
+}
+add_action('wp_head', 'geotour_preload_critical_resources', 1);
