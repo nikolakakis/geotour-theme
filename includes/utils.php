@@ -300,3 +300,15 @@ function geotour_get_search_results_by_type($search_query) {
     
     return $results;
 }
+
+/**
+ * Check if supplementary data should be included based on zoom level
+ * This is used by the Big Map to determine when to fetch panoramas, people, etc.
+ * 
+ * @param float $zoom_level Current map zoom level
+ * @return bool Whether to include supplementary data
+ */
+function geotour_should_include_supplementary_data($zoom_level) {
+    // Include supplementary data at zoom level 14 and above
+    return $zoom_level >= 14;
+}

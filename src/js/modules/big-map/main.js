@@ -135,11 +135,13 @@ export class BigMapUI {
         this.loadingStates.showLoading(true);
         
         try {
-            const data = await this.dataHandler.fetchListings();
+            const currentZoom = this.map ? this.map.getZoom() : window.geotourBigMap.defaultZoom;
+            const data = await this.dataHandler.fetchListings(null, currentZoom);
             this.updateMapAndSidebar(data);
             
             // Initialize toolbar visibility on first load
-            this.toolbar.updateToolbar(data);
+            const listings = Array.isArray(data) ? data : data.listings || [];
+            this.toolbar.updateToolbar(listings);
         } catch (error) {
             console.error('Error loading initial data:', error);
             this.loadingStates.showError(window.geotourBigMap.strings.loadingError);
@@ -164,11 +166,14 @@ export class BigMapUI {
         }
     }
     
-    updateMapAndSidebar(listings) {
-        // Update map markers
-        this.markersHandler.updateMap(this.map, listings);
+    updateMapAndSidebar(data) {
+        // Handle both old format (array) and new format (object with listings/supplementary)
+        const listings = Array.isArray(data) ? data : data.listings || [];
         
-        // Add click handlers to markers
+        // Update map markers (both listings and supplementary)
+        this.markersHandler.updateMap(this.map, data);
+        
+        // Add click handlers to main listing markers only
         const markers = this.markersHandler.getCurrentMarkers();
         markers.forEach((marker, index) => {
             if (listings[index]) {
@@ -178,7 +183,7 @@ export class BigMapUI {
             }
         });
         
-        // Update sidebar
+        // Update sidebar (only with main listings, not supplementary data)
         this.sidebarHandler.updateSidebar(listings);
         
         // Add handlers to listing items
@@ -235,17 +240,19 @@ export class BigMapUI {
             this.loadingStates.showLoading(true);
             
             // Fetch fresh data with updated route
-            const data = await this.dataHandler.fetchListings();
+            const currentZoom = this.map ? this.map.getZoom() : window.geotourBigMap.defaultZoom;
+            const data = await this.dataHandler.fetchListings(null, currentZoom);
             
             // Update map and sidebar
             this.updateMapAndSidebar(data);
             
             // Update toolbar
-            this.toolbar.updateToolbar(data);
+            const listings = Array.isArray(data) ? data : data.listings || [];
+            this.toolbar.updateToolbar(listings);
             
             // If requested, zoom to route extent
             if (options.shouldZoomToRoute) {
-                this.toolbar.zoomToRouteExtent(data);
+                this.toolbar.zoomToRouteExtent(listings);
             }
             
         } catch (error) {

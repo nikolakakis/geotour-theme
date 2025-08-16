@@ -6,21 +6,41 @@
 export class BigMapMarkers {
     constructor() {
         this.currentMarkers = [];
+        this.supplementaryMarkers = []; // New array for supplementary markers
         this.initialBoundsFit = false;
     }
     
-    updateMap(map, listings) {
+    updateMap(map, data) {
+        // Handle both old format (array) and new format (object with listings/supplementary)
+        const listings = Array.isArray(data) ? data : data.listings || [];
+        const supplementaryData = Array.isArray(data) ? [] : data.supplementary || [];
+        
         // Clear existing markers
         this.currentMarkers.forEach(marker => {
             map.removeLayer(marker);
         });
         this.currentMarkers = [];
+
+        // Clear existing supplementary markers
+        this.supplementaryMarkers.forEach(marker => {
+            map.removeLayer(marker);
+        });
+        this.supplementaryMarkers = [];
         
-        // Add new markers
+        // Add main listing markers
         listings.forEach(listing => {
             if (listing.latitude && listing.longitude) {
                 const marker = this.createMarker(listing);
                 this.currentMarkers.push(marker);
+                marker.addTo(map);
+            }
+        });
+
+        // Add supplementary markers (panoramas, people, etc.)
+        supplementaryData.forEach(item => {
+            if (item.latitude && item.longitude) {
+                const marker = this.createSupplementaryMarker(item);
+                this.supplementaryMarkers.push(marker);
                 marker.addTo(map);
             }
         });
@@ -85,6 +105,80 @@ export class BigMapMarkers {
         });
         
         return marker;
+    }
+
+    createSupplementaryMarker(item) {
+        // Create custom icon for supplementary items (panoramas, people, etc.)
+        const iconClass = `supplementary-marker marker-${item.source_type}`;
+        
+        // Use specific icon for panoramas, fallback to API icon for others
+        let iconUrl = item.map_icon_url;
+        let iconSize = [24, 24]; // Default size for other supplementary items
+        
+        if (item.source_type === 'panorama') {
+            iconUrl = '/wp-content/themes/geotour-theme/assets/graphics/map-pins/panoramas.svg';
+            iconSize = [30, 30]; // Bigger size for panoramas to make them more visible
+        }
+        
+        const icon = L.divIcon({
+            className: iconClass,
+            html: `<img src="${iconUrl}" alt="${item.title}" class="supplementary-pin" style="width: ${iconSize[0]}px; height: ${iconSize[1]}px;" onerror="this.src='${window.geotourBigMap.defaultIconUrl || '/wp-content/themes/geotour-theme/assets/map-pins/default.svg'}'">`,
+            iconSize: iconSize,
+            iconAnchor: [iconSize[0]/2, iconSize[1]],
+            popupAnchor: [0, -iconSize[1]]
+        });
+        
+        const marker = L.marker([item.latitude, item.longitude], { icon });
+        
+        // Create popup content for supplementary items
+        const popupContent = this.createSupplementaryPopupContent(item);
+        marker.bindPopup(popupContent);
+        
+        return marker;
+    }
+
+    createSupplementaryPopupContent(item) {
+        // Create different popup content based on source type
+        let typeLabel = '';
+        let linkText = 'View Details';
+        let extraInfo = '';
+        
+        switch(item.source_type) {
+            case 'panorama':
+                typeLabel = 'Virtual Tour';
+                linkText = 'Visit'; // Special link text for panoramas
+                break;
+            case 'people':
+                typeLabel = 'Historical Figure';
+                if (item.acf_fields) {
+                    if (item.acf_fields.event_date) {
+                        extraInfo += `<p><strong>Period:</strong> ${item.acf_fields.event_date}</p>`;
+                    }
+                    if (item.acf_fields.event_role) {
+                        extraInfo += `<p><strong>Role:</strong> ${item.acf_fields.event_role}</p>`;
+                    }
+                }
+                break;
+            case 'oldphotos':
+                typeLabel = 'Historical Photo';
+                break;
+            case 'pois':
+                typeLabel = 'Point of Interest';
+                break;
+            default:
+                typeLabel = 'Information';
+        }
+        
+        return `
+            <div class="map-popup supplementary-popup ${item.source_type}-popup">
+                <div class="popup-type-label">${typeLabel}</div>
+                <h4>${item.title}</h4>
+                ${item.image_url ? `<img src="${item.image_url}" alt="${item.title}" class="popup-image">` : ''}
+                ${item.description ? `<p>${item.description}</p>` : ''}
+                ${extraInfo}
+                <a href="${item.item_url}" class="popup-link">${linkText}</a>
+            </div>
+        `;
     }
     
     createPopupContent(listing) {
