@@ -432,3 +432,6 @@ function geotour_enqueue_google_fonts() {
     echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&family=Syne:wght@700;800&display=swap">';
 }
 add_action('wp_head', 'geotour_enqueue_google_fonts');
+
+// Include shortcodes
+require_once get_template_directory() . '/inc/shortcodes/map-controls-popup.php';

@@ -1,0 +1,219 @@
+// Map Controls Popup Component
+// Compact floating menu styling for popup maker integration
+
+@use '../base/variables' as vars;
+@use 'sass:color';
+
+.map-controls-popup-container {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 1rem;
+    
+    .map-controls-popup-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.75rem;
+        
+        @media (max-width: vars.$breakpoint-sm) {
+            gap: 0.5rem;
+        }
+    }
+}
+
+.map-control-popup-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: white;
+    border: 2px solid vars.$main-color;
+    border-radius: vars.$border-radius;
+    color: vars.$main-color;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    
+    // Hover effects
+    &:hover {
+        background: vars.$main-color;
+        border-color: vars.$main-color;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(vars.$main-color, 0.4);
+    }
+    
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(vars.$main-color, 0.3);
+    }
+    
+    // SVG icons
+    svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+        transition: transform 0.3s ease;
+    }
+    
+    // Image icons (for VR) - keep original color, filter on hover
+    img {
+        width: 18px;
+        height: 18px;
+        transition: transform 0.3s ease, filter 0.3s ease;
+    }
+    
+    &:hover {
+        svg {
+            transform: scale(1.1);
+        }
+        
+        img {
+            transform: scale(1.1);
+            filter: brightness(0) invert(1); // Make white on hover
+        }
+    }
+    
+    // Special styling for VR button
+    &.map-control-vr {
+        border-color: vars.$accent-color-sea;
+        color: vars.$accent-color-sea;
+        
+        &:hover {
+            background: vars.$accent-color-sea;
+            border-color: vars.$accent-color-sea;
+            color: white;
+            box-shadow: 0 4px 12px rgba(vars.$accent-color-sea, 0.4);
+        }
+    }
+    
+    // Special styling for 3D buttons
+    &.map-control-3d {
+        border-color: vars.$accent-color-earth;
+        color: vars.$accent-color-earth;
+        
+        &:hover {
+            background: vars.$accent-color-earth;
+            border-color: vars.$accent-color-earth;
+            color: white;
+            box-shadow: 0 4px 12px rgba(vars.$accent-color-earth, 0.4);
+        }
+    }
+    
+    // Focus styles for accessibility
+    &:focus {
+        outline: none;
+        border-color: vars.$accent-color-sun;
+        box-shadow: 0 0 0 3px rgba(vars.$accent-color-sun, 0.3);
+    }
+}
+
+// Mobile optimizations
+@media (max-width: vars.$breakpoint-sm) {
+    .map-controls-popup-container {
+        padding: 0.75rem;
+        max-width: 250px;
+    }
+    
+    .map-control-popup-button {
+        width: 44px;
+        height: 44px;
+        
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        img {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+    .map-controls-popup-container {
+        .map-control-popup-button {
+            background: vars.$dark-surface;
+            border-color: vars.$main-color;
+            color: vars.$main-color;
+            
+            &:hover {
+                background: vars.$main-color;
+                border-color: vars.$main-color;
+                color: white;
+            }
+            
+            &.map-control-vr {
+                border-color: vars.$accent-color-sea;
+                color: vars.$accent-color-sea;
+                
+                &:hover {
+                    background: vars.$accent-color-sea;
+                }
+            }
+            
+            &.map-control-3d {
+                border-color: vars.$accent-color-earth;
+                color: vars.$accent-color-earth;
+                
+                &:hover {
+                    background: vars.$accent-color-earth;
+                }
+            }
+        }
+    }
+}
+
+// Animation for when popup opens
+.map-controls-popup-container {
+    animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+// Tooltip-like hover effect for better UX
+.map-control-popup-button {
+    &::after {
+        content: attr(title);
+        position: absolute;
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+    }
+    
+    &:hover::after {
+        opacity: 1;
+    }
+    
+    @media (max-width: vars.$breakpoint-sm) {
+        &::after {
+            display: none; // Hide tooltips on mobile
+        }
+    }
+}
