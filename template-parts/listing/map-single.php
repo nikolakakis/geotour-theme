@@ -123,14 +123,14 @@ $cesium_3d_map_base_url = 'https://tour.geotour.gr/3dmap/'; // Base for Cesium
                 $vtour_link = get_field('vtour_link', $post_id);
                 if (!empty($vtour_link)) : ?>
                     <a href="<?php echo esc_url($vtour_link); ?>" class="map-control-button map-control-vr" title="<?php esc_attr_e('Open Virtual Tour', 'geotour'); ?>">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 7h-17C2.67 7 2 7.67 2 8.5v7C2 16.33 2.67 17 3.5 17h17c.83 0 1.5-.67 1.5-1.5v-7c0-.83-.67-1.5-1.5-1.5zM7.5 14.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5S10 10.62 10 12s-1.12 2.5-2.5 2.5zm9 0c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5S19 10.62 19 12s-1.12 2.5-2.5 2.5z"/><circle cx="7.5" cy="12" r="1.5"/><circle cx="16.5" cy="12" r="1.5"/></svg>
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/graphics/map-pins/panoramas.svg" alt="Virtual Tour" width="20" height="20">
                     </a>
                 <?php endif; ?>
 
                 <?php // 3D Video Path - ACF: video_path
                 if (!empty($video_path_value) && $marker_lat && $marker_lng) :
                     $video_path_url = add_query_arg(array('videopath' => $video_path_value), $cesium_3d_map_base_url); ?>
-                    <a href="<?php echo esc_url($video_path_url); ?>" target="_blank" class="map-control-button map-control-3d" title="<?php esc_attr_e('Play 3D Video Path', 'geotour'); ?>">
+                    <a href="<?php echo esc_url($video_path_url); ?>" class="map-control-button map-control-3d" title="<?php esc_attr_e('Play 3D Video Path', 'geotour'); ?>">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5z"/></svg>
                     </a>
                 <?php endif; ?>
@@ -138,7 +138,7 @@ $cesium_3d_map_base_url = 'https://tour.geotour.gr/3dmap/'; // Base for Cesium
                 <?php // 3D Tour - ACF: 3d_tour
                 if (!empty($tour_3d_value) && $marker_lat && $marker_lng) :
                     $tour_3d_url_constructed = add_query_arg(array('tour' => $tour_3d_value), $cesium_3d_map_base_url); ?>
-                    <a href="<?php echo esc_url($tour_3d_url_constructed); ?>" target="_blank" class="map-control-button map-control-3d" title="<?php esc_attr_e('Start 3D Tour', 'geotour'); ?>">
+                    <a href="<?php echo esc_url($tour_3d_url_constructed); ?>" class="map-control-button map-control-3d" title="<?php esc_attr_e('Start 3D Tour', 'geotour'); ?>">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3zm0-12C6.48 3 2 7.48 2 13s4.48 10 10 10 10-4.48 10-10S17.52 3 12 3zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
                     </a>
                 <?php endif; ?>
