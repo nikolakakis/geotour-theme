@@ -22,6 +22,7 @@ if ( ! function_exists( 'bt_create_listing' ) ) {
                     'singular_name' => __( 'Listing Item', 'geotour' ) // Changed text domain
                 ),
                 'public'        => true,
+                'show_in_rest' => true,
                 'has_archive'   => 'listings', // Changed to 'listings' plural to avoid conflict
                 'menu_position' => 5,
                 'supports'      => array( 'title', 'editor', 'revisions', 'thumbnail', 'author', 'comments', 'excerpt' ),
@@ -37,7 +38,8 @@ if ( ! function_exists( 'bt_create_listing' ) ) {
                 'label' => __( 'Categories', 'geotour' ), // Changed text domain
                 'singular_name' => __( 'Category', 'geotour' ), // Changed text domain
                 'show_admin_column' => true,
-                'rewrite' => array( 'slug' => 'listing-category' ) // Added rewrite slug
+                'rewrite' => array( 'slug' => 'listing-category' ), // Added rewrite slug
+                'show_in_rest' => true
             ) 
         );
 
@@ -49,7 +51,8 @@ if ( ! function_exists( 'bt_create_listing' ) ) {
                 'label' => __( 'Regions', 'geotour' ), // Changed text domain
                 'singular_name' => __( 'Region', 'geotour' ), // Changed text domain
                 'show_admin_column' => true,
-                'rewrite' => array( 'slug' => 'listing-region' ) // Added rewrite slug
+                'rewrite' => array( 'slug' => 'listing-region' ), // Added rewrite slug
+                'show_in_rest' => true
             ) 
         );
 
@@ -60,7 +63,8 @@ if ( ! function_exists( 'bt_create_listing' ) ) {
                 'hierarchical' => false, 
                 'label' => __( 'Tags', 'geotour' ), // Changed text domain
                 'singular_name' => __( 'Tag', 'geotour' ), // Changed text domain
-                'rewrite' => array( 'slug' => 'listing-tag' ) // Added rewrite slug
+                'rewrite' => array( 'slug' => 'listing-tag' ), // Added rewrite slug
+                'show_in_rest' => true
             ) 
         );
 
