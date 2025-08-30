@@ -9,6 +9,7 @@ import { initializeAllMaps } from './modules/maps/main.js';
 import { initializeGallery } from './modules/gallery/main.js';
 import { BigMapUI } from './modules/big-map/main.js';
 import { HeroParallax } from './modules/hero/parallax.js';
+import { initializeListingInpageMenu } from './modules/listing/inpage-menu.js';
 
 // Import accessibility improvements
 import './accessibility.js';
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeHero();
     initializeAllMaps();
     initializeGallery(); // Initialize gallery functionality
+    initializeListingInpageMenu(); // Only runs if menu exists
     
     console.log('Modules initialized.');
 });

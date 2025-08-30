@@ -81,10 +81,23 @@ if ($regions && !is_wp_error($regions)) {
             
             <!-- Scroll indicator -->
             <div class="hero-scroll-indicator">
-                <div class="scroll-arrow"></div>
+                <div class="scroll-arrow" style="cursor: pointer;"></div>
             </div>
             
         </div>
     </div>
     
 </section>
+<?php get_template_part('template-parts/listing/inpage-menu'); ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var scrollArrow = document.querySelector('.hero-scroll-indicator .scroll-arrow');
+    var targetMenu = document.getElementById('listing-inpage-menu');
+    if (scrollArrow && targetMenu) {
+        scrollArrow.addEventListener('click', function(e) {
+            e.preventDefault();
+            targetMenu.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }
+});
+</script>

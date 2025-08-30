@@ -62,7 +62,7 @@ $cesium_3d_map_base_url = 'https://tour.geotour.gr/3dmap/'; // Base for Cesium
 
 ?>
 
-<section class="listing-map-full-section">
+<section class="listing-map-full-section" id="summary">
     <div class="listing-map-container-wrapper">
         
         <!-- Left side - Content overlap area (hidden on mobile) -->

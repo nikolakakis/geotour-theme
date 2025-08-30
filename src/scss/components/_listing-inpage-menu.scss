@@ -1,0 +1,104 @@
+// Sticky horizontal in-page menu for single listing
+.listing-inpage-menu {
+  position: relative; // Default
+  top: auto;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid #e0e6eb;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(34, 165, 117, 0.04);
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  min-height: 56px;
+  
+  ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  li {
+    display: flex;
+    align-items: center;
+    margin: 0 0.25rem;
+    position: relative;
+  }
+  
+  .inpage-menu-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1.1rem 0.25rem 1.1rem;
+    color: #222;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: none;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    position: relative;
+    outline: none;
+    min-width: 56px;
+    min-height: 48px;
+    border-bottom: 2px solid transparent;
+    
+    &:hover,
+    &:focus {
+      background: #f0f4f8;
+      color: #22a575;
+    }
+    &.active {
+      background: #e6f7f0;
+      color: #22a575;
+      font-weight: 700;
+      border-bottom: 2.5px solid #22a575;
+      box-shadow: none;
+    }
+  }
+  // Always show label below icon, small text
+  .inpage-menu-label {
+    display: block;
+    font-size: 0.95rem;
+    color: #444;
+    margin-top: 0.15rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    position: static;
+    opacity: 1 !important;
+    pointer-events: auto;
+    text-align: center;
+  }
+  @media (max-width: 700px) {
+    .inpage-menu-link {
+      flex-direction: column;
+      .inpage-menu-label {
+        font-size: 1rem;
+        color: #222;
+        margin-top: 0.18rem;
+      }
+    }
+  }
+}
+.listing-inpage-menu.is-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(34, 165, 117, 0.08);
+  background: #fff;
+}

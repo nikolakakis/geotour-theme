@@ -13,7 +13,7 @@ $hide_sidebar = ($acf_hide_sidebar === true || $acf_hide_sidebar === 1 || $acf_h
 $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
 ?>
 
-<div class="content-wrapper">
+<div class="content-wrapper" id="main-content">
     <div class="<?php echo esc_attr($layout_class); ?>">
         
         <!-- Main Content Area -->
@@ -45,7 +45,7 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                 if (empty($viator_keywords)) $viator_keywords = "Crete";
                 // Only display if we have coordinates and keywords
                 ?>
-                <section class="viator-activities-full-section">
+                <section class="viator-activities-full-section" id="viator-activities-container">
                     <?php echo do_shortcode('[viator_activities count="24" lat="' . $viator_lat . '" lng="' . $viator_lng . '" keyword="' . esc_attr($viator_keywords) . '" min_rating="3"]'); ?>
                 </section>                
                     
@@ -87,7 +87,7 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                 <?php endif; ?>
                 
                 <!-- Nearest listings grid shortcode (100vw) -->
-                <section class="nearest-listings-full-section">
+                <section class="nearest-listings-full-section" id="nearby">
                     <?php echo do_shortcode('[listings-grid type="nearest" limit="12"]'); ?>
                 </section>
                 

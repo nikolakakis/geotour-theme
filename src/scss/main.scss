@@ -29,6 +29,7 @@
 @use 'components/related-content'; // Styles for related posts and period listings
 @use 'components/events'; // Complementary events styles
 @use 'components/loading-indicators'; // Add this line
+@use 'components/listing-inpage-menu'; // Sticky in-page menu for single listing
 
 // Page specific styles
 @use 'pages/single-listing'; // Single listing page (MOST IMPORTANT)
