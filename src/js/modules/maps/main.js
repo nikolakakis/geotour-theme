@@ -55,7 +55,10 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     
     // Default center (Crete, Greece)
     const defaultCenter = [35.2401, 24.8093];
-    const defaultZoom = 9;
+    let defaultZoom = 9;
+    if (mapElementId === 'listing-map') {
+        defaultZoom = 12;
+    }
     
     // Determine map center and zoom
     let center = defaultCenter;
@@ -63,7 +66,8 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     
     if (mapData.coordinates) {
         center = mapData.coordinates;
-        zoom = mapData.zoomLevel || 13;
+        // Use zoomLevel if provided, otherwise use defaultZoom
+        zoom = typeof mapData.zoomLevel !== 'undefined' ? mapData.zoomLevel : defaultZoom;
     } else {
         // Try to get from data attributes
         const lat = parseFloat(mapElement.dataset.lat);
@@ -72,7 +76,7 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
         
         if (!isNaN(lat) && !isNaN(lng)) {
             center = [lat, lng];
-            zoom = !isNaN(zoomAttr) ? zoomAttr : 13;
+            zoom = !isNaN(zoomAttr) ? zoomAttr : defaultZoom;
         }
     }    // Check if this should be a static map
     const isStatic = mapData.isStatic || mapElement.dataset.static === 'true';
@@ -93,12 +97,20 @@ export function initializeGeotourMap(mapElementId, mapData = {}) {
     
     const map = L.map(mapElementId, mapOptions);
 
-    // Add OpenStreetMap raster tile layer
-    const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'    });
-    osmLayer.addTo(map);
-    
+    // Add CyclOSM tile layer for single listing map
+    let tileLayer;
+    if (mapElementId === 'listing-map') {
+        tileLayer = L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
+            maxZoom: 20,
+            attribution: '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
+    } else {
+        tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
+    }
+    tileLayer.addTo(map);
     console.log('Raster tile map initialized successfully');
     
     // Add marker if coordinates are provided

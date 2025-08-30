@@ -69,6 +69,12 @@
         display: none; // Hidden on mobile since the map content area is hidden
     }
 }
+.listing-map-full-section {
+    .listing-single-map {
+        border-radius: 13px;
+        box-shadow: 0 4px 24px rgba(34, 40, 90, .1), 0 1.5px 4px rgba(34, 40, 90, .06);
+    }
+}
 
 // Responsive 2-column layout for map and summary on large screens
 @media (min-width: 1200px) {

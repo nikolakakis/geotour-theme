@@ -192,10 +192,12 @@ body {
 
     // Right Section: Hamburger Menu Button
     .header-right-section {
+        position: fixed;
         display: flex;
         align-items: center;
         z-index: 1002; // Ensure hamburger is above fullscreen menu
         margin-top: 20px;
+        right: 20px;
     }
 }
 

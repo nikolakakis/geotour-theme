@@ -31,6 +31,8 @@
 @use 'components/loading-indicators'; // Add this line
 @use 'components/listing-inpage-menu'; // Sticky in-page menu for single listing
 
+@use 'layout/listing'; // Sticky in-page menu for single listing
+
 // Page specific styles
 @use 'pages/single-listing'; // Single listing page (MOST IMPORTANT)
 // Pages

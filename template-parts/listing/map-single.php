@@ -26,11 +26,8 @@ if (!$marker_lat || !$marker_lng) {
     return; // Exit if no valid coordinates
 }
 
-// Get zoom level from position data, default to 13 for single listings
-$zoom_level = isset($position_data['zoom']) ? intval($position_data['zoom']) : 13;
-
-// Reduce zoom level by 2 for better overview
-$zoom_level = max(1, $zoom_level - 2); // Ensure minimum zoom of 1
+// Get zoom level from position data, default to 12 for single listings
+$zoom_level = isset($position_data['zoom']) ? intval($position_data['zoom']) : 12;
 
 // Get category-based map icon
 $map_icon_config = geotour_get_listing_map_icon(get_the_ID());
@@ -96,8 +93,8 @@ $cesium_3d_map_base_url = 'https://tour.geotour.gr/3dmap/'; // Base for Cesium
                  class="geotour-map-container listing-single-map"
                  data-lat="<?php echo esc_attr($marker_lat); ?>"
                  data-lng="<?php echo esc_attr($marker_lng); ?>"
-                 data-zoom="<?php echo esc_attr($zoom_level); ?>"
-                 data-static="true"
+                 data-zoom="14"
+                 data-static="false"
                  data-no-popup="true">
                 
                 <!-- Loading placeholder -->
@@ -118,9 +115,9 @@ $cesium_3d_map_base_url = 'https://tour.geotour.gr/3dmap/'; // Base for Cesium
 window.geotourListingMapData = window.geotourListingMapData || {};
 window.geotourListingMapData.single = {
     coordinates: [<?php echo $marker_lat; ?>, <?php echo $marker_lng; ?>],
-    zoomLevel: <?php echo $zoom_level; ?>,
+    zoomLevel: 14,
     iconConfig: <?php echo geotour_generate_js_icon_config($map_icon_config); ?>,
-    isStatic: true,
+    isStatic: false,
     showPopup: false
 };
 

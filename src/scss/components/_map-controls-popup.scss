@@ -8,7 +8,7 @@
     width: 100%;
     max-width: 300px;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 0.1rem;
     
     .map-controls-popup-grid {
         display: flex;
@@ -116,7 +116,7 @@
 // Mobile optimizations
 @media (max-width: vars.$breakpoint-sm) {
     .map-controls-popup-container {
-        padding: 0.75rem;
+        padding: 0.05rem;
         max-width: 250px;
     }
     
