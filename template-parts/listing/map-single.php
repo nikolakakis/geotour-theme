@@ -68,22 +68,23 @@ $cesium_3d_map_base_url = 'https://tour.geotour.gr/3dmap/'; // Base for Cesium
         <!-- Left side - Content overlap area (hidden on mobile) -->
         <div class="listing-map-content-area">
             <div class="listing-excerpt-section">
-                <h3 class="excerpt-title"><?php _e('Summary About This Location', 'geotour'); ?></h3>
-                <?php if ($listing_excerpt && strlen($listing_excerpt) > 10) : ?>
-                    <div class="listing-excerpt-content">
-                        <p><?php echo esc_html($listing_excerpt); ?></p>
-                    </div>
-                <?php else : ?>
-                    <div class="listing-excerpt-content">
-                        <p><?php _e('Discover this fascinating location and its rich history.', 'geotour'); ?></p>
-                    </div>
-                <?php endif; ?>
-                  <!-- Additional metadata could go here -->                <div class="scroll-to-content">
+                <div class="summary-content-box">
+                    <h3 class="excerpt-title"><?php _e('Summary About This Location', 'geotour'); ?></h3>
+                    <?php if ($listing_excerpt && strlen($listing_excerpt) > 10) : ?>
+                        <div class="listing-excerpt-content">
+                            <p><?php echo esc_html($listing_excerpt); ?></p>
+                        </div>
+                    <?php else : ?>
+                        <div class="listing-excerpt-content">
+                            <p><?php _e('Discover this fascinating location and its rich history.', 'geotour'); ?></p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <!-- Additional metadata could go here -->
+                <div class="scroll-to-content">
                     <a href="#listing-content" class="scroll-to-content-btn">
                         <span>Full text below</span>
-                        <div class="scroll-arrow" style="cursor: pointer;">
-                            
-                        </div>
+                        <div class="scroll-arrow" style="cursor: pointer;"></div>
                     </a>
                 </div>
             </div>

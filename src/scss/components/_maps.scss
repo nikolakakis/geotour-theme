@@ -258,11 +258,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    
-    @media (min-width: 1024px) {
-        flex: 0 0 30%; // 30% width on large screens
-        max-width: 30%;
-    }
 }
 
 .listing-map-area .geotour-map-container {
@@ -276,7 +271,7 @@
     min-height: 350px;
     
     @media (min-width: 1024px) {
-        min-height: 450px;
+        min-height: 410px;
     }
 }
 
@@ -296,4 +291,29 @@
         background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><circle cx="12" cy="12" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="12" cy="19" r="2"/></svg>') center/contain no-repeat;
         opacity: 0.3;
     }
+}
+
+.summary-content-box {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(34, 40, 90, 0.10), 0 1.5px 4px rgba(34, 40, 90, 0.06);
+  padding: 2rem 1.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 100%;
+  word-break: break-word;
+}
+
+@media (max-width: 1200px) and (min-width: 700px) {
+  .listing-excerpt-section {
+    .excerpt-title {
+      font-size: 1.1rem !important;
+      margin-bottom: 1rem !important;
+      padding-bottom: 0.4rem !important;
+    }
+    .listing-excerpt-content p {
+      font-size: 0.92rem !important;
+      line-height: 1.4 !important;
+      margin-bottom: 0.5rem !important;
+    }
+  }
 }

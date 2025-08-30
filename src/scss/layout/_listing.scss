@@ -69,3 +69,34 @@
         display: none; // Hidden on mobile since the map content area is hidden
     }
 }
+
+// Responsive 2-column layout for map and summary on large screens
+@media (min-width: 1200px) {
+  .listing-map-full-section .listing-map-container-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+  }
+  .listing-map-full-section .listing-map-content-area,
+  .listing-map-full-section .listing-map-area {
+    width: 50%;
+    max-width: 50%;
+    flex: 0 0 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+// Responsive adjustments for medium screens
+@media (max-width: 1200px) and (min-width: 700px) {
+  .listing-excerpt-section {
+    .excerpt-title {
+      font-size: 1.2rem;
+    }
+    .listing-excerpt-content p {
+      font-size: 1rem;
+    }
+  }
+}

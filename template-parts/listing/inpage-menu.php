@@ -33,6 +33,7 @@ $menu_items = [
         'id' => 'summary',
         'label' => __('Summary', 'geotour'),
         'show' => $has_summary,
+        'class' => 'inpage-menu-summary',
     ],
     [
         'id' => 'details',
@@ -60,7 +61,7 @@ $menu_items = [
     <ul>
         <?php foreach ($menu_items as $item) : if (!$item['show']) continue; ?>
             <li>
-                <a href="#<?php echo esc_attr($item['id']); ?>" class="inpage-menu-link" data-section="<?php echo esc_attr($item['id']); ?>">
+                <a href="#<?php echo esc_attr($item['id']); ?>" class="inpage-menu-link<?php echo !empty($item['class']) ? ' ' . esc_attr($item['class']) : ''; ?>" data-section="<?php echo esc_attr($item['id']); ?>">
                     <span class="inpage-menu-label"><?php echo esc_html($item['label']); ?></span>
                 </a>
             </li>

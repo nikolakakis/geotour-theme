@@ -83,12 +83,16 @@
     text-align: center;
   }
   @media (max-width: 700px) {
+    .inpage-menu-link.inpage-menu-summary {
+      display: none !important;
+    }
+  }
+  @media (max-width: 900px) {
     .inpage-menu-link {
-      flex-direction: column;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.7rem 0.2rem 0.7rem;
       .inpage-menu-label {
-        font-size: 1rem;
-        color: #222;
-        margin-top: 0.18rem;
+        font-size: 0.85rem;
       }
     }
   }
