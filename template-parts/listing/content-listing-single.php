@@ -35,17 +35,19 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                     $marker = $position_data['markers'][0];
                     $viator_lat = isset($marker['lat']) ? floatval($marker['lat']) : null;
                     $viator_lng = isset($marker['lng']) ? floatval($marker['lng']) : null;
+                } else {
+                    $viator_lat = 35.182780;
+                    $viator_lng = 24.770842;
                 }
                 
                 // Get keywords from ACF field
                 $viator_keywords = get_field('viator_keywords');
-                
+                if (empty($viator_keywords)) $viator_keywords = "Crete";
                 // Only display if we have coordinates and keywords
-                if ($viator_lat && $viator_lng && !empty($viator_keywords)) : ?>
-                    <section class="viator-activities-full-section">
-                        <?php echo do_shortcode('[viator_activities count="24" lat="' . $viator_lat . '" lng="' . $viator_lng . '" keyword="' . esc_attr($viator_keywords) . '" min_rating="3"]'); ?>
-                    </section>
-                <?php endif; ?>
+                ?>
+                <section class="viator-activities-full-section">
+                    <?php echo do_shortcode('[viator_activities count="24" lat="' . $viator_lat . '" lng="' . $viator_lng . '" keyword="' . esc_attr($viator_keywords) . '" min_rating="3"]'); ?>
+                </section>                
                     
                 <!-- Virtual Tour Section (100vw) -->
                 <?php
