@@ -190,12 +190,9 @@
     width: 100vw;
     position: relative;
     left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;    
-    min-height: 400px;
-    max-height: 500px; // Prevent excessive height
-    overflow: hidden; // Prevent both X and Y overflow
+    right: 50%;    
+    margin: 40px -50vw 40px -50vw;  
+    min-height: 400px;    
     
     @media (min-width: 1024px) {
         min-height: 500px;
@@ -205,8 +202,7 @@
 
 .listing-map-container-wrapper {
     display: flex;
-    height: 100%;
-    
+    height: 100%;    
     
     @media (min-width: 1024px) {
         min-height: 500px;

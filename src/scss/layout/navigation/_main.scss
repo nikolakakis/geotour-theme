@@ -28,21 +28,25 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
     position: fixed;
     display: flex;
     align-items: center;
-    z-index: 11002; // Ensure hamburger is above fullscreen menu
+    z-index: 9999; 
    
     right: 20px;
-    top: 30px;
+    top: 10px;
     box-shadow: 0 4px 15px rgba(variables.$primary-color, 0.3),
             0 2px 8px rgba(0, 0, 0, 0.2);
 
     // Responsive adjustments
+    @media (max-width: 1400px) {
+        z-index: 999; 
+        
+    }
     @media (max-width: 1024px) {
         right: 15px;
-        top: 20px;
+        top: 8px;
     }
     @media (max-width: 600px) {
         right: 10px;
-        top: 10px;
+        top: 6px;
     }
 
 

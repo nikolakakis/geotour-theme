@@ -76,14 +76,15 @@ $cesium_3d_map_base_url = 'https://tour.geotour.gr/3dmap/'; // Base for Cesium
                             <p><?php _e('Discover this fascinating location and its rich history.', 'geotour'); ?></p>
                         </div>
                     <?php endif; ?>
+                    <!-- Additional metadata could go here -->
+                    <div class="scroll-to-content">
+                        <a href="#listing-content" class="scroll-to-content-btn">
+                            <span>Full text below</span>
+                            <div class="scroll-arrow" style="cursor: pointer;"></div>
+                        </a>
+                    </div>
                 </div>
-                <!-- Additional metadata could go here -->
-                <div class="scroll-to-content">
-                    <a href="#listing-content" class="scroll-to-content-btn">
-                        <span>Full text below</span>
-                        <div class="scroll-arrow" style="cursor: pointer;"></div>
-                    </a>
-                </div>
+                
             </div>
         </div>
         
