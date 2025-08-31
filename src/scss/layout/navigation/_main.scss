@@ -19,31 +19,57 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
       }
     }
 }
+// Right Section: Hamburger Menu Button
+// --- Hamburger Container  --- 
+.header-right-section {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-dark);
+    position: fixed;
+    display: flex;
+    align-items: center;
+    z-index: 11002; // Ensure hamburger is above fullscreen menu
+   
+    right: 20px;
+    top: 30px;
+    box-shadow: 0 4px 15px rgba(variables.$primary-color, 0.3),
+            0 2px 8px rgba(0, 0, 0, 0.2);
 
-// --- Hamburger Icon --- 
-.hamburger-button { // Restored original hamburger styles
-    width: 40px; // Example value, adjust as needed
-    height: 40px; // Example value
-    position: fixed; // Or absolute, depending on desired placement
-    top: 0px; // Example value
-    right: 00px; // Example value
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 1001; // Ensure it's above the menu
-
-    span {
-        display: block;
-        width: 28px; // Example value
-        height: 3px; // Example value
-        background-color: variables.$text-color; // Use a theme variable
-        margin: 5px auto;
-        transition: all 0.3s ease-in-out;
-        position: relative;
-        border-radius: 3px;
+    // Responsive adjustments
+    @media (max-width: 1024px) {
+        right: 15px;
+        top: 20px;
     }
-}
+    @media (max-width: 600px) {
+        right: 10px;
+        top: 10px;
+    }
 
+
+  // --- Hamburger Icon --- 
+  .hamburger-button {
+      width: 40px;
+      height: 40px;
+      
+      top: 0px;
+      right: 0px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1001;
+
+      span {
+          display: block;
+          width: 28px;
+          height: 3px;
+          background-color: white;
+          margin: 5px auto;
+          transition: all 0.3s ease-in-out;
+          position: relative;
+          border-radius: 3px;
+      }
+  }
+}
 // --- Menu Open State for Hamburger --- 
 .menu-open .hamburger-button span:nth-child(1) { // Restored original open state
     transform: translateY(8px) rotate(45deg); // Example transform

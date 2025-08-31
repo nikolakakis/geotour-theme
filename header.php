@@ -110,16 +110,16 @@
             </div>
 
             <!-- Right Section: Hamburger Menu Button -->
-            <div class="header-right-section">
-                <button id="hamburger-icon" class="hamburger-button" aria-label="<?php esc_attr_e('Open Menu', 'geotour'); ?>" aria-expanded="false" aria-controls="fullscreen-menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
+            
         </div>
     </header>
-
+    <div class="header-right-section">
+        <button id="hamburger-icon" class="hamburger-button" aria-label="<?php esc_attr_e('Open Menu', 'geotour'); ?>" aria-expanded="false" aria-controls="fullscreen-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
     <!-- Full Screen Menu -->
     <nav id="fullscreen-menu" class="fullscreen-menu" aria-hidden="true">
         <?php
