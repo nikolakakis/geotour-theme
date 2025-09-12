@@ -106,13 +106,19 @@ $is_english = ($current_lang === 'en');
                         ['title_en' => 'Contact', 'title_el' => 'Επικοινωνία', 'url' => home_url('/contact')],
                         ['title_en' => 'Terms & Conditions', 'title_el' => 'Όροι & Προϋποθέσεις', 'url' => home_url('/terms')],
                         ['title_en' => 'Cookies', 'title_el' => 'Cookies', 'url' => home_url('/cookies')],
-                        ['title_en' => 'Privacy Policy', 'title_el' => 'Πολιτική Απορρήτου', 'url' => home_url('/privacy')],
                     ];
 
                     foreach ($info_links as $link) {
                         $title = $is_english ? $link['title_en'] : $link['title_el'];
                         echo '<li><a href="' . esc_url($link['url']) . '">' . esc_html($title) . '</a></li>';
                     }
+                    
+                    // Add Privacy & Cookie Settings link
+                    echo '<li><a href="#" onclick="googlefc.callbackQueue.push(googlefc.showRevocationMessage); return false;">Privacy & Cookie Settings</a></li>';
+                    
+                    // Add Privacy Policy link
+                    $privacy_title = $is_english ? 'Privacy Policy' : 'Πολιτική Απορρήτου';
+                    echo '<li><a href="' . esc_url(home_url('/privacy')) . '">' . esc_html($privacy_title) . '</a></li>';
                     ?>
                 </ul>
             </div>
