@@ -62,6 +62,11 @@
     }
     ?>
     
+    <?php
+    // Output header ad scripts if needed
+    get_template_part('template-parts/ads/header-ads');
+    ?>
+    
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
