@@ -433,5 +433,8 @@ function geotour_enqueue_google_fonts() {
 }
 add_action('wp_head', 'geotour_enqueue_google_fonts');
 
+// Disable XML-RPC for security
+add_filter('xmlrpc_enabled', '__return_false');
+
 // Include shortcodes
 require_once get_template_directory() . '/inc/shortcodes/map-controls-popup.php';
