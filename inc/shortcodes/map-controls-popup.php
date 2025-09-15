@@ -47,7 +47,7 @@ function geotour_map_controls_popup_shortcode($atts) {
     // Base URLs
     $google_maps_base_url = 'https://www.google.com/maps?q=';
     $route_planner_base_url = 'https://www.geotour.gr/listing/?route_listings=';
-    $cesium_3d_map_base_url = 'https://tour.geotour.gr/3dmap/';
+    $cesium_3d_map_base_url = 'https://www.geotour.gr/vt/3dmap/';
     
     // Start output buffering
     ob_start();

@@ -39,12 +39,12 @@ function listingsSearch_v2($data) {
         $args['meta_query'] = array(
             array(
                 'key' => 'vtour_link', // Geotour Metabox to ACF field
-                'value' => 'https://tour.geotour.gr/#' . $vt_value . ',', 
+                'value' => 'https://www.geotour.gr/vt/' . $vt_value . ',', 
                 'compare' => 'LIKE', 
             ),
             array(
                 'key' => 'vtour_link', // Geotour Metabox to ACF field
-                'value' => 'https://tour.geotour.gr/#' . $vt_value . '%', 
+                'value' => 'https://www.geotour.gr/vt/' . $vt_value . '%', 
                 'compare' => 'NOT LIKE' 
             )
         );
