@@ -122,7 +122,7 @@
             width: 100%;
             background-color: var(--panel-bg-color);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            border-top: 1px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
             
             /* Initial hidden state for JS */
             opacity: 0;
@@ -192,7 +192,7 @@
         }
 
         #explore-menu .mega-menu-content {
-            grid-template-columns: 1fr 1fr 1.5fr;
+            grid-template-columns: 1fr 2fr;
         }
         
         #listings-menu .mega-menu-content {
@@ -329,36 +329,40 @@
                     <a href="#" class="menu-item">About Geotour</a>
                     <a href="#" class="menu-item">Geotour timeline</a>
                 </div>
-                 <div class="mega-menu-column">
+                <div class="mega-menu-column">
                     <h3 class="menu-item">People</h3>
                     <a href="#" class="menu-item">Social Teams</a>
-                     <a href="#" class="menu-item">Cultural Associations</a>
-                </div>
-                 <div class="mega-menu-column">
-                    <!-- Empty for layout demonstration -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Explore Menu -->
-        <div id="explore-menu" class="mega-menu-container">
-            <div class="mega-menu-content">
-                <div class="mega-menu-column">
-                    <h3 class="menu-item">Discover</h3>
-                    <a href="#" class="menu-item">Virtual Tour</a>
-                    <a href="#" class="menu-item">3D Map</a>
+                    <a href="#" class="menu-item">Cultural Associations</a>
                 </div>
                 <div class="mega-menu-column">
                     <h3 class="menu-item">History</h3>
                     <a href="#" class="menu-item">Cretan History</a>
                     <a href="#" class="menu-item">Human Presence in Crete</a>
                 </div>
+            </div>
+        </div>
+
+        <!-- Explore Menu -->
+        <div id="explore-menu" class="mega-menu-container">
+            <div class="mega-menu-content" style="grid-template-columns: 1fr 2fr;">
                 <div class="mega-menu-column">
+                    <a href="/listing" class="menu-item">2D Map</a>
+                    <a href="#" class="menu-item">Virtual Tour</a>
+                    <a href="#" class="menu-item">3D Map</a>
+                </div>
+                <div class="mega-menu-column" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch;">
                     <a href="#" class="media-card menu-item">
                         <img src="https://images.unsplash.com/photo-1590184432078-55d645f34133?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDE3fHxjcmV0ZSUyMGJlYWNofGVufDB8fHx8MTY3OTg1OTQzMw&ixlib=rb-4.0.3&q=80&w=1080" alt="Balos Lagoon in Crete">
                         <div class="media-card-content">
                             <h4>Explore The Island</h4>
                             <p>Discover the breathtaking landscapes and rich history of Crete from anywhere in the world.</p>
+                        </div>
+                    </a>
+                    <a href="#" class="media-card menu-item">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1080&q=80" alt="Samaria Gorge">
+                        <div class="media-card-content">
+                            <h4>Samaria Gorge</h4>
+                            <p>Walk through the famous gorge and experience the wild beauty of Crete's nature reserve.</p>
                         </div>
                     </a>
                 </div>
