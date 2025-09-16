@@ -205,18 +205,12 @@
         
         /* --- Multimedia Elements --- */
         .media-card {
-            background-color: var(--bg-color);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            background: none;
+            box-shadow: none;
+            border-radius: 0;
+            transition: none;
         }
-        
-        .media-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-        }
-
         .media-card img {
             width: 100%;
             height: 200px;
@@ -226,6 +220,7 @@
         
         .media-card-content {
             padding: 20px;
+            transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
         }
         
         .media-card-content h4 {
@@ -303,6 +298,51 @@
         h1 {
             color: var(--primary-color);
         }
+
+        .rhombus-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            transform: skewX(var(--rhombus-skew-angle));
+            background: var(--bg-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: background 0.3s;
+        }
+        .rhombus-card:hover {
+            background: var(--primary-light);
+        }
+        .rhombus-card .media-card {
+            transform: skewX(calc(-1 * var(--rhombus-skew-angle)));
+            background: transparent;
+            box-shadow: none;
+            border-radius: 0;
+        }
+        .rhombus-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .rhombus-card:hover img {
+            transform: scale(1.04);
+        }
+        .media-card-content {
+            padding: 20px;
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), color 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .rhombus-card:hover .media-card-content {
+            transform: translateX(4px);
+            color: #fff;
+        }
+        .rhombus-card:hover .media-card-content h4,
+        .rhombus-card:hover .media-card-content p {
+            color: #fff;
+        }
+        .media-card-content h4,
+        .media-card-content p {
+            transition: inherit;
+        }
     </style>
 </head>
 <body>
@@ -313,7 +353,7 @@
                 <li data-menu-target="#geotour-menu"><a href="#">Geotour</a></li>
                 <li data-menu-target="#explore-menu"><a href="#">Explore</a></li>
                 <li data-menu-target="#listings-menu"><a href="#">Listings</a></li>
-                <li><a href="#">Blog</a></li> <!-- Simple Link -->
+                <li><a href="#">Blog</a> <!-- Simple Link -->
                 <li data-menu-target="#events-menu"><a href="#">Events</a></li>
             </ul>
         </nav>
@@ -344,27 +384,39 @@
 
         <!-- Explore Menu -->
         <div id="explore-menu" class="mega-menu-container">
-            <div class="mega-menu-content" style="grid-template-columns: 1fr 2fr;">
+            <div class="mega-menu-content" style="grid-template-columns: 1fr 1fr 1fr;">
                 <div class="mega-menu-column">
-                    <a href="/listing" class="menu-item">2D Map</a>
-                    <a href="#" class="menu-item">Virtual Tour</a>
-                    <a href="#" class="menu-item">3D Map</a>
+                    <div class="rhombus-card">
+                        <a href="#" class="media-card menu-item">
+                            <img src="https://images.unsplash.com/photo-1590184432078-55d645f34133?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDE3fHxjcmV0ZSUyMGJlYWNofGVufDB8fHx8MTY3OTg1OTQzMw&ixlib=rb-4.0.3&q=80&w=1080" alt="Balos Lagoon in Crete">
+                            <div class="media-card-content">
+                                <h4>Explore The Island</h4>
+                                <p>Discover the breathtaking landscapes and rich history of Crete from anywhere in the world.</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-                <div class="mega-menu-column" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: stretch;">
-                    <a href="#" class="media-card menu-item">
-                        <img src="https://images.unsplash.com/photo-1590184432078-55d645f34133?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDE3fHxjcmV0ZSUyMGJlYWNofGVufDB8fHx8MTY3OTg1OTQzMw&ixlib=rb-4.0.3&q=80&w=1080" alt="Balos Lagoon in Crete">
-                        <div class="media-card-content">
-                            <h4>Explore The Island</h4>
-                            <p>Discover the breathtaking landscapes and rich history of Crete from anywhere in the world.</p>
-                        </div>
-                    </a>
-                    <a href="#" class="media-card menu-item">
-                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1080&q=80" alt="Samaria Gorge">
-                        <div class="media-card-content">
-                            <h4>Samaria Gorge</h4>
-                            <p>Walk through the famous gorge and experience the wild beauty of Crete's nature reserve.</p>
-                        </div>
-                    </a>
+                <div class="mega-menu-column">
+                    <div class="rhombus-card">
+                        <a href="#" class="media-card menu-item">
+                            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1080&q=80" alt="Samaria Gorge">
+                            <div class="media-card-content">
+                                <h4>Samaria Gorge</h4>
+                                <p>Walk through the famous gorge and experience the wild beauty of Crete's nature reserve.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="mega-menu-column">
+                    <div class="rhombus-card">
+                        <a href="#" class="media-card menu-item">
+                            <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1080&q=80" alt="Elafonissi Beach">
+                            <div class="media-card-content">
+                                <h4>Elafonissi Beach</h4>
+                                <p>Relax on the pink sands and swim in the crystal-clear waters of one of Crete's most famous beaches.</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
