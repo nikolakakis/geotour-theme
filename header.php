@@ -85,27 +85,7 @@
     <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e('Skip to content', 'geotour'); ?></a>    <!-- New Main Header -->
     <header class="main-header">
         <div class="header-container">            <!-- Left Section: Social Icons -->
-            <div class="header-left-section">
-                <div class="social-icons">
-                    <a target="_blank" href="https://web.facebook.com/geotour.crete/" aria-label="Facebook">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
-                        </svg>
-                    </a>
-                    <a target="_blank" href="https://www.instagram.com/nikolakakism/" aria-label="Instagram">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919 1.266-.058 1.644-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z"/>
-                        </svg>
-                    </a>                    
-                    <a style="margin-left: 5px;" target="_blank" href="https://www.youtube.com/@nikolakakism" aria-label="YouTube">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <g transform="translate(0, -3) scale(1,1.3)" aria-label="Temple Symbol">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                            </g>
-                        </svg>
-                    </a>
-                </div>
-            </div>
+            
 
             <!-- Center Section: Logo -->
             <div class="header-center-section animate-on-load">
@@ -116,7 +96,8 @@
 
             <!-- Right Section: Hamburger Menu Button -->
             
-        </div>
+        </div> <!-- .header-container -->
+        <?php if ( !wp_is_mobile() ) { get_template_part('template-parts/header/desktop-mega-menu'); } ?>
     </header>
     <div class="header-right-section">
         <button id="hamburger-icon" class="hamburger-button" aria-label="<?php esc_attr_e('Open Menu', 'geotour'); ?>" aria-expanded="false" aria-controls="fullscreen-menu">
@@ -140,12 +121,17 @@
             if ($site_description || is_customize_preview()) :
                 echo '<p class="site-description">'. esc_html($site_description) .'</p>';
             endif;
-            echo '</div>';        endif;        wp_nav_menu([
-                'theme_location' => 'primary', // Ensure this theme location is registered
-                'menu_class'     => 'menu', // Original class
+            echo '</div>';
+        endif;
+        // Only keep the mobile menu (fullscreen/hamburger) here
+        if (wp_is_mobile()) {
+            wp_nav_menu([
+                'theme_location' => 'primary',
+                'menu_class'     => 'menu',
                 'container'      => false,
                 'walker'         => new Geotour_Accordion_Menu_Walker()
             ]);
+        }
         ?>
         
         <!-- Search Form at Bottom of Menu -->

@@ -13,6 +13,7 @@ import { initializeListingInpageMenu } from './modules/listing/inpage-menu.js';
 
 // Import accessibility improvements
 import './accessibility.js';
+import './desktop-mega-menu';
 
 // Check if Leaflet is available globally (from plugin)
 if (typeof L !== 'undefined') {

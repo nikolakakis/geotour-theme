@@ -516,3 +516,16 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
         }
     }
 }
+
+// Hide .header-container on desktop, show only on mobile
+body .main-header .header-container, .header-right-section {
+  display: none;
+}
+@media (max-width: 1024px) {
+  body .main-header .header-container {
+    display: flex;
+  }
+  .header-right-section {
+    display: block;
+  }
+}
