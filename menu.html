@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega-Menu Concept (Corrected)</title>
+    <style>
+        /* --- General Styling & Setup --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #22a575;
+            --primary-color-dark: #1a835b;
+            --primary-light: #4fbe93;
+            --text-color: #2c3e50;
+            --text-color-muted: #7f8c9a;
+            --heading-color: #1d2d3d;
+            --bg-color: #fcfcfc;
+            --panel-bg-color: #f8f9fa;
+            --border-color: #e0e6eb;
+            --accent-color-sea: #0077b6;
+            --accent-color-sun: #ffc300;
+            --accent-color-earth: #e67e22;
+            --rhombus-skew-angle: 8deg;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #eef2f5; /* A light grey for the page background */
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* --- Header & Navigation Bar --- */
+        .main-header {
+            background-color: var(--bg-color);
+            padding: 0 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            position: relative; /* This is crucial for positioning the mega-menus */
+            z-index: 1000;
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-links > li > a {
+            display: block;
+            padding: 30px 25px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            position: relative;
+            transition: all 0.3s ease;
+            
+            /* Rhombus shape container */
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: transparent;
+                transform: skewX(var(--rhombus-skew-angle));
+                transition: all 0.3s ease;
+                z-index: -1;
+            }
+        }
+
+        /* CSS fallback for browsers that don't support nested selectors */
+        .nav-links > li > a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: transparent;
+            transform: skewX(var(--rhombus-skew-angle));
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-links > li > a:hover::before,
+        .nav-links > li.active > a::before {
+            background-color: var(--primary-color);
+        }
+
+        .nav-links > li > a:hover,
+        .nav-links > li.active > a {
+            color: var(--bg-color);
+        }
+        
+        /* --- Mega-Menu Panels --- */
+        .mega-menu-container {
+            position: absolute;
+            left: 0;
+            top: 100%; /* Positioned relative to the .main-header */
+            width: 100%;
+            background-color: var(--panel-bg-color);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-top: 1px solid var(--border-color);
+            
+            /* Initial hidden state for JS */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), visibility 0s 0.4s;
+        }
+
+        /* Active state for JS */
+        .mega-menu-container.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), visibility 0s 0s;
+        }
+        
+        .mega-menu-content {
+            display: grid;
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .mega-menu-content a {
+            text-decoration: none;
+        }
+
+        .mega-menu-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .mega-menu-column .menu-item {
+            opacity: 0; /* Initial state for stagger animation */
+        }
+        
+        .mega-menu-column h3 {
+            font-size: 16px;
+            color: var(--text-color);
+            margin: 0 0 10px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .mega-menu-column a {
+            color: #555;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 8px 0;
+            position: relative;
+            transition: color 0.3s ease, padding-left 0.3s ease;
+        }
+        
+        .mega-menu-column a:hover {
+            color: var(--primary-color);
+            padding-left: 10px;
+        }
+
+        /* --- Specific Mega-Menu Layouts --- */
+        
+        #geotour-menu .mega-menu-content {
+             grid-template-columns: repeat(3, 1fr);
+        }
+
+        #explore-menu .mega-menu-content {
+            grid-template-columns: 1fr 1fr 1.5fr;
+        }
+        
+        #listings-menu .mega-menu-content {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        #events-menu .mega-menu-content {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        /* --- Multimedia Elements --- */
+        .media-card {
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .media-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .media-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .media-card-content {
+            padding: 20px;
+        }
+        
+        .media-card-content h4 {
+            margin: 0 0 10px 0;
+            color: var(--text-color);
+        }
+
+        .media-card-content p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Thumbnail Gallery */
+        .thumbnail-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .thumbnail-gallery a {
+            padding: 0;
+            display: block;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .thumbnail-gallery a:hover {
+            padding-left: 0;
+        }
+
+        .thumbnail-gallery img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .thumbnail-gallery a:hover img {
+            transform: scale(1.1);
+        }
+
+        .thumbnail-gallery .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(34, 165, 117, 0.7), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .thumbnail-gallery a:hover .overlay {
+            opacity: 1;
+        }
+
+        .thumbnail-gallery .overlay span {
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        /* --- Dummy Content for the page --- */
+        .content-area {
+            padding: 60px 40px;
+            max-width: 1100px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 8px;
+        }
+        h1 {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="main-nav">
+            <div class="nav-logo">Geotour Crete</div>
+            <ul class="nav-links">
+                <li data-menu-target="#geotour-menu"><a href="#">Geotour</a></li>
+                <li data-menu-target="#explore-menu"><a href="#">Explore</a></li>
+                <li data-menu-target="#listings-menu"><a href="#">Listings</a></li>
+                <li><a href="#">Blog</a></li> <!-- Simple Link -->
+                <li data-menu-target="#events-menu"><a href="#">Events</a></li>
+            </ul>
+        </nav>
+
+        <!-- ========= MEGA-MENU HTML CONTAINERS (CORRECTED PLACEMENT) ========= -->
+        <!-- These now live INSIDE the header -->
+
+        <!-- Geotour Menu -->
+        <div id="geotour-menu" class="mega-menu-container">
+            <div class="mega-menu-content">
+                <div class="mega-menu-column">
+                    <h3 class="menu-item">About</h3>
+                    <a href="#" class="menu-item">About Geotour</a>
+                    <a href="#" class="menu-item">Geotour timeline</a>
+                </div>
+                 <div class="mega-menu-column">
+                    <h3 class="menu-item">People</h3>
+                    <a href="#" class="menu-item">Social Teams</a>
+                     <a href="#" class="menu-item">Cultural Associations</a>
+                </div>
+                 <div class="mega-menu-column">
+                    <!-- Empty for layout demonstration -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Explore Menu -->
+        <div id="explore-menu" class="mega-menu-container">
+            <div class="mega-menu-content">
+                <div class="mega-menu-column">
+                    <h3 class="menu-item">Discover</h3>
+                    <a href="#" class="menu-item">Virtual Tour</a>
+                    <a href="#" class="menu-item">3D Map</a>
+                </div>
+                <div class="mega-menu-column">
+                    <h3 class="menu-item">History</h3>
+                    <a href="#" class="menu-item">Cretan History</a>
+                    <a href="#" class="menu-item">Human Presence in Crete</a>
+                </div>
+                <div class="mega-menu-column">
+                    <a href="#" class="media-card menu-item">
+                        <img src="https://images.unsplash.com/photo-1590184432078-55d645f34133?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDE3fHxjcmV0ZSUyMGJlYWNofGVufDB8fHx8MTY3OTg1OTQzMw&ixlib=rb-4.0.3&q=80&w=1080" alt="Balos Lagoon in Crete">
+                        <div class="media-card-content">
+                            <h4>Explore The Island</h4>
+                            <p>Discover the breathtaking landscapes and rich history of Crete from anywhere in the world.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Listings Menu -->
+        <div id="listings-menu" class="mega-menu-container">
+            <div class="mega-menu-content">
+                <div class="mega-menu-column">
+                    <h3 class="menu-item">Archaeological Sites</h3>
+                    <a href="#" class="menu-item">Minoan period</a>
+                    <a href="#" class="menu-item">Archaic & Classical</a>
+                    <a href="#" class="menu-item">Hellenistic period</a>
+                </div>
+                 <div class="mega-menu-column">
+                    <h3 class="menu-item">Locations</h3>
+                    <a href="#" class="menu-item">Villages</a>
+                    <a href="#" class="menu-item">Religion</a>
+                </div>
+                <div class="mega-menu-column" style="grid-column: span 2;">
+                    <h3 class="menu-item">Featured Sites</h3>
+                    <div class="thumbnail-gallery">
+                        <a href="#" class="menu-item">
+                            <img src="https://images.unsplash.com/photo-1629285483773-63a23349910e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDV8fGtub3Nzb3N8ZW58MHx8fHwxNjc5ODU5NTI4&ixlib=rb-4.0.3&q=80&w=1080" alt="Knossos Palace">
+                            <div class="overlay"><span>Knossos Palace</span></div>
+                        </a>
+                        <a href="#" class="menu-item">
+                            <img src="https://images.unsplash.com/photo-1614561331093-4e67f259b68a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fHBoYWlzdG9zfGVufDB8fHx8MTY3OTg1OTU1Nw&ixlib=rb-4.0.3&q=80&w=1080" alt="Phaistos Disc">
+                             <div class="overlay"><span>Phaistos</span></div>
+                        </a>
+                         <a href="#" class="menu-item">
+                            <img src="https://images.unsplash.com/photo-1582370146430-c3c2b875defa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDEwfHxjcmV0ZSUyMHJ1aW5zfGVufDB8fHx8MTY3OTg1OTU5NA&ixlib=rb-4.0.3&q=80&w=1080" alt="Ancient Ruins">
+                             <div class="overlay"><span>Gortyna</span></div>
+                        </a>
+                         <a href="#" class="menu-item">
+                            <img src="https://images.unsplash.com/photo-1590184432078-55d645f34133?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDE3fHxjcmV0ZSUyMGJlYWNofGVufDB8fHx8MTY3OTg1OTQzMw&ixlib=rb-4.0.3&q=80&w=1080" alt="Coastal view">
+                             <div class="overlay"><span>Zakros</span></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Events Menu -->
+        <div id="events-menu" class="mega-menu-container">
+            <div class="mega-menu-content">
+                <div class="mega-menu-column">
+                    <h3 class="menu-item">Upcoming</h3>
+                    <a href="#" class="menu-item">Festivals</a>
+                    <a href="#" class="menu-item">Conferences</a>
+                    <a href="#" class="menu-item">Local Holidays</a>
+                </div>
+                <div class="mega-menu-column">
+                     <a href="#" class="media-card menu-item">
+                        <img src="https://images.unsplash.com/photo-1519700345399-65084910a5fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDEyfHxjcmV0ZSUyMGZlc3RpdmFsfGVufDB8fHx8MTY3OTg2MDA5NA&ixlib=rb-4.0.3&q=80&w=1080" alt="Cretan Festival">
+                        <div class="media-card-content">
+                            <h4>Summer Music Festival</h4>
+                            <p>Join us for a celebration of traditional Cretan music and culture under the stars.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Dummy Page Content -->
+    <main class="content-area">
+        <h1>Welcome to Geotour Crete</h1>
+        <p>This is a hover-based menu. Simply move your mouse over "Geotour," "Explore," "Listings," or "Events" to see the custom panels appear.</p>
+        <p>This corrected example demonstrates how distinct, visually-rich panels can be created for different sections of your site, improving navigation and user engagement. The solution is built with clean HTML, modern CSS, and vanilla JavaScript for animations and interactivity. It is designed to be a solid foundation that you can adapt and integrate into your WordPress theme.</p>
+    </main>
+
+    <!-- GSAP for advanced animations (optional but recommended for the "fancy" effect) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const header = document.querySelector('.main-header');
+            const navLinks = document.querySelectorAll('.nav-links > li[data-menu-target]');
+            let activeMenu = null;
+            let leaveTimeout;
+
+            // This function shows a menu
+            const showMenu = (menu) => {
+                if (activeMenu) {
+                    activeMenu.classList.remove('visible');
+                    const activeLink = document.querySelector('.nav-links > li.active');
+                    if(activeLink) activeLink.classList.remove('active');
+                }
+                
+                menu.classList.add('visible');
+                const link = document.querySelector(`li[data-menu-target="#${menu.id}"]`);
+                if(link) link.classList.add('active');
+
+                activeMenu = menu;
+
+                // Animate items with GSAP
+                gsap.fromTo(menu.querySelectorAll('.menu-item'), 
+                    { opacity: 0, y: 15 }, 
+                    { opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: 'power2.out' }
+                );
+            };
+
+            // This function hides the currently active menu
+            const hideMenu = () => {
+                if (activeMenu) {
+                    activeMenu.classList.remove('visible');
+                    const link = document.querySelector(`li[data-menu-target="#${activeMenu.id}"]`);
+                    if(link) link.classList.remove('active');
+                    activeMenu = null;
+                }
+            };
+            
+            navLinks.forEach(link => {
+                const targetId = link.getAttribute('data-menu-target');
+                const menu = document.querySelector(targetId);
+
+                if (menu) {
+                    link.addEventListener('mouseenter', () => {
+                        clearTimeout(leaveTimeout); // Cancel any pending hide actions
+                        showMenu(menu);
+                    });
+                }
+            });
+
+            // Add a mouseleave listener to the entire header
+            header.addEventListener('mouseleave', () => {
+                // Use a timeout to delay hiding, allowing for small mouse movements
+                leaveTimeout = setTimeout(() => {
+                    hideMenu();
+                }, 200);
+            });
+            
+            // If the mouse re-enters the header, cancel the hide action
+             header.addEventListener('mouseenter', () => {
+                 clearTimeout(leaveTimeout);
+             });
+
+        });
+    </script>
+</body>
+</html>
