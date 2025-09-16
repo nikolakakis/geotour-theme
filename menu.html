@@ -111,9 +111,13 @@
 
         .nav-links > li > a:hover,
         .nav-links > li.active > a {
+            
             color: var(--bg-color);
         }
         
+        li.search-icon {
+            height: 5px;
+        }
         /* --- Mega-Menu Panels --- */
         .mega-menu-container {
             position: absolute;
@@ -355,9 +359,25 @@
                 <li data-menu-target="#listings-menu"><a href="#">Listings</a></li>
                 <li><a href="#">Blog</a> <!-- Simple Link -->
                 <li data-menu-target="#events-menu"><a href="#">Events</a></li>
+                <li class="search-icon" data-menu-target="#search-menu">
+                    <a href="#" class="search-menu-link" aria-label="Search">
+                        <svg class="search-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block; margin:auto; color: #7f8c9a;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </a>
+                </li>
             </ul>
         </nav>
 
+        <style>
+        .search-menu-link .search-icon {
+            color: #7f8c9a;
+            transition: color 0.3s;
+        }
+        .nav-links > li[data-menu-target="#search-menu"]:hover .search-icon,
+        .nav-links > li[data-menu-target="#search-menu"].active .search-icon {
+            color: #fff !important;
+            
+        }
+        </style>
         <!-- ========= MEGA-MENU HTML CONTAINERS (CORRECTED PLACEMENT) ========= -->
         <!-- These now live INSIDE the header -->
 
@@ -476,6 +496,18 @@
                             <p>Join us for a celebration of traditional Cretan music and culture under the stars.</p>
                         </div>
                     </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Menu -->
+        <div id="search-menu" class="mega-menu-container">
+            <div class="mega-menu-content" style="display: flex; justify-content: center; align-items: center; padding: 60px 40px;">
+                <div style="width: 100%; max-width: 600px;">
+                    <div class="search-field search-text">
+                        <label for="website-search-text" class="screen-reader-text">Search the website</label>
+                        <input type="search" name="s" id="website-search-text" placeholder="Search articles, people, photos..." aria-label="Search website content">
+                    </div>
                 </div>
             </div>
         </div>
