@@ -521,11 +521,33 @@ body.menu-open { // Restored original class, assuming it was 'menu-open'
 body .main-header .header-container, .header-right-section {
   display: none;
 }
+
 @media (max-width: 1024px) {
   body .main-header .header-container {
-    display: flex;
+    display: flex !important;
   }
   .header-right-section {
-    display: block;
+    display: block !important;
+  }
+  
+  // Ensure mobile menu items are visible
+  #fullscreen-menu {
+    display: flex !important;
+  }
+  
+  #fullscreen-menu .menu-item {
+    display: list-item !important;
+  }
+  
+  #fullscreen-menu > .menu {
+    display: block !important;
+  }
+}
+
+// Ensure desktop elements are hidden on mobile
+@media (max-width: 1024px) {
+  .desktop-mega-menu,
+  .mega-menu-container {
+    display: none !important;
   }
 }

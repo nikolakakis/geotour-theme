@@ -273,6 +273,19 @@
 @media (max-width: 1024px) {
   .desktop-mega-menu,
   .mega-menu-container {
-    display: none;
+    display: none !important;
+  }
+}
+
+// Ensure desktop mega menu is only visible on desktop
+@media (min-width: 1025px) {
+  .desktop-mega-menu {
+    display: flex !important;
+  }
+  
+  // Hide mobile menu elements on desktop
+  #fullscreen-menu,
+  .header-right-section {
+    display: none !important;
   }
 }
