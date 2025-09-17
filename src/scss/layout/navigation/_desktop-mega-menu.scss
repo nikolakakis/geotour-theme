@@ -1,8 +1,278 @@
 // Desktop Mega Menu Styles
-// Place all desktop mega menu specific styles here
+@use '../../base/variables' as variables;
+@use '../../base/animations' as animations;
+@use 'sass:color';
 
-.desktop-mega-menu {
-  // Add your desktop mega menu styles here
+
+.main-header {
+  background-color: var(--bg-color);
+  padding: 0 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1000;
 }
 
-// You can import this file in your main SCSS entry point or navigation/_main.scss
+.desktop-mega-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1300px;
+  margin: 0 auto;
+  background: none;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-color);
+  padding: 0;
+  position: static;
+  z-index: 1000;
+
+  .nav-logo {
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--primary-color);
+  }
+
+  .nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    > li {
+      position: relative;
+      > a {
+        display: block;
+        padding: 30px 25px;
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 600;
+        position: relative;
+        transition: all 0.3s ease;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: transparent;
+          transform: skewX(var(--rhombus-skew-angle));
+          transition: all 0.3s ease;
+          z-index: -1;
+        }
+      }
+      > a:hover::before,
+      &.active > a::before {
+        background-color: var(--primary-color);
+      }
+      > a:hover,
+      &.active > a {
+        color: var(--bg-color);
+      }
+    }
+  }
+}
+
+.mega-menu-container {
+  position: absolute;
+  left: 0;
+  top: 87%;
+  width: 100%;
+  background-color: var(--panel-bg-color);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid var(--primary-color);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), visibility 0s 0.4s;
+  z-index: 2000;
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), visibility 0s 0s;
+  }
+}
+
+.mega-menu-content {
+  display: grid;
+  gap: 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px;
+  a {
+    text-decoration: none;
+  }
+}
+
+// Specific Mega-Menu Layouts
+#geotour-menu .mega-menu-content {
+  grid-template-columns: repeat(3, 1fr);
+}
+#explore-menu .mega-menu-content {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+#listings-menu .mega-menu-content {
+  grid-template-columns: repeat(4, 1fr);
+}
+#events-menu .mega-menu-content {
+  grid-template-columns: 1fr 1fr;
+}
+
+.mega-menu-column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  h3 {
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 0 0 10px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  a:not(.media-card) {
+    color: #555;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 8px 0;
+    position: relative;
+    transition: color 0.3s ease, padding-left 0.3s ease;
+    &:hover {
+      color: var(--primary-color);
+      padding-left: 10px;
+    }
+  }
+}
+
+// Multimedia Elements
+.media-card {
+  position: relative;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  transition: none;
+  display: block;
+}
+.media-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+.media-card-content {
+  padding: 20px;
+  transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.media-card-content h4 {
+  margin: 0 0 10px 0;
+  color: var(--text-color);
+  font-family: variables.$font-primary;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.media-card-content p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  font-family: variables.$font-primary;
+}
+
+// Media Card (Rhombus)
+.rhombus-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  transform: skewX(var(--rhombus-skew-angle));
+  background: var(--bg-color);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s;
+  &:hover {
+    background: var(--primary-light);
+  }
+  .media-card {
+    transform: skewX(calc(-1 * var(--rhombus-skew-angle)));
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  img {
+    transform: scale(1.12);
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  &:hover img {
+    transform: scale(1.04);
+  }
+  .media-card-content {
+    padding: 40px;
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), color 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  &:hover .media-card-content {
+    transform: translateX(4px);
+    color: #fff;
+    h4, p {
+      color: #fff;
+    }
+  }
+  .media-card-content h4,
+  .media-card-content p {    
+    transition: inherit;
+  }
+  
+}
+
+// Thumbnail Gallery
+.thumbnail-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  a {
+    padding: 0;
+    display: block;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    &:hover {
+      padding-left: 0;
+    }
+    img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    &:hover img {
+      transform: scale(1.1);
+    }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(34, 165, 117, 0.7), transparent);
+      display: flex;
+      align-items: flex-end;
+      padding: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      span {
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+      }
+    }
+    &:hover .overlay {
+      opacity: 1;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .desktop-mega-menu,
+  .mega-menu-container {
+    display: none;
+  }
+}

@@ -3,6 +3,7 @@ import '../scss/main.scss';
 
 // Import modules
 import { initializeMainMenu } from './modules/navigation/main.js';
+import { initializeDesktopMegaMenu } from './modules/navigation/newnav.js';
 import { initializeHeader } from './modules/header/main.js';
 import { initializeHero } from './modules/hero/main.js';
 import { initializeAllMaps } from './modules/maps/main.js';
@@ -13,7 +14,7 @@ import { initializeListingInpageMenu } from './modules/listing/inpage-menu.js';
 
 // Import accessibility improvements
 import './accessibility.js';
-import './desktop-mega-menu';
+// import './desktop-mega-menu';
 
 // Check if Leaflet is available globally (from plugin)
 if (typeof L !== 'undefined') {
@@ -39,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize modules
     initializeMainMenu();
+    initializeDesktopMegaMenu();
     initializeHeader();
     initializeHero();
     initializeAllMaps();

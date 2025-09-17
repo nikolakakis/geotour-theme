@@ -2,6 +2,23 @@
 // Import the modern Sass color module
 @use 'sass:color';
 
+// Define CSS variables for global use, based on SCSS variables
+:root {
+  --primary-color: #{variables.$primary-color};
+  --primary-light: #{variables.$primary-light};
+  --primary-dark: #{variables.$primary-dark};
+  --text-color: #{variables.$text-color};
+  --text-color-muted: #{variables.$text-color-muted};
+  --heading-color: #{variables.$heading-color};
+  --bg-color: #{variables.$background-color};
+  --panel-bg-color: #{variables.$panel-bg-color};
+  --border-color: #{variables.$border-color};
+  --accent-color-sea: #{variables.$accent-color-sea};
+  --accent-color-sun: #{variables.$accent-color-sun};
+  --accent-color-earth: #{variables.$accent-color-earth};
+  --rhombus-skew-angle: 8deg;
+}
+
 // Google Fonts are now enqueued in functions.php for performance.
 // The @import rules have been removed from this file.
 

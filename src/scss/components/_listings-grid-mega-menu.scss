@@ -1,0 +1,73 @@
+@use '../base/variables' as variables;
+
+// Styles for the listings grid when it appears inside the mega menu.
+// These rules override the default grid styles for a more compact view.
+.mega-menu-container .listings-grid-container {
+  .listings-grid {
+    gap: 10px; // Keep a small gap between grid items.
+
+    .listing-item {
+      .listing-inner {
+        border-radius: 6px; // Rounded corners for a softer look.
+        overflow: hidden;
+        // Set a fixed height to match the previous thumbnail gallery.
+        // This ensures consistency in the menu layout.
+        height: 110px; 
+      }
+
+      .listing-image-full {
+        height: 100%;
+      }
+
+      .listing-background-image {
+        object-fit: cover; // Ensure the image covers the area without distortion.
+      }
+
+      // Adjust the category icon to be smaller and positioned neatly.
+      .listing-category-icon {
+        top: 8px;
+        left: 8px;
+        width: 28px;
+        height: 28px;
+        padding: 4px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        backdrop-filter: blur(2px);
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      // Adjust the content overlay at the bottom.
+      .listing-content-overlay {
+        padding: 8px; // Reduce padding for a tighter fit.
+        justify-content: flex-end; // Align content to the bottom.
+      }
+
+      // Make the title font smaller.
+      .listing-title h3 {
+        font-size: 14px;
+        line-height: 1.2;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+        color: #fff;
+        font-family: variables.$font-primary;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      }
+
+      // Make the region font smaller.
+      .listing-region {
+        a {
+          color: #fff;
+          opacity: 0.9;
+        }
+        span {
+          font-size: 12px;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}
