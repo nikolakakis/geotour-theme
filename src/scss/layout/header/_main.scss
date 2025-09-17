@@ -199,6 +199,7 @@ body {
 
 /* Subtle animated 'G' in the background */
 .main-header::before {
+    display: none;
     content: 'G';
     font-family: 'Syne', sans-serif;
     font-weight: 800;
@@ -212,11 +213,13 @@ body {
     z-index: 0;
     transition: font-size 0.3s ease;
 
-    @media (min-width: 768px) {
+    @media (max-width: 1023px) {
+        display: block;
         font-size: 35rem;
     }
 
     @media (min-width: 1024px) {
+        display: none;
         font-size: 45rem;
     }
 }

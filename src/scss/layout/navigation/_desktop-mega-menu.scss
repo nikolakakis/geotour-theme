@@ -2,8 +2,16 @@
 @use '../../base/variables' as variables;
 @use '../../base/animations' as animations;
 @use 'sass:color';
+.nav-links {
+  .search-menu-link .search-icon {
+    color: var(--primary-color) !important;         
+    
+  }
+  li.active .search-icon {
+    color: white !important;
+  }
 
-
+}
 .main-header {
   background-color: var(--bg-color);
   padding: 0 40px;
@@ -287,5 +295,56 @@
   #fullscreen-menu,
   .header-right-section {
     display: none !important;
+  }
+}
+
+
+//===========================================================
+// SCSS for The Events Calendar compact list in a mega menu
+//===========================================================
+.compact-events-menu-summary {
+  max-width: 350px; // Optional: Constrain the width of the block
+  padding: 10px;    // Optional: Add space around the entire list
+
+  // The main <ul> list container
+  .tribe-events-widget-events-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  // Each list item <li>
+  .tribe-event-info {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+
+    // The event title
+    .tribe-event-title {
+      a {
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #333;
+        transition: color 0.2s ease-in-out;
+
+        &:hover {
+          color: #000;
+        }
+      }
+    }
+
+    // The event date and time
+    .tribe-event-duration {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      color: #777;
+    }
+
+    // Modifier for the last item in the list
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
   }
 }

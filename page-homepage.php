@@ -27,7 +27,7 @@ get_header(); ?>
                     <p class="search-section-description"><?php _e('Explore points of interest on the interactive map', 'geotour'); ?></p>
                     <!-- Modern Search Form -->
                     <div class="homepage-search-form">
-                        <form method="get" action="<?php echo esc_url(home_url('/listing')); ?>" class="listing-search-form">
+                        <form style="padding: 0.85rem;" method="get" action="<?php echo esc_url(home_url('/listing')); ?>" class="listing-search-form">
                             <!-- Region Select -->
                             <div class="search-field">
                                 <label for="listing-region"><?php _e('Region', 'geotour'); ?></label>

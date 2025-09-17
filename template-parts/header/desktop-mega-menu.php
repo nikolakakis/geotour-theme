@@ -1,6 +1,14 @@
 <!-- Desktop Mega Menu (static HTML from menu.html) -->
 <nav class="main-nav desktop-mega-menu">
-    <div class="nav-logo">Geotour Crete</div>
+    <a href="<?php echo esc_url(home_url('/')); ?>" class="nav-logo" style="display: flex; align-items: center;">
+        <?php
+            // Inline the SVG for best performance and styling flexibility
+            $logo_svg_path = get_template_directory() . '/assets/graphics/logo.svg';
+            if (file_exists($logo_svg_path)) {
+                echo file_get_contents($logo_svg_path);
+            }
+        ?>
+    </a>
     <ul class="nav-links">
         <li data-menu-target="#geotour-menu"><a href="#">Geotour</a></li>
         <li data-menu-target="#explore-menu"><a href="#">Explore</a></li>
@@ -25,8 +33,8 @@
         </div>
         <div class="mega-menu-column">
             <h3 class="menu-item">People</h3>            
-            <a href="/people" class="menu-item">People</a>
-            <a href="/listing/" class="menu-item">Social Teams</a>
+            <a href="/people" class="menu-item">People bio</a>
+            <a href="/listing/?listing-region=&listing-category=social-teams&search=" class="menu-item">Social Teams</a>
             <a href="/cultural-associations-contacts/" class="menu-item">Cultural Associations</a>
         </div>
         <div class="mega-menu-column">
@@ -41,7 +49,7 @@
     <div class="mega-menu-content" style="grid-template-columns: 1fr 1fr 1fr;">
         <div class="mega-menu-column">
             <div class="rhombus-card">
-                <a href="#" class="media-card menu-item">
+                <a href="https://www.geotour.gr/vt/" class="media-card menu-item">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/photos/vtour.webp" alt="Kofinas peak in Geotour virtual tour">
                     <div class="media-card-content">
                         <h4>Virtual Tour</h4>
@@ -53,7 +61,7 @@
         </div>
         <div class="mega-menu-column">
             <div class="rhombus-card">
-                <a href="#" class="media-card menu-item">
+                <a href="https://www.geotour.gr/vt/3dmap/" class="media-card menu-item">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/photos/3d.webp" alt="Kofinas peak in Geotour 3D map">
                     <div class="media-card-content">
                         <h4>3D Map</h4>
@@ -64,49 +72,51 @@
         </div>
         <div class="mega-menu-column">
             <div class="rhombus-card">
-                <a href="#" class="media-card menu-item">
+                <a href="/listing" class="media-card menu-item">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/photos/2dmap.webp" alt="The area of Asterousia in the 2D map">
                     <div class="media-card-content">
                         <h4>2D Map</h4>
-                        <p>A more traditional but also lightweight map for you navigation.</p>
+                        <p>A convenient but also lightweight map for you navigation.</p>
                     </div>
                 </a>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Listings Menu -->
 <div id="listings-menu" class="mega-menu-container">
     <div class="mega-menu-content">
         <div class="mega-menu-column">
             <h3 class="menu-item">Archaeological Sites</h3>
-            <a href="#" class="menu-item">Minoan period</a>
-            <a href="#" class="menu-item">Archaic & Classical</a>
-            <a href="#" class="menu-item">Hellenistic period</a>
+            <a href="/listing/?acffield=minoan" class="menu-item">Minoan period</a>
+            <a href="/listing/?acffield=classical" class="menu-item">Archaic & Classical</a>
+            <a href="/listing/?acffield=hellenistic" class="menu-item">Hellenistic period</a>
+            <a href="/listing/?acffield=roman" class="menu-item">Roman period</a>
         </div>
         <div class="mega-menu-column">
             <h3 class="menu-item">Locations</h3>
-            <a href="#" class="menu-item">Villages</a>
-            <a href="#" class="menu-item">Religion</a>
+            <a href="/listing/?listing-category=villages-en" class="menu-item">Villages</a>
+            <a href="/listing/?listing-category=religion-pois-en class="menu-item">Religion</a>
         </div>
         <div class="mega-menu-column" style="grid-column: span 2;">
             <h3 class="menu-item">Featured Sites</h3>
             <div class="thumbnail-gallery">
-                <a href="#" class="menu-item">
-                    <img src="https://images.unsplash.com/photo-1629285483773-63a23349910e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDV8fGtub3Nzb3N8ZW58MHx8fHwxNjc5ODU5NTI4&ixlib=rb-4.0.3&q=80&w=1080" alt="Knossos Palace">
-                    <div class="overlay"><span>Knossos Palace</span></div>
-                </a>
-                <a href="#" class="menu-item">
-                    <img src="https://images.unsplash.com/photo-1614561331093-4e67f259b68a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fHBoYWlzdG9zfGVufDB8fHx8MTY3OTg1OTU1Nw&ixlib=rb-4.0.3&q=80&w=1080" alt="Phaistos Disc">
-                    <div class="overlay"><span>Phaistos</span></div>
-                </a>
-                <a href="#" class="menu-item">
-                    <img src="https://images.unsplash.com/photo-1582370146430-c3c2b875defa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDEwfHxjcmV0ZSUyMHJ1aW5zfGVufDB8fHx8MTY3OTg1OTU5NA&ixlib=rb-4.0.3&q=80&w=1080" alt="Ancient Ruins">
+                <a href="/listing/gortyna-archaeological-site/" class="menu-item">
+                    <img src="/wp-content/uploads/2024/09/AppoloPytrhios-640x384.webp" alt="Gortyna ruins">
                     <div class="overlay"><span>Gortyna</span></div>
                 </a>
-                <a href="#" class="menu-item">
-                    <img src="https://images.unsplash.com/photo-1590184432078-55d645f34133?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDE3fHxjcmV0ZSUyMGJlYWNofGVufDB8fHx8MTY3OTg1OTQzMw&ixlib=rb-4.0.3&q=80&w=1080" alt="Coastal view">
-                    <div class="overlay"><span>Zakros</span></div>
+                <a href="/listing/festos/" class="menu-item">
+                    <img src="/wp-content/uploads/2024/04/Group-0-DSC_9239_DSC_9242-4-images-Edit-640x240.webp" alt="Phaistos Minoan palace">
+                    <div class="overlay"><span>Phaistos</span></div>
+                </a>
+                <a href="/listing/ancient-eleftherna/" class="menu-item">
+                    <img src="/wp-content/uploads/2024/09/eleutherna-640x384.webp" alt="Ancient Eleutherna">
+                    <div class="overlay"><span>Ancient Eleutherna</span></div>
+                </a>
+                <a href="/listing/zakros-minoan-palace/" class="menu-item">
+                    <img src="/wp-content/uploads/2024/06/DJI_0084-640x427.webp" alt="Kato Zakros Minoan palace">
+                    <div class="overlay"><span>Kato Zakros</span></div>
                 </a>
             </div>
         </div>
@@ -116,19 +126,17 @@
 <div id="events-menu" class="mega-menu-container">
     <div class="mega-menu-content">
         <div class="mega-menu-column">
-            <h3 class="menu-item">Upcoming</h3>
-            <a href="#" class="menu-item">Festivals</a>
-            <a href="#" class="menu-item">Conferences</a>
-            <a href="#" class="menu-item">Local Holidays</a>
+            <h3 class="menu-item">Events Views</h3>
+            <a href="/events/month/" class="menu-item">Calendar</a>
+            <a href="/events/map/" class="menu-item">Events Map</a>
+            <a href="/events/week/" class="menu-item">By week</a>
         </div>
         <div class="mega-menu-column">
-            <a href="#" class="media-card menu-item">
-                <img src="https://images.unsplash.com/photo-1519700345399-65084910a5fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDEyfHxjcmV0ZSUyMGZlc3RpdmFsfGVufDB8fHx8MTY3OTg2MDA5NA&ixlib=rb-4.0.3&q=80&w=1080" alt="Cretan Festival">
-                <div class="media-card-content">
-                    <h4>Summer Music Festival</h4>
-                    <p>Join us for a celebration of traditional Cretan music and culture under the stars.</p>
+            <div class="compact-events-menu-summary">   
+                <?php
+                     echo do_shortcode('[tribe_events_list limit="5" venue="false" address="false" city="false" region="false" country="false" postal_code="false"]'); ?>
                 </div>
-            </a>
+                
         </div>
     </div>
 </div>
