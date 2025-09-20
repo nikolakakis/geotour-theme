@@ -11,6 +11,7 @@ import { initializeGallery } from './modules/gallery/main.js';
 import { BigMapUI } from './modules/big-map/main.js';
 import { HeroParallax } from './modules/hero/parallax.js';
 import { initializeListingInpageMenu } from './modules/listing/inpage-menu.js';
+import { initializeCretanHistoryBreadcrumbs } from './modules/cretan-history/breadcrumb.js';
 
 // Import accessibility improvements
 import './accessibility.js';
@@ -46,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeAllMaps();
     initializeGallery(); // Initialize gallery functionality
     initializeListingInpageMenu(); // Only runs if menu exists
+    initializeCretanHistoryBreadcrumbs(); // Initialize Cretan History breadcrumbs
     
     console.log('Modules initialized.');
 });

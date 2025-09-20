@@ -117,8 +117,39 @@
         // No additional specific style needed here for &:first-child.active unless desired
     }
 
-    // Responsive adjustments for mobile
-    @media (max-width: 768px) {
+    // Enhanced breadcrumb animations
+    .breadcrumb-item {
+        .period-icon {
+            transition: transform 0.3s ease;
+            will-change: transform; // Optimize for animations
+            
+            img {
+                display: block;
+                max-width: 100%;
+                height: auto;
+            }
+        }
+        
+        // Smooth hover effects
+        &:hover .period-icon {
+            transform: scale(1.1);
+        }
+        
+        // Active state enhancement
+        &.active .period-icon {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(vars.$primary-color, 0.3);
+        }
+    }
+    
+    // Ensure proper positioning context
+    position: relative;
+    overflow: visible; // Allow items to move outside bounds during animation
+}
+
+// Responsive adjustments for mobile
+@media (max-width: 768px) {
+    #cretan-history-breadcrumb {
         padding: 0.5rem;
         gap: 0.3rem; // Tighter gap
 
@@ -159,6 +190,16 @@
                 border-width: 2px;
                 box-shadow: 0 1px 4px rgba(vars.$primary-dark, 0.2);
             }
+        }
+    }
+}
+
+// Accessibility: Respect reduced motion preferences
+@media (prefers-reduced-motion: reduce) {
+    #cretan-history-breadcrumb {
+        * {
+            animation: none !important;
+            transition: none !important;
         }
     }
 }
