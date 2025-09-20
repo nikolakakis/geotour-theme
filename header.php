@@ -123,15 +123,14 @@
             endif;
             echo '</div>';
         endif;
-        // Only keep the mobile menu (fullscreen/hamburger) here
-        if (wp_is_mobile()) {
-            wp_nav_menu([
-                'theme_location' => 'primary',
-                'menu_class'     => 'menu',
-                'container'      => false,
-                'walker'         => new Geotour_Accordion_Menu_Walker()
-            ]);
-        }
+        
+        // Always output the mobile menu - CSS will control visibility
+        wp_nav_menu([
+            'theme_location' => 'primary',
+            'menu_class'     => 'menu',
+            'container'      => false,
+            'walker'         => new Geotour_Accordion_Menu_Walker()
+        ]);
         ?>
         
         <!-- Search Form at Bottom of Menu -->

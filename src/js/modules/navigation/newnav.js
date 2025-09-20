@@ -3,6 +3,11 @@
  * This includes hover effects to show/hide menus and GSAP animations.
  */
 export function initializeDesktopMegaMenu() {
+    // Only run on desktop screens (1025px and wider)
+    if (window.innerWidth <= 1024) {
+        return;
+    }
+
     const header = document.querySelector('.main-header');
     if (!header) return; // Exit if the main header isn't found
 
@@ -17,12 +22,12 @@ export function initializeDesktopMegaMenu() {
     const showMenu = (menu) => {
         if (activeMenu) {
             activeMenu.classList.remove('visible');
-            const activeLink = document.querySelector('.nav-links > li.active');
+            const activeLink = document.querySelector('.desktop-mega-menu .nav-links > li.active');
             if (activeLink) activeLink.classList.remove('active');
         }
 
         menu.classList.add('visible');
-        const link = document.querySelector(`li[data-menu-target="#${menu.id}"]`);
+        const link = document.querySelector(`.desktop-mega-menu li[data-menu-target="#${menu.id}"]`);
         if (link) link.classList.add('active');
 
         activeMenu = menu;
@@ -40,7 +45,7 @@ export function initializeDesktopMegaMenu() {
     const hideMenu = () => {
         if (activeMenu) {
             activeMenu.classList.remove('visible');
-            const link = document.querySelector(`li[data-menu-target="#${activeMenu.id}"]`);
+            const link = document.querySelector(`.desktop-mega-menu li[data-menu-target="#${activeMenu.id}"]`);
             if (link) link.classList.remove('active');
             activeMenu = null;
         }
@@ -69,5 +74,12 @@ export function initializeDesktopMegaMenu() {
     // If the mouse re-enters the header, cancel the hide action
     header.addEventListener('mouseenter', () => {
         clearTimeout(leaveTimeout);
+    });
+
+    // Listen for window resize to disable on mobile
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 1024 && activeMenu) {
+            hideMenu();
+        }
     });
 }

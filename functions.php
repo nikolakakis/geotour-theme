@@ -112,6 +112,38 @@ add_action('after_setup_theme', function() {
     ]);
 });
 
+// Add debug function to check if menu is assigned and has items
+function geotour_debug_menu() {
+    if (current_user_can('administrator')) {
+        $locations = get_nav_menu_locations();
+        $menu_id = isset($locations['primary']) ? $locations['primary'] : 0;
+        
+        if ($menu_id) {
+            $menu_items = wp_get_nav_menu_items($menu_id);
+            if (empty($menu_items)) {
+                echo '<!-- DEBUG: Primary menu location assigned but no menu items found -->';
+            } else {
+                echo '<!-- DEBUG: Primary menu has ' . count($menu_items) . ' items -->';
+                // Also check if the mobile menu container exists
+                echo '<!-- DEBUG: Check if #fullscreen-menu container exists in template -->';
+            }
+        } else {
+            echo '<!-- DEBUG: No menu assigned to primary location -->';
+        }
+    }
+}
+add_action('wp_head', 'geotour_debug_menu');
+
+// Debug function to check what's in the fullscreen menu
+function geotour_debug_fullscreen_menu() {
+    if (current_user_can('administrator')) {
+        add_action('wp_footer', function() {
+            echo '<script>console.log("Mobile menu debug:", document.querySelector("#fullscreen-menu"));</script>';
+        });
+    }
+}
+add_action('init', 'geotour_debug_fullscreen_menu');
+
 /**
  * Disable comments and trackbacks completely
  */
