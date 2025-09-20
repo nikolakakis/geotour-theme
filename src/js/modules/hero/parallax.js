@@ -78,6 +78,11 @@ export class HeroParallax {
             
             if (!heroSection) return;
             
+            // Skip parallax for homepage hero sections
+            if (heroSection.classList.contains('homepage-hero')) {
+                return;
+            }
+            
             const rect = heroSection.getBoundingClientRect();
             const sectionTop = rect.top + scrolled;
             const sectionHeight = rect.height;

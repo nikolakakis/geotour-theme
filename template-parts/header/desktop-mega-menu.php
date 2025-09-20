@@ -13,7 +13,7 @@
         <li data-menu-target="#geotour-menu"><a href="#">Geotour</a></li>
         <li data-menu-target="#explore-menu"><a href="#">Explore</a></li>
         <li data-menu-target="#listings-menu"><a href="#">Listings</a></li>
-        <li><a href="#">Blog</a></li>
+        <li><a href="/blog">Blog</a></li>
         <li data-menu-target="#events-menu"><a href="#">Events</a></li>
         <li data-menu-target="#search-menu">
             <a href="#" class="search-menu-link" aria-label="Search">
