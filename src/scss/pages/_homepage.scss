@@ -542,7 +542,7 @@
 
     // Content area with proper spacing
     .homepage-content-area {
-        padding: 8rem 0 5rem 0; // Increased top padding from 5rem to 8rem
+        padding: 4rem 0 5rem 0; // Increased top padding from 5rem to 8rem
         background: linear-gradient(135deg, vars.$background-color 0%, color.adjust(vars.$background-color, $lightness: -2%) 100%);
         min-height: 50vh;
         position: relative;
@@ -775,4 +775,14 @@ body:not(.home) .homepage-hero .hero-background-image {
             }
         }
     }
+}
+
+#div-gpt-ad-1758305678423-0 {
+    text-align: center;
+    margin-bottom: -50px;
+}
+
+.page-template-page-homepage-php iframe {
+    margin: 0 auto;
+    text-align: center;
 }

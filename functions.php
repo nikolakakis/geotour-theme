@@ -74,6 +74,7 @@ require_once GEOTOUR_THEME_DIR . '/includes/legacy-shortcodes.php';
 
 // Modern shortcode implementations
 require_once GEOTOUR_THEME_DIR . '/includes/shortcodes/content-gallery.php';
+require_once GEOTOUR_THEME_DIR . '/includes/shortcodes/cretan-history-breadcrumb.php';
 
 // Map functionality
 require_once GEOTOUR_THEME_DIR . '/includes/maps/icon-management.php';

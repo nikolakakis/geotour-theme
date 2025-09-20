@@ -103,6 +103,14 @@ get_header(); ?>
                 </div>
             </div>
         </section>
+        <section class="ad-container" style="width: 100%; text-align: center;">
+        <!-- /23317265155/geotour-homepage-01 -->
+            <div id='div-gpt-ad-1758305678423-0' style='min-width: 728px; min-height: 90px; text-align: center;'>
+                <script>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1758305678423-0'); });
+                </script>
+            </div>        
+        </section>
         <section class="homepage-content-area">
             <div class="container">
                 <?php the_content(); ?>
