@@ -469,5 +469,47 @@ add_action('wp_head', 'geotour_enqueue_google_fonts');
 // Disable XML-RPC for security
 add_filter('xmlrpc_enabled', '__return_false');
 
+/**
+ * Ensure VectorGrid plugin is loaded for listing pages
+ * Multiple loading strategies for reliability
+ */
+function geotour_ensure_vectorgrid_loading() {
+    // Check if we're on listing page or admin
+    if (is_admin()) return;
+    
+    $is_listing_page = false;
+    
+    // Multiple ways to detect listing page
+    if (is_page()) {
+        $template = get_page_template_slug();
+        $page_id = get_queried_object_id();
+        $meta_template = get_post_meta($page_id, '_wp_page_template', true);
+        
+        $is_listing_page = (
+            $template === 'page-listing.php' ||
+            $meta_template === 'page-listing.php' ||
+            basename(get_page_template()) === 'page-listing.php'
+        );
+    }
+    
+    if ($is_listing_page) {
+        // Load VectorGrid with high priority
+        wp_enqueue_script(
+            'leaflet-vectorgrid-priority',
+            'https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js',
+            array(),
+            '1.3.0',
+            false // Load in head
+        );
+        
+        // Add inline script to verify loading
+        wp_add_inline_script('leaflet-vectorgrid-priority', '
+            console.log("VectorGrid script loaded via WordPress");
+            window.vectorGridLoadAttempted = true;
+        ');
+    }
+}
+add_action('wp_enqueue_scripts', 'geotour_ensure_vectorgrid_loading', 5); // Very early
+
 // Include shortcodes
 require_once get_template_directory() . '/inc/shortcodes/map-controls-popup.php';

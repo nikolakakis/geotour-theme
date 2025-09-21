@@ -5,10 +5,11 @@
 // This file replaces the old monolithic _big-map.scss
 
 // Import all component styles
-@use 'container';    // Main container and layout
-@use 'loading';      // Loading states and overlays
-@use 'sidebar';      // Sidebar layout and header
-@use 'filters';      // Filter display and results
-@use 'listings';     // Listings container and items
-@use 'controls';     // Map control buttons
-@use 'markers';      // Custom markers and popups
+@use 'container';       // Main container and layout
+@use 'loading';         // Loading states and overlays
+@use 'sidebar';         // Sidebar layout and header
+@use 'filters';         // Filter display and results
+@use 'listings';        // Listings container and items
+@use 'controls';        // Map control buttons
+@use 'markers';         // Custom markers and popups
+@use 'thematic-layers'; // Trails, boundaries, and other thematic layers

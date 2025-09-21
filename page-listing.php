@@ -7,7 +7,28 @@
  * @package Geotour_Mobile_First
  */
 
-get_header(); ?>
+get_header(); 
+
+// Ensure VectorGrid is loaded for E4 trail functionality
+wp_enqueue_script(
+    'leaflet-vectorgrid-direct',
+    'https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js',
+    array(),
+    '1.3.0',
+    false // Load in head to ensure it's available early
+);
+?>
+
+<!-- Additional head scripts for map functionality -->
+<script>
+console.log('page-listing.php: Loading VectorGrid...');
+if (typeof window !== 'undefined') {
+    window.addEventListener('load', function() {
+        console.log('Window loaded. Leaflet available:', typeof L !== 'undefined');
+        console.log('VectorGrid available:', typeof L !== 'undefined' && typeof L.vectorGrid !== 'undefined');
+    });
+}
+</script>
 
 <div class="big-map-container">
     <button id="floating-sidebar-toggle" class="floating-sidebar-toggle" title="<?php _e('Show listings', 'geotour'); ?>">

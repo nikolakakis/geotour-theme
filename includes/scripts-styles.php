@@ -2,8 +2,7 @@
 // filepath: e:\visualstudio\geotour-theme\includes\scripts-styles.php
 /**
  * Scripts and Styles Management
- * 
- * @package Geotour_Mobile_First
+ * * @package Geotour_Mobile_First
  */
 
 if (!defined('ABSPATH')) {
@@ -145,6 +144,35 @@ function geotour_enqueue_theme_assets() {
 
     // Enqueue Leaflet CSS (JS is bundled by Vite) - TEMPORARILY DISABLED TO AVOID CONFLICTS
     // wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', array(), '1.9.4');
+
+    // --- START OF THEMATIC LAYER MODIFICATION ---
+    // Conditionally enqueue thematic map layers (E4 Trail) on the correct page template.
+    if (is_page_template('page-listing.php')) {
+        // The handle for the main script from the geotour-crete-maps plugin
+        $plugin_handle = 'geotour-extra-content-script';
+
+        // Only proceed if the plugin script is actually present
+        if (wp_script_is($plugin_handle, 'registered')) {
+            // Enqueue Leaflet.VectorGrid, making it dependent on the plugin's script
+            wp_enqueue_script(
+                'leaflet-vectorgrid',
+                'https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js',
+                array($plugin_handle),
+                '1.3.0',
+                true
+            );
+
+            // Enqueue our thematic layers script, dependent on VectorGrid
+            wp_enqueue_script(
+                'my-theme-thematic-layers',
+                get_template_directory_uri() . '/assets/js/thematic-layers.js',
+                array('leaflet-vectorgrid'),
+                '1.0.1', // Incremented version
+                true
+            );
+        }
+    }
+    // --- END OF THEMATIC LAYER MODIFICATION ---
 
     // TEMPORARILY SIMPLIFIED - Localize script with basic data
     $map_data = [];
@@ -291,3 +319,7 @@ function geotour_preload_critical_resources() {
     }
 }
 add_action('wp_head', 'geotour_preload_critical_resources', 1);
+
+// This function is now removed, as its logic is integrated into geotour_enqueue_theme_assets
+// function geotour_enqueue_vectorgrid_plugin() { ... }
+// add_action('wp_enqueue_scripts', 'geotour_enqueue_vectorgrid_plugin', 12);

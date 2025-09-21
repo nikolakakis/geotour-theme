@@ -10,6 +10,7 @@ import { BigMapSidebar } from './sidebar.js';
 import { BigMapLoadingStates } from './loading.js';
 import { BigMapRoutePreview } from './route-preview.js';
 import { BigMapToolbar } from './toolbar-functions.js';
+import { ThematicLayerManager } from './thematic-layers.js';
 
 export class BigMapUI {
     constructor() {
@@ -23,6 +24,7 @@ export class BigMapUI {
         this.sidebarHandler = new BigMapSidebar();
         this.loadingStates = new BigMapLoadingStates();
         this.routePreview = new BigMapRoutePreview('5b3ce3597851110001cf624858bc89595fdf4f0eb8df2464c0e8e135'); // Using your API key
+        this.thematicLayers = null; // Initialize after map creation
         
         // Get URL parameters on initialization
         this.urlParams = new URLSearchParams(window.location.search);
@@ -129,6 +131,10 @@ export class BigMapUI {
             this.loadingStates
         );
         this.toolbar.init();
+        
+        // Initialize thematic layers (trails, boundaries, etc.)
+        this.thematicLayers = new ThematicLayerManager();
+        this.thematicLayers.init(this.map);
     }
     
     async loadInitialData() {
@@ -288,6 +294,41 @@ export class BigMapUI {
         if (routeMarkers.length > 0) {
             const group = new L.featureGroup(routeMarkers);
             this.map.fitBounds(group.getBounds().pad(0.1));
+        }
+    }
+    
+    /**
+     * Get the thematic layer manager for external access
+     * @returns {ThematicLayerManager|null}
+     */
+    getThematicLayers() {
+        return this.thematicLayers;
+    }
+    
+    /**
+     * Cleanup method - call when the BigMap component is destroyed
+     * Useful for SPA scenarios or when navigating away from the map page
+     */
+    destroy() {
+        if (this.thematicLayers) {
+            this.thematicLayers.destroy();
+        }
+        
+        if (this.routePreview) {
+            // Add cleanup for route preview if it has a destroy method
+        }
+        
+        if (this.toolbar) {
+            // Add cleanup for toolbar if it has a destroy method
+        }
+        
+        // Remove event listeners
+        window.removeEventListener('resize', this.handleResize);
+        document.removeEventListener('routeChanged', this.handleRouteChange);
+        
+        if (this.map) {
+            this.map.remove();
+            this.map = null;
         }
     }
 }

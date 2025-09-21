@@ -1,0 +1,72 @@
+// ==========================================================================
+// THEMATIC LAYERS STYLES
+// ==========================================================================
+// Styles for non-marker layers like trails, boundaries, etc.
+
+@use '../../base/variables' as vars;
+
+// E4 Trail specific styling
+.leaflet-container {
+    
+    // Custom marker styling for supplementary layers (if needed in future)
+    .thematic-layer-marker {
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    // Vector tile layer styling for interactive elements
+    .leaflet-vectorgrid-container {
+        // Ensure vector tiles render properly
+        pointer-events: auto;
+        
+        // E4 Trail hover effects (if interactive features are added)
+        .e4-trail-segment {
+            cursor: pointer;
+            
+            &:hover {
+                filter: drop-shadow(0 0 3px rgba(216, 60, 60, 0.6));
+            }
+        }
+    }
+}
+
+// Loading indicator for thematic layers
+.thematic-layers-loading {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 12px;
+    border-radius: vars.$border-radius;
+    font-size: 0.875rem;
+    color: vars.$text-color;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    
+    &.hidden {
+        display: none;
+    }
+    
+    .loading-spinner {
+        display: inline-block;
+        margin-right: 8px;
+        width: 12px;
+        height: 12px;
+        border: 2px solid vars.$main-color;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Future: Styles for other thematic layers
+// .administrative-boundaries { }
+// .protected-areas { }
+// .other-trails { }
