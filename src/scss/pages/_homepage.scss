@@ -37,6 +37,11 @@
         position: relative;
         overflow: hidden;
         
+        // Desktop layout: fields and button in a row
+        display: flex;
+        align-items: end;
+        gap: 1.5rem;
+        padding: 0rem;
         
         // Add subtle animated border gradient
         &::before {
@@ -60,8 +65,11 @@
         }
         
         @media (max-width: 768px) {
+            // Mobile layout: stack vertically
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1.25rem;
             padding: 2.5rem;
-            
             border-radius: 20px;
             
             &::before {
@@ -69,28 +77,38 @@
             }
         }
         
-        @media (max-width: 480px) {
-            padding: 2rem;
-            border-radius: 16px;
+        // Special handling for single-field forms (website search)
+        &:has(.search-fields > .search-field:only-child) {
+            .search-fields {
+                flex: 1;
+                
+                .search-field {
+                    flex: 1;
+                }
+            }
             
-            &::before {
-                border-radius: 16px;
+            @media (max-width: 768px) {
+                .search-submit::after {
+                    content: 'Search Website';
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .search-submit::after {
+                    content: 'Search';
+                }
             }
         }
     }
     
     .search-fields {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        display: flex;
         gap: 1.5rem;
-        margin-bottom: 2.5rem;
-        position: relative;
-        z-index: 2;
+        flex: 1;
         
         @media (max-width: 768px) {
-            grid-template-columns: 1fr;
+            flex-direction: column;
             gap: 1.25rem;
-            margin-bottom: 2rem;
         }
     }
     
@@ -106,12 +124,13 @@
             letter-spacing: 0.025em;
             text-transform: uppercase;
             display: block;
+            width: 75%;
             font-family: vars.$font-heading;
         }
         
-        select, input[type="text"] {
-            width: 95%;
-            padding: 0px 8px;
+        select, input[type="text"], input[type="search"] {
+            width: 100%;
+            padding: 18px 16px;
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 16px;
             font-size: 1rem;
@@ -120,6 +139,7 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: vars.$text-color;
+            box-sizing: border-box;
             
             position: relative;
             
@@ -202,72 +222,55 @@
     }
     
     .search-submit {
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
+        // Desktop: small circular button positioned on the right
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        padding: 0;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
         background: linear-gradient(135deg, 
             vars.$primary-color 0%, 
             vars.$primary-light 50%, 
             vars.$primary-dark 100%);
-        color: white;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        padding: 18px 32px;
-        font-size: 1.1rem;
-        font-weight: 700;
-        border-radius: 16px;
+        color: #fff;
         cursor: pointer;
-        transition: all 0.4s ease-in-out;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+        margin-left: 1rem;
+        align-self: end; // Align with form fields
         box-shadow: 0 8px 25px rgba(vars.$primary-color, 0.3),
                     0 4px 10px rgba(0, 0, 0, 0.1),
                     inset 0 1px 0 rgba(255, 255, 255, 0.4);
-        position: relative;
-        z-index: 2;
-        overflow: hidden;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        font-family: vars.$font-heading;
         
-        // Add animated shine effect
-        &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.3), 
-                transparent);
-            transition: left 0.6s;
+        svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
         }
         
         &:hover {
-            transform: translateY(-1px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(vars.$primary-color, 0.4),
-                        0 8px 20px rgba(0, 0, 0, 0.15),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px) scale(1.05);
             background: linear-gradient(135deg, 
                 vars.$primary-light 0%, 
                 color.adjust(vars.$primary-light, $lightness: +8%) 50%, 
                 vars.$primary-color 100%);
             border-color: rgba(255, 255, 255, 0.5);
-            
-            &::before {
-                left: 100%;
+            box-shadow: 0 15px 35px rgba(vars.$primary-color, 0.4),
+                        0 8px 20px rgba(0, 0, 0, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+                        
+            svg {
+                transform: scale(1.1);
             }
         }
         
         &:active {
-            transform: translateY(-2px) scale(1.01);
-            box-shadow: 0 10px 20px rgba(vars.$primary-color, 0.3),
-                        0 4px 10px rgba(0, 0, 0, 0.1),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px) scale(1.02);
         }
         
         &:focus {
@@ -278,78 +281,45 @@
                         inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
         
-        .search-icon {
-            font-size: 1.2rem;
-            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
-            transition: transform 0.3s ease;
-        }
-        
-        &:hover .search-icon {
-            transform: scale(1.1) rotate(5deg);
+        // Mobile: full-width button below form fields
+        @media (max-width: 768px) {
+            position: static;
+            width: 100%;
+            height: 54px;
+            border-radius: 16px;
+            margin-left: 0;
+            margin-top: 1.5rem;
+            align-self: stretch;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: vars.$font-heading;
+            padding: 0 2rem;
+            gap: 12px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            
+            // Show text on mobile
+            &::after {
+                content: 'Explore Map';
+                margin-left: 8px;
+            }
+            
+            svg {
+                width: 20px;
+                height: 20px;
+            }
         }
         
         @media (max-width: 480px) {
-            padding: 16px 28px;
+            height: 50px;
             font-size: 1rem;
-            max-width: none;
+            padding: 0 1.5rem;
             
-            .search-icon {
-                font-size: 1.1rem;
+            &::after {
+                content: 'Search';
             }
         }
-    }
-    .search-submit {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        padding: 0;
-        border: none;
-        border-radius: 50%;
-        background-color: vars.$primary-color;
-        color: #fff;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        flex-shrink: 0;
-        margin-left: 0.5rem;
-        
-        @media (max-width: 768px) {
-            width: 100%;
-            height: 44px;
-            border-radius: 0.5rem;
-            margin-left: 0;
-            margin-top: 0.5rem;
-        }
-        
-        svg {
-            width: 24px;
-            height: 24px;
-            fill: #fff;
-        }
-        
-        &:hover {
-            background-color: vars.$primary-dark;
-        }
-    }
-}
-.homepage-search-form {
-    width: 90%;
-    max-width: 850px;
-    margin: 0 auto;
-    input {
-        width: 100%;
-        border: 0;
-        padding: 25px;
-        outline: 0px;
-    }
-    @media (max-width: 768px) {
-        width: 95%;
-        max-width: none;
-        margin: 0 auto;
     }
 }
 .homepage {

@@ -28,53 +28,55 @@ get_header(); ?>
                     <!-- Modern Search Form -->
                     <div class="homepage-search-form">
                         <form style="padding: 0.85rem;" method="get" action="<?php echo esc_url(home_url('/listing')); ?>" class="listing-search-form">
-                            <!-- Region Select -->
-                            <div class="search-field">
-                                <label for="listing-region"><?php _e('Region', 'geotour'); ?></label>
-                                                                        <select name="listing-region" id="listing-region" aria-label="<?php esc_attr_e('Select a region to filter listings', 'geotour'); ?>">
-                                    <option value=""><?php _e('All Regions', 'geotour'); ?></option>
-                                    <?php
-                                    $regions = get_terms([
-                                        'taxonomy' => 'listing-region',
-                                        'hide_empty' => false,
-                                        'orderby' => 'name',
-                                        'order' => 'ASC'
-                                    ]);
-                                    if (!empty($regions) && !is_wp_error($regions)) {
-                                        echo geotour_build_hierarchical_options($regions, 0);
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <!-- Category Select -->
-                            <div class="search-field">
-                                <label for="listing-category"><?php _e('Category', 'geotour'); ?></label>
-                                <select name="listing-category" id="listing-category" aria-label="<?php esc_attr_e('Select a category to filter listings', 'geotour'); ?>">
-                                    <option value=""><?php _e('All Categories', 'geotour'); ?></option>
-                                    <?php
-                                    $categories = get_terms([
-                                        'taxonomy' => 'listing-category',
-                                        'hide_empty' => false,
-                                        'orderby' => 'name',
-                                        'order' => 'ASC'
-                                    ]);
-                                    $excluded_categories = [
-                                        '_listing_root',
-                                        'accommodation-en',
-                                        'restaurant',
-                                        'shopping',
-                                        'services'
-                                    ];
-                                    if (!empty($categories) && !is_wp_error($categories)) {
-                                        echo geotour_build_hierarchical_options($categories, 0, 0, $excluded_categories);
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <!-- Text Search -->
-                            <div class="search-field search-text">
-                                <label for="search-text"><?php _e('Search', 'geotour'); ?></label>
-                                <input type="text" name="search" id="search-text" placeholder="<?php _e('Keywords...', 'geotour'); ?>" aria-label="<?php esc_attr_e('Enter keywords to search listings', 'geotour'); ?>">
+                            <div class="search-fields">
+                                <!-- Region Select -->
+                                <div class="search-field">
+                                    <label for="listing-region"><?php _e('Region', 'geotour'); ?></label>
+                                    <select name="listing-region" id="listing-region" aria-label="<?php esc_attr_e('Select a region to filter listings', 'geotour'); ?>">
+                                        <option value=""><?php _e('All Regions', 'geotour'); ?></option>
+                                        <?php
+                                        $regions = get_terms([
+                                            'taxonomy' => 'listing-region',
+                                            'hide_empty' => false,
+                                            'orderby' => 'name',
+                                            'order' => 'ASC'
+                                        ]);
+                                        if (!empty($regions) && !is_wp_error($regions)) {
+                                            echo geotour_build_hierarchical_options($regions, 0);
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <!-- Category Select -->
+                                <div class="search-field">
+                                    <label for="listing-category"><?php _e('Category', 'geotour'); ?></label>
+                                    <select name="listing-category" id="listing-category" aria-label="<?php esc_attr_e('Select a category to filter listings', 'geotour'); ?>">
+                                        <option value=""><?php _e('All Categories', 'geotour'); ?></option>
+                                        <?php
+                                        $categories = get_terms([
+                                            'taxonomy' => 'listing-category',
+                                            'hide_empty' => false,
+                                            'orderby' => 'name',
+                                            'order' => 'ASC'
+                                        ]);
+                                        $excluded_categories = [
+                                            '_listing_root',
+                                            'accommodation-en',
+                                            'restaurant',
+                                            'shopping',
+                                            'services'
+                                        ];
+                                        if (!empty($categories) && !is_wp_error($categories)) {
+                                            echo geotour_build_hierarchical_options($categories, 0, 0, $excluded_categories);
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <!-- Text Search -->
+                                <div class="search-field search-text">
+                                    <label for="search-text"><?php _e('Search', 'geotour'); ?></label>
+                                    <input type="text" name="search" id="search-text" placeholder="<?php _e('Keywords...', 'geotour'); ?>" aria-label="<?php esc_attr_e('Enter keywords to search listings', 'geotour'); ?>">
+                                </div>
                             </div>
                             <button type="submit" class="search-submit" title="<?php _e('Explore Map', 'geotour'); ?>" aria-label="<?php esc_attr_e('Submit search and explore map', 'geotour'); ?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg>
@@ -87,10 +89,12 @@ get_header(); ?>
                     <p class="search-section-description"><?php _e('Find articles, people, photos and all content', 'geotour'); ?></p>
                     <div class="homepage-search-form">
                         <form method="get" action="<?php echo esc_url(home_url('/')); ?>" class="listing-search-form">
-                            <!-- Text Search -->
-                            <div class="search-field search-text">
-                                <label for="website-search-text" class="screen-reader-text"><?php _e('Search the website', 'geotour'); ?></label>
-                                <input type="search" name="s" id="website-search-text" placeholder="<?php _e('Search articles, people, photos...', 'geotour'); ?>" aria-label="<?php esc_attr_e('Search website content', 'geotour'); ?>">
+                            <div class="search-fields">
+                                <!-- Text Search -->
+                                <div class="search-field search-text">
+                                    <label for="website-search-text" class="screen-reader-text"><?php _e('Search the website', 'geotour'); ?></label>
+                                    <input type="search" name="s" id="website-search-text" placeholder="<?php _e('Search articles, people, photos...', 'geotour'); ?>" aria-label="<?php esc_attr_e('Search website content', 'geotour'); ?>">
+                                </div>
                             </div>
                             <button type="submit" class="search-submit" title="<?php _e('Search Website', 'geotour'); ?>" aria-label="<?php esc_attr_e('Submit website search', 'geotour'); ?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
