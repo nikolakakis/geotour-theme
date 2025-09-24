@@ -82,6 +82,9 @@ export class ThematicLayerManager {
             minZoom: 14, // Only show at zoom 14+
             maxZoom: 22
         };
+        
+        console.log('Using layer name:', e4Config.layerName);
+        console.log('Tile URL:', e4Config.tileUrl);
 
         // --- Style Definition for the two-layer dashed effect ---
         
@@ -111,9 +114,34 @@ export class ThematicLayerManager {
             rendererFactory: L.svg.tile,
             maxZoom: e4Config.maxZoom,
             vectorTileLayerStyles: {
-                [e4Config.layerName]: baseTrailStyle
+                // Use function-based styling for better control and property access
+                [e4Config.layerName]: (properties, zoom) => {
+                    return {
+                        color: '#bcaea0', // Light earth/stone color
+                        weight: 3,
+                        opacity: 1.0,
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    };
+                }
             },
-            interactive: true // Allow mouse events for future popup functionality
+            interactive: true // Allow mouse events for popup functionality
+        });
+
+        // Add debugging for vector tile loading
+        baseTrailLayer.on('loading', function(e) {
+            console.log('E4 base layer: Vector tiles loading...');
+        });
+
+        baseTrailLayer.on('load', function(e) {
+            console.log('E4 base layer: Vector tiles loaded successfully');
+        });
+
+        // Log available layers when tiles are added
+        baseTrailLayer.on('tileload', function(e) {
+            if (e.tile && e.tile._layers) {
+                console.log('Available layers in vector tile:', Object.keys(e.tile._layers));
+            }
         });
 
         // Top dashed layer (rendered on top)
@@ -121,13 +149,75 @@ export class ThematicLayerManager {
             rendererFactory: L.svg.tile,
             maxZoom: e4Config.maxZoom,
             vectorTileLayerStyles: {
-                [e4Config.layerName]: markerTrailStyle
+                // Use function-based styling for better control and property access
+                [e4Config.layerName]: (properties, zoom) => {
+                    return {
+                        color: '#D83C3C', // Strong trail red
+                        weight: 3,
+                        opacity: 1.0,
+                        dashArray: '10, 15', // 10px dash, 15px gap
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    };
+                }
             },
             interactive: true
         });
 
         // Group the layers for unified management
         this.e4TrailLayers = L.layerGroup([baseTrailLayer, markerTrailLayer]);
+        
+        // Add click interactivity for popups
+        this.e4TrailLayers.on('click', (e) => {
+            // Stop the click from propagating to the map, which might close other popups
+            L.DomEvent.stop(e);
+
+            const properties = e.layer.properties;
+            let popupContent = '<h4>E4 European Path</h4>';
+
+            // Build the popup content dynamically from the feature's properties
+            // Adjust these property names to match your actual PostGIS data structure
+            if (properties) {
+                if (properties.name) {
+                    popupContent += `<p><strong>Section:</strong> ${properties.name}</p>`;
+                }
+                if (properties.section_id) {
+                    popupContent += `<p><strong>Section ID:</strong> ${properties.section_id}</p>`;
+                }
+                if (properties.difficulty) {
+                    popupContent += `<p><strong>Difficulty:</strong> ${properties.difficulty}</p>`;
+                }
+                if (properties.length_km) {
+                    popupContent += `<p><strong>Length:</strong> ${properties.length_km} km</p>`;
+                }
+                if (properties.description) {
+                    popupContent += `<p><strong>Description:</strong> ${properties.description}</p>`;
+                }
+                
+                // If no specific properties are found, show available data
+                if (!properties.name && !properties.section_id && !properties.difficulty) {
+                    popupContent += '<p><strong>Trail Section</strong></p>';
+                    popupContent += '<p>Part of the E4 European Long Distance Path crossing Crete</p>';
+                    
+                    // Debug: show available properties in development
+                    if (Object.keys(properties).length > 0) {
+                        popupContent += '<hr><small><strong>Available data:</strong><br>';
+                        Object.keys(properties).slice(0, 5).forEach(key => {
+                            popupContent += `${key}: ${properties[key]}<br>`;
+                        });
+                        popupContent += '</small>';
+                    }
+                }
+            } else {
+                popupContent += '<p>Trail information is not available for this section.</p>';
+            }
+
+            // Create and open the popup at the location of the click
+            L.popup()
+                .setLatLng(e.latlng)
+                .setContent(popupContent)
+                .openOn(this.map);
+        });
         
         // Store in our layer management system
         this.layerGroups.set('e4_trail', {
@@ -144,25 +234,42 @@ export class ThematicLayerManager {
      * Sets up interactive features for the E4 trail
      */
     setupE4TrailInteractions(baseLayer, topLayer) {
-        // Add hover effect to highlight the trail
+        // Enhanced hover effects for better user experience
+        const originalTopLayerStyle = {
+            color: '#D83C3C',
+            weight: 3,
+            opacity: 1.0
+        };
+
         const highlightStyle = {
             color: '#FF4444',
             weight: 5,
-            opacity: 0.8
+            opacity: 0.9
         };
 
-        // You can add click handlers here for future features like:
-        // - Showing trail information popups
-        // - Adding trail segments to route planning
-        // - Displaying elevation profiles
-        
+        // Add hover effect to the top (dashed) layer
         topLayer.on('mouseover', (e) => {
-            // Potential future enhancement: highlight trail segment on hover
+            // Temporarily increase weight and change color for hover feedback
+            e.layer.setStyle && e.layer.setStyle(highlightStyle);
         });
 
         topLayer.on('mouseout', (e) => {
-            // Reset highlight
+            // Reset to original style
+            e.layer.setStyle && e.layer.setStyle(originalTopLayerStyle);
         });
+
+        // Add hover effect to base layer as well for consistent interaction
+        baseLayer.on('mouseover', (e) => {
+            // Change cursor to pointer to indicate clickability
+            this.map.getContainer().style.cursor = 'pointer';
+        });
+
+        baseLayer.on('mouseout', (e) => {
+            // Reset cursor
+            this.map.getContainer().style.cursor = '';
+        });
+
+        console.log('E4 trail interactions set up successfully');
     }
 
     /**
