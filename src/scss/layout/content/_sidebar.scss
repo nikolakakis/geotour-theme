@@ -55,7 +55,7 @@
 // Main content layout with sidebar
 .content-with-sidebar {
     display: grid;
-    grid-template-columns: 1fr 370px; // Approximately 75% / 25% at 1600px
+    grid-template-columns: 1fr 400px; // Approximately 75% / 25% at 1600px
     gap: 3rem;
     align-items: start;
     

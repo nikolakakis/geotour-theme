@@ -21,7 +21,7 @@ if ( ! empty( $adtype ) ) :
 
 <?php
     elseif ($adtype === '728_header_ad') :
-        // --- OPTION B: GAM Header Ad ---
+        // --- OPTION B: GAM Homepage Header Ad ---
 ?>
 <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
 <script>
@@ -35,6 +35,22 @@ if ( ! empty( $adtype ) ) :
 </script>
 
 <?php
+    // --- START: NEWLY ADDED CODE ---
+    elseif ($adtype === 'listing-gam-01') :
+        // --- OPTION C: GAM Listing Page Ads ---
+?>
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+<script>
+  window.googletag = window.googletag || {cmd: []};
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/23317265155/listing-sidebar-01', [[336, 280], [300, 600], [300, 250]], 'div-gpt-ad-1758826394692-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.pubads().collapseEmptyDivs();
+    googletag.enableServices();
+  });
+</script>
+<?php
+    // --- END: NEWLY ADDED CODE ---
     endif; // End ad type conditional
 
 endif; // End master conditional (!empty($adtype))

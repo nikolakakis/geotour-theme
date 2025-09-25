@@ -131,7 +131,15 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
           <!-- Sidebar Area -->
         <?php if (!$hide_sidebar) : ?>
         <aside class="sidebar-content">
+
+
             <div class="listing-sidebar">
+                <!-- /23317265155/listing-sidebar-01 -->
+                <div id='div-gpt-ad-1758826394692-0' style='min-width: 300px; min-height: 250px;'>
+                <script>
+                    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1758826394692-0'); });
+                </script>
+                </div>
                   <!-- Festive Dates -->
                 <div id="festivedates"></div>
                 
