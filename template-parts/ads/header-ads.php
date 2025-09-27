@@ -35,22 +35,41 @@ if ( ! empty( $adtype ) ) :
 </script>
 
 <?php
-    // --- START: NEWLY ADDED CODE ---
+    // --- START: COMBINED SCRIPT ---
     elseif ($adtype === 'listing-gam-01') :
-        // --- OPTION C: GAM Listing Page Ads ---
+        // --- OPTION C: GAM Listing Page Ads (Sidebar and Mobile) ---
 ?>
 <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
 <script>
   window.googletag = window.googletag || {cmd: []};
   googletag.cmd.push(function() {
+    
+    // Defines the Sidebar Ad Slot (Visible on all devices)
     googletag.defineSlot('/23317265155/listing-sidebar-01', [[336, 280], [300, 600], [300, 250]], 'div-gpt-ad-1758826394692-0').addService(googletag.pubads());
+
+    // Defines the Under-Hero Mobile Ad Slot
+    googletag.defineSlot('/23317265155/Geotour_Listing_UnderHero_Mobile_Box', [[336, 280], [300, 250]], 'div-gpt-ad-1758916182848-0').addService(googletag.pubads());
+    // Defines the Responsive Article Body Ad Slot above the first h2 heading for wider screens
+    googletag.defineSlot('/23317265155/Geotour_Article_Body1_Responsive', [728, 90], 'div-gpt-ad-1758965563979-0').addService(googletag.pubads());
+    // Defines the Responsive Article Body Ad Slot above the first h2 heading for narrower screens
+    googletag.defineSlot('/23317265155/mobile_in_content_one', [300, 75], 'div-gpt-ad-1758969680865-0').addService(googletag.pubads());
+    // Defines the Responsive Article Body Ad Slot above the second h2 heading for wider screens
+    googletag.defineSlot('/23317265155/Geotour_Article_Body2_banner', [728, 90], 'div-gpt-ad-1758981125616-0').addService(googletag.pubads());
+    // Defines the Responsive Article Body Ad Slot above the third h2 heading for wider screens
+    googletag.defineSlot('/23317265155/Geotour_Article_Body3_banner', [728, 90], 'div-gpt-ad-1758981576053-0').addService(googletag.pubads());
+    // Defines the Responsive Article Body Ad Slot above the fourth h2 heading for wider screens
+    googletag.defineSlot('/23317265155/Geotour_Article_Body4_banner', [728, 90], 'div-gpt-ad-1758981672253-0').addService(googletag.pubads());
+
+
+    
+    // --- Global settings for all ads on the page (defined only once) ---
     googletag.pubads().enableSingleRequest();
     googletag.pubads().collapseEmptyDivs();
     googletag.enableServices();
   });
 </script>
 <?php
-    // --- END: NEWLY ADDED CODE ---
+    // --- END: COMBINED SCRIPT ---
     endif; // End ad type conditional
 
 endif; // End master conditional (!empty($adtype))

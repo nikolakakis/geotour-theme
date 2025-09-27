@@ -1,0 +1,14 @@
+// ==========================================================================
+// ARCHIVE ITEM COMPONENT STYLES (BLOG LIST)
+// ==========================================================================
+
+@use '../base/variables' as vars;
+@use 'sass:color';
+
+/* Styling for our responsive GAM ad containers */
+.gam-responsive-banner-ad {
+  display: block;
+  margin: 25px auto; /* Adds space above/below and centers the ad */
+  text-align: center;
+  width: 100%;
+}

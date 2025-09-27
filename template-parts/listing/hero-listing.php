@@ -88,6 +88,33 @@ if ($regions && !is_wp_error($regions)) {
     </div>
     
 </section>
+<?php
+// 1. Check if the visitor is on a mobile device using PHP
+if ( wp_is_mobile() ) :
+?>
+    
+    <style>
+        .listing-hero-ad-section {
+            padding: 20px 0;
+            background: #f8f9fa; /* Light grey background */
+            text-align: center;
+        }
+    </style>
+
+    <section class="listing-hero-ad-section">
+        <div class="container">
+            <div id='div-gpt-ad-1758916182848-0' style='min-width: 300px; min-height: 250px; margin: 0 auto;'>
+                <script>
+                    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1758916182848-0'); });
+                </script>
+            </div>
+        </div>
+    </section>
+
+<?php
+endif; // End the mobile check
+?>
+
 <?php get_template_part('template-parts/listing/inpage-menu'); ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
