@@ -55,13 +55,19 @@ if ( ! empty( $adtype ) ) :
     googletag.defineSlot('/23317265155/mobile_in_content_one', [300, 75], 'div-gpt-ad-1758969680865-0').addService(googletag.pubads());
     // Defines the Responsive Article Body Ad Slot above the second h2 heading for wider screens
     googletag.defineSlot('/23317265155/Geotour_Article_Body2_banner', [728, 90], 'div-gpt-ad-1758981125616-0').addService(googletag.pubads());
+    // Defines the Responsive Article Body Ad Slot above the second h2 heading for narrower screens
+    googletag.defineSlot('/23317265155/mobile_Geotour_Article_Body2_banner', [[300, 75], [300, 100], [300, 250]], 'div-gpt-ad-1758987712673-0').addService(googletag.pubads());
     // Defines the Responsive Article Body Ad Slot above the third h2 heading for wider screens
     googletag.defineSlot('/23317265155/Geotour_Article_Body3_banner', [728, 90], 'div-gpt-ad-1758981576053-0').addService(googletag.pubads());
+    // Defines the Responsive Article Body Ad Slot above the third h2 heading for narrower screens
+    googletag.defineSlot('/23317265155/mobile_Geotour_Article_Body3_banner', [[300, 100], [300, 250], [300, 75]], 'div-gpt-ad-1758987837272-0').addService(googletag.pubads());
     // Defines the Responsive Article Body Ad Slot above the fourth h2 heading for wider screens
     googletag.defineSlot('/23317265155/Geotour_Article_Body4_banner', [728, 90], 'div-gpt-ad-1758981672253-0').addService(googletag.pubads());
+    // Defines the Responsive Article Body Ad Slot above the fourth h2 heading for narrower screens
+    googletag.defineSlot('/23317265155/mobile_Geotour_Article_Body4_banner', [[300, 100], [300, 250], [300, 75]], 'div-gpt-ad-1758987927787-0').addService(googletag.pubads());
 
 
-    
+
     // --- Global settings for all ads on the page (defined only once) ---
     googletag.pubads().enableSingleRequest();
     googletag.pubads().collapseEmptyDivs();
