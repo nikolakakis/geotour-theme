@@ -119,6 +119,7 @@ export class BigMapDataHandler {
         console.log('Full REST URL:', url);
         console.log('Zoom level:', currentZoom);
         console.log('Include supplementary:', currentZoom >= 14);
+        console.log('Route listings:', window.geotourBigMap.urlParams.route_listings);
         console.log('==========================');
 
         const response = await fetch(url, {
@@ -128,14 +129,27 @@ export class BigMapDataHandler {
         });
 
         if (!response.ok) {
+            console.error('API Error:', response.status, response.statusText);
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const rawData = await response.json();
+        
+        console.log('=== API RESPONSE ===');
+        console.log('Total items received:', rawData.length);
+        console.log('====================');
+        
+        // Check if rawData is an array
+        if (!Array.isArray(rawData)) {
+            console.error('API did not return an array:', rawData);
+            throw new Error('Invalid API response format');
+        }
 
         // Separate listings from supplementary data
         const listings = rawData.filter(item => item.source_type === 'listing');
         const supplementaryData = rawData.filter(item => item.source_type !== 'listing');
+        
+        console.log(`Listings: ${listings.length}, Supplementary: ${supplementaryData.length}`);
 
         // Transform the v3 data to the structure the app expects
         const transformedListings = this._transformV3Data(listings);

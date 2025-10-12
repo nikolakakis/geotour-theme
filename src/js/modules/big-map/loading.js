@@ -62,7 +62,21 @@ export class BigMapLoadingStates {
     showError(message) {
         const container = document.getElementById('listings-container');
         if (container) {
-            container.innerHTML = `<div class="error-message">${message}</div>`;
+            container.innerHTML = `
+                <div class="error-message">
+                    <svg viewBox="0 0 24 24" fill="currentColor" style="width: 48px; height: 48px; margin-bottom: 1rem; color: #ef4444;">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                    <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">${message}</p>
+                    <p style="font-size: 0.9rem; color: #64748b;">The page will refresh automatically...</p>
+                </div>
+            `;
+        }
+        
+        // Also update the count element
+        const countElement = document.getElementById('results-count');
+        if (countElement) {
+            countElement.textContent = 'Error loading data';
         }
     }
     

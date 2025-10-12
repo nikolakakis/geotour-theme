@@ -247,7 +247,15 @@ export class BigMapUI {
             
             // Fetch fresh data with updated route
             const currentZoom = this.map ? this.map.getZoom() : window.geotourBigMap.defaultZoom;
-            const data = await this.dataHandler.fetchListings(null, currentZoom);
+            
+            // Get current bounding box to ensure we fetch data for the current view
+            let bbox = null;
+            if (this.map) {
+                const bounds = this.map.getBounds();
+                bbox = `${bounds.getWest()},${bounds.getSouth()},${bounds.getEast()},${bounds.getNorth()}`;
+            }
+            
+            const data = await this.dataHandler.fetchListings(bbox, currentZoom);
             
             // Update map and sidebar
             this.updateMapAndSidebar(data);
@@ -263,7 +271,14 @@ export class BigMapUI {
             
         } catch (error) {
             console.error('Error refreshing route data:', error);
+            console.error('Error details:', error.message, error.stack);
             this.loadingStates.showError('Error updating route. Please try again.');
+            
+            // Restore previous view by clearing the error after a few seconds
+            setTimeout(() => {
+                // Try to reload data without route changes
+                this.onMapMoveEnd();
+            }, 3000);
         } finally {
             this.loadingStates.hideLoading();
         }
