@@ -59,9 +59,9 @@ if (!empty($adtype)) :
     googletag.defineSlot('/23317265155/listing-sidebar-01', [[336, 280], [300, 600], [300, 250]], 'div-gpt-ad-1758826394692-0').addService(googletag.pubads());
 
     // Defines the Under-Hero Mobile Ad Slot
-    googletag.defineSlot('/23317265155/Geotour_Listing_UnderHero_Mobile_Box', [[336, 280], [300, 250]], 'div-gpt-ad-1758916182848-0').addService(googletag.pubads());
+    googletag.defineSlot('/23317265155/Geotour_Listing_UnderHero_Mobile_Box', [[336, 280], [300, 250]], 'div-gpt-ad-1758916182848-0').addService(googletag.pubads());    
     // Defines the Responsive Article Body Ad Slot above the first h2 heading for wider screens    
-    googletag.defineSlot('/23317265155/Geotour_Article_Body1_Responsive', [300, 250], 'div-gpt-ad-1759076403160-0').addService(googletag.pubads());
+    googletag.defineSlot('/23317265155/Geotour_Article_Body1_Responsive', [300, 250], 'div-gpt-ad-1759438267926-0').addService(googletag.pubads());
     // Defines the Responsive Article Body Ad Slot above the first h2 heading for narrower screens
     googletag.defineSlot('/23317265155/mobile_in_content_one', [300, 75], 'div-gpt-ad-1758969680865-0').addService(googletag.pubads());
     // Defines the Responsive Article Body Ad Slot above the second h2 heading for wider screens
@@ -73,8 +73,9 @@ if (!empty($adtype)) :
     googletag.defineSlot('/23317265155/Geotour_Article_Body3a_banner', [300, 250], 'div-gpt-ad-1759074904699-0').addService(googletag.pubads());
     //3b
     googletag.defineSlot('/23317265155/Geotour_Article_Body3b_banner', [300, 250], 'div-gpt-ad-1759075083666-0').addService(googletag.pubads());
-    //3
-    //googletag.defineSlot('/23317265155/Geotour_Article_Body3_banner', [728, 90], 'div-gpt-ad-1758981576053-0').addService(googletag.pubads());
+
+    //mobile 2
+    googletag.defineSlot('/23317265155/mobile_Geotour_Article_Body2_banner', [[300, 75], [300, 100], [300, 250]], 'div-gpt-ad-1759346647953-0').addService(googletag.pubads());
     // Defines the Responsive Article Body Ad Slot above the third h2 heading for narrower screens
     googletag.defineSlot('/23317265155/mobile_Geotour_Article_Body3_banner', [[300, 100], [300, 250], [300, 75]], 'div-gpt-ad-1758987837272-0').addService(googletag.pubads());
     // Defines the Responsive Article Body Ad Slot above the fourth h2 heading for wider screens
