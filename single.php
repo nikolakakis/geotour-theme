@@ -91,13 +91,7 @@ get_header();
                 <!-- Sidebar Area -->
                 <?php if (!$hide_sidebar) : ?>
                 <aside class="sidebar-content">
-                    <div class="listing-sidebar">
-                        <!-- /23317265155/listing-sidebar-01 -->
-                        <div id='div-gpt-ad-1760280208244-0' style='min-width: 300px; min-height: 250px;'>
-                        <script>
-                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1760280208244-0'); });
-                        </script>
-                        </div>
+                    <div class="listing-sidebar">                        
                         <!-- Post Info Section -->
                         <div class="sidebar-section">
                             <h3 class="sidebar-title"><?php _e('Post Info', 'geotour'); ?></h3>
