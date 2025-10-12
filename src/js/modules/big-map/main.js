@@ -148,6 +148,15 @@ export class BigMapUI {
             // Initialize toolbar visibility on first load
             const listings = Array.isArray(data) ? data : data.listings || [];
             this.toolbar.updateToolbar(listings);
+            
+            // Auto-zoom to route extent if route stops exist (like clicking "Zoom to Route" button)
+            const routeListings = listings.filter(listing => listing.route_order);
+            if (routeListings.length > 0) {
+                // Add small delay to ensure map and markers are fully rendered
+                setTimeout(() => {
+                    this.toolbar.zoomToRoute();
+                }, 500);
+            }
         } catch (error) {
             console.error('Error loading initial data:', error);
             this.loadingStates.showError(window.geotourBigMap.strings.loadingError);
