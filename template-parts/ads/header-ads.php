@@ -47,20 +47,33 @@ if (!empty($adtype)) :
     endif;
     
     // --- START: COMBINED SCRIPT ---
-    if (in_array('listing-gam-01', $adtype)) :
-        // --- OPTION C: GAM Listing Page Ads (Sidebar and Mobile) ---
+if (in_array('listing-gam-01', $adtype)) :
+    // --- OPTION C: GAM Listing Page Ads (Sidebar and Mobile) ---
 ?>
 <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
 <script>
   window.googletag = window.googletag || {cmd: []};
   googletag.cmd.push(function() {
     
+    // --- START: Key-Value Targeting Logic ---
+    <?php
+    // Get the value from your ACF text field 'page_topic_value'.
+    $page_topic = function_exists('get_field') ? get_field('page_topic_value') : null;
+
+    // If a value exists in the field, print the setTargeting script.
+    if (!empty($page_topic)) {
+        // We use json_encode() to safely handle the string and ensure it has the correct quotes.
+        echo "googletag.pubads().setTargeting('page_topic', " . json_encode($page_topic) . ");\n";
+    }
+    ?>
+    // --- END: Key-Value Targeting Logic ---
+    
     // Defines the Sidebar Ad Slot (Visible on all devices)
-    googletag.defineSlot('/23317265155/listing-sidebar-01', [[336, 280], [300, 600], [300, 250]], 'div-gpt-ad-1758826394692-0').addService(googletag.pubads());
+    googletag.defineSlot('/23317265155/listing-sidebar-01', [[336, 280], [300, 250]], 'div-gpt-ad-1760280208244-0').addService(googletag.pubads());
 
     // Defines the Under-Hero Mobile Ad Slot
-    googletag.defineSlot('/23317265155/Geotour_Listing_UnderHero_Mobile_Box', [[336, 280], [300, 250]], 'div-gpt-ad-1758916182848-0').addService(googletag.pubads());    
-    // Defines the Responsive Article Body Ad Slot above the first h2 heading for wider screens    
+    googletag.defineSlot('/23317265155/Geotour_Listing_UnderHero_Mobile_Box', [[336, 280], [300, 250]], 'div-gpt-ad-1758916182848-0').addService(googletag.pubads());     
+    // Defines the Responsive Article Body Ad Slot above the first h2 heading for wider screens      
     googletag.defineSlot('/23317265155/Geotour_Article_Body1_Responsive', [300, 250], 'div-gpt-ad-1759438267926-0').addService(googletag.pubads());
     // Defines the Responsive Article Body Ad Slot above the first h2 heading for narrower screens
     googletag.defineSlot('/23317265155/mobile_in_content_one', [300, 75], 'div-gpt-ad-1758969680865-0').addService(googletag.pubads());
@@ -83,12 +96,6 @@ if (!empty($adtype)) :
     // Defines the Responsive Article Body Ad Slot above the fourth h2 heading for narrower screens
     googletag.defineSlot('/23317265155/mobile_Geotour_Article_Body4_banner', [[300, 100], [300, 250], [300, 75]], 'div-gpt-ad-1758987927787-0').addService(googletag.pubads());
 
-
-
-
-
-
-
     // --- Global settings for all ads on the page (defined only once) ---
     googletag.pubads().enableSingleRequest();
     googletag.pubads().collapseEmptyDivs();
@@ -96,8 +103,8 @@ if (!empty($adtype)) :
   });
 </script>
 <?php
-    // --- END: COMBINED SCRIPT ---
-    endif; // End listing-gam-01 conditional
+// --- END: COMBINED SCRIPT ---
+endif; // End listing-gam-01 conditional
     
     // --- 3. GetYourGuide Widget ---
     if (in_array('getyourguide', $adtype)) :

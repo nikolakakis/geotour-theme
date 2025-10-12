@@ -61,9 +61,9 @@ get_header();
                 <aside class="sidebar-content">
                     <div class="listing-sidebar">
                         <!-- /23317265155/listing-sidebar-01 -->
-                        <div id='div-gpt-ad-1758826394692-0' style='min-width: 300px; min-height: 250px;'>
+                        <div id='div-gpt-ad-1760280208244-0' style='min-width: 300px; min-height: 250px;'>
                         <script>
-                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1758826394692-0'); });
+                            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1760280208244-0'); });
                         </script>
                         </div>
                         <!-- Page Info Section -->
