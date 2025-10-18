@@ -11,6 +11,9 @@ get_header();
 <?php if (have_posts()) : ?>
     <?php while (have_posts()) : the_post(); ?>
         
+        <!-- Custom Map Section (100vw) - ACF controlled -->
+        <?php get_template_part('template-parts/pages/map-custom'); ?>
+        
         <div class="content-wrapper">
             <?php
             // Check if sidebar should be hidden
