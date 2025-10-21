@@ -62,27 +62,30 @@ function geotour_map_controls_popup_shortcode($atts) {
                    target="_blank" 
                    class="map-control-popup-button" 
                    title="<?php esc_attr_e('Open in Google Maps', 'geotour'); ?>">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </svg>
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/graphics/controls/map.svg" 
+                         alt="Google Maps" 
+                         width="38" 
+                         height="38">
                 </a>
                 
                 <!-- Route Planner -->
                 <a href="<?php echo esc_url($route_planner_base_url . $post_id); ?>" 
                    class="map-control-popup-button" 
                    title="<?php esc_attr_e('Open Route Planner', 'geotour'); ?>">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M22.43 10.59l-9.01-9.01c-.75-.75-2.07-.75-2.83 0l-9.01 9.01c-.75.75-.75 2.07 0 2.83l9.01 9.01c.75.75 2.07.75 2.83 0l9.01-9.01c.76-.75.76-2.07 0-2.83zm-10.42 8.09V14H8v-4h4V5.32l5.69 5.69-5.69 5.67z"/>
-                    </svg>
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/graphics/controls/route.svg" 
+                         alt="Route Planner" 
+                         width="38" 
+                         height="38">
                 </a>
                 
                 <!-- 3D Map -->
                 <a href="<?php echo esc_url(add_query_arg(array('lon' => $marker_lng, 'lat' => $marker_lat, 'heading' => '0.0', 'pitch' => '-45'), $cesium_3d_map_base_url)); ?>" 
                    class="map-control-popup-button" 
                    title="<?php esc_attr_e('Open 3D Map', 'geotour'); ?>">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 2.24L19.5 8 12 11.76 4.5 8 12 4.24zM4 16.17V9.83L11 14v6.34L4 16.17zm16 0L13 20.34V14l7-4.17v6.34z"/>
-                    </svg>
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/graphics/controls/3d.png" 
+                         alt="3D Map" 
+                         width="38" 
+                         height="38">
                 </a>
             <?php endif; ?>
 
@@ -91,10 +94,10 @@ function geotour_map_controls_popup_shortcode($atts) {
                 <a href="<?php echo esc_url($vtour_link); ?>" 
                    class="map-control-popup-button map-control-vr" 
                    title="<?php esc_attr_e('Open Virtual Tour', 'geotour'); ?>">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/graphics/map-pins/panoramas.svg" 
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/graphics/controls/360.png" 
                          alt="Virtual Tour" 
-                         width="18" 
-                         height="18">
+                         width="38" 
+                         height="38">
                 </a>
             <?php endif; ?>
 

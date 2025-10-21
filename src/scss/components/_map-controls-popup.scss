@@ -27,8 +27,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     background: white;
     border: 2px solid vars.$main-color;
     border-radius: vars.$border-radius;
@@ -61,10 +61,10 @@
         transition: transform 0.3s ease;
     }
     
-    // Image icons (for VR) - keep original color, filter on hover
+    // Image icons - larger size for detailed graphics
     img {
-        width: 18px;
-        height: 18px;
+        width: 38px;
+        height: 38px;
         transition: transform 0.3s ease, filter 0.3s ease;
     }
     
@@ -121,8 +121,8 @@
     }
     
     .map-control-popup-button {
-        width: 44px;
-        height: 44px;
+        width: 50px;
+        height: 50px;
         
         svg {
             width: 18px;
@@ -130,8 +130,8 @@
         }
         
         img {
-            width: 16px;
-            height: 16px;
+            width: 32px;
+            height: 32px;
         }
     }
 }
