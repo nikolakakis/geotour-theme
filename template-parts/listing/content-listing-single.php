@@ -12,7 +12,14 @@ $acf_hide_sidebar = get_field('hide_sidebar');
 $hide_sidebar = ($acf_hide_sidebar === true || $acf_hide_sidebar === 1 || $acf_hide_sidebar === '1');
 $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
 ?>
-
+<div class="side-rail-ad side-rail-left">
+    <!-- /23317265155/Geotour_desktop_SideRail_Left -->
+    <div id='div-gpt-ad-1761468110147-0' style='min-width: 120px; min-height: 600px;'>
+    <script>
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1761468110147-0'); });
+    </script>
+    </div>
+</div>
 <div class="content-wrapper" id="main-content">
     <div class="<?php echo esc_attr($layout_class); ?>">
         
@@ -274,5 +281,13 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
         </aside>
         <?php endif; ?>
         
+    </div>
+</div>
+<div class="side-rail-ad side-rail-right">
+    <!-- /23317265155/Geotour_desktop_SideRail_Right -->
+    <div id='div-gpt-ad-1761467879664-0' style='min-width: 120px; min-height: 600px;'>
+    <script>
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1761467879664-0'); });
+    </script>
     </div>
 </div>
