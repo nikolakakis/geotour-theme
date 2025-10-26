@@ -12,3 +12,49 @@
   text-align: center;
   width: 100%;
 }
+// ==========================================================================
+// STICKY SIDE RAIL AD STYLES (DESKTOP-ONLY)
+// ==========================================================================
+
+.side-rail-ad {
+  // 1. Hide on all small screens by default
+  display: none;
+  width: 160px;
+  height: 600px;
+  
+  /**
+   * 2. This is the new "Pro" breakpoint.
+   * MATH:
+   * 1500px (New content width)
+   * 160px (Left ad)
+   * 160px (Right ad)
+   * 40px (A 20px padding on the far edges)
+   * = 1860px TOTAL
+   *
+   * We set the breakpoint to 1861px. This looks MUCH better.
+   */
+  @media (min-width: 1861px) {
+    display: block;
+    // Note: 'position' is NOT set here by default.
+  }
+}
+
+/**
+ * 3. This class is ADDED BY JAVASCRIPT on scroll.
+ * This is what makes the ads "stick" only when needed.
+ */
+.side-rail-sticky {
+  position: fixed;
+  top: 100px; /* Adjust this: 100px from the top of the window */
+  z-index: 10; /* Ensures it floats over other content if needed */
+}
+
+.side-rail-left {
+  // 20px from the far left edge of the browser window.
+  left: 20px;
+}
+
+.side-rail-right {
+  // 20px from the far right edge of the browser window.
+  right: 20px;
+}

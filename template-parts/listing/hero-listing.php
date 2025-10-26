@@ -101,15 +101,7 @@ if ( wp_is_mobile() ) :
         }
     </style>
 
-    <section class="listing-hero-ad-section">
-        <div class="container">
-            <div id='div-gpt-ad-1758916182848-0' style='min-width: 300px; min-height: 250px; margin: 0 auto;'>
-                <script>
-                    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1758916182848-0'); });
-                </script>
-            </div>
-        </div>
-    </section>
+    
 
 <?php
 endif; // End the mobile check

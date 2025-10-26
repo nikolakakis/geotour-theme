@@ -68,8 +68,11 @@ if (in_array('listing-gam-01', $adtype)) :
     ?>
     // --- END: Key-Value Targeting Logic ---
     
-    // Defines the Sidebar Ad Slot (Visible on all devices)
-    googletag.defineSlot('/23317265155/listing-sidebar-01', [[336, 280], [300, 250]], 'div-gpt-ad-1760280794026-0').addService(googletag.pubads());
+    // Defines the Top Sidebar Ad Slot (Visible on all devices)
+    googletag.defineSlot('/23317265155/listing-sidebar-01', [[300, 250], [336, 280], [300, 600]], 'div-gpt-ad-1761463070811-0').addService(googletag.pubads());    
+
+    // Defines the Bottom Sidebar Ad Slot (Visible on all devices)
+    googletag.defineSlot('/23317265155/Geotour_Listing_Sidebar_Box_bottom', [[300, 100], [300, 250], [300, 600]], 'div-gpt-ad-1761461807399-0').addService(googletag.pubads());
 
     // Defines the Under-Hero Mobile Ad Slot
     googletag.defineSlot('/23317265155/Geotour_Listing_UnderHero_Mobile_Box', [[336, 280], [300, 250]], 'div-gpt-ad-1758916182848-0').addService(googletag.pubads());     
