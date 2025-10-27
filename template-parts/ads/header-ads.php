@@ -131,7 +131,7 @@ if (in_array('listing-gam-01', $adtype)) :
     
     <?php if ($h2_count >= 5) : ?>
     // Defines the Responsive Article Body Ad Slot above the fifth h2 heading for narrower screens (mobile Body3)
-    googletag.defineSlot('/23317265155/mobile_Geotour_Article_Body3_banner', [[300, 75], [300, 100], [300, 250]], 'div-gpt-ad-23318356914-0').addService(googletag.pubads());
+    googletag.defineSlot('/23317265155/mobile_Geotour_Article_Body3_banner', [[300, 75], [300, 100], [300, 250]], 'div-gpt-ad-1758987837272-0').addService(googletag.pubads());
     <?php endif; ?>
     
     <?php if ($h2_count >= 7) : ?>
