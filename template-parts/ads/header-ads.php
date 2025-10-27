@@ -29,10 +29,16 @@ if (!empty($adtype)) :
 <?php
     endif;
     
+    // --- Load GPT library once for all GAM ad types ---
+    if (in_array('728_header_ad', $adtype) || in_array('listing-gam-01', $adtype)) :
+?>
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+<?php
+    endif;
+    
     if (in_array('728_header_ad', $adtype)) :
         // --- OPTION B: GAM Homepage Header Ad ---
 ?>
-<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
 <script>
   window.googletag = window.googletag || {cmd: []};
   googletag.cmd.push(function() {
@@ -49,8 +55,14 @@ if (!empty($adtype)) :
     // --- START: COMBINED SCRIPT ---
 if (in_array('listing-gam-01', $adtype)) :
     // --- OPTION C: GAM Listing Page Ads (Sidebar and Mobile) ---
+    
+    // Count H2 tags in post content to determine which ad slots to define
+    global $post;
+    $h2_count = 0;
+    if (isset($post) && !empty($post->post_content)) {
+        $h2_count = substr_count(strtolower($post->post_content), '<h2');
+    }
 ?>
-<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
 <script>
   window.googletag = window.googletag || {cmd: []};
   googletag.cmd.push(function() {
@@ -67,36 +79,66 @@ if (in_array('listing-gam-01', $adtype)) :
     }
     ?>
     // --- END: Key-Value Targeting Logic ---
-
-    // SIDE RAIL ADS for desktop
-    // right side
-    googletag.defineSlot('/23317265155/Geotour_desktop_SideRail_Right', [[160, 600], [120, 600]], 'div-gpt-ad-1761467879664-0').addService(googletag.pubads());
-    // left side
-    googletag.defineSlot('/23317265155/Geotour_desktop_SideRail_Left', [[160, 600], [120, 600]], 'div-gpt-ad-1761468110147-0').addService(googletag.pubads());
-    
     // Defines the Top Sidebar Ad Slot (Visible on all devices)
     googletag.defineSlot('/23317265155/listing-sidebar-01', [[300, 250], [336, 280], [300, 600]], 'div-gpt-ad-1761463070811-0').addService(googletag.pubads());    
 
     // Defines the Bottom Sidebar Ad Slot (Visible on all devices)
     googletag.defineSlot('/23317265155/Geotour_Listing_Sidebar_Box_bottom', [[300, 100], [300, 250], [300, 600]], 'div-gpt-ad-1761461807399-0').addService(googletag.pubads());
 
-    // Defines the Under-Hero Mobile Ad Slot
-    googletag.defineSlot('/23317265155/Geotour_Listing_UnderHero_Mobile_Box', [[336, 280], [300, 250]], 'div-gpt-ad-1758916182848-0').addService(googletag.pubads());     
+    <?php if ( ! wp_is_mobile() ) : // DESKTOP ONLY ADS ?>
+    // SIDE RAIL ADS for desktop
+    // right side
+    googletag.defineSlot('/23317265155/Geotour_desktop_SideRail_Right', [[160, 600], [120, 600]], 'div-gpt-ad-1761467879664-0').addService(googletag.pubads());
+    // left side
+    googletag.defineSlot('/23317265155/Geotour_desktop_SideRail_Left', [[160, 600], [120, 600]], 'div-gpt-ad-1761468110147-0').addService(googletag.pubads());
+    
+    <?php if ($h2_count >= 1) : ?>
     // Defines the Responsive Article Body Ad Slot above the first h2 heading for wider screens      
     googletag.defineSlot('/23317265155/Geotour_Article_Body1_Responsive', [300, 250], 'div-gpt-ad-1759438267926-0').addService(googletag.pubads());
+    <?php endif; ?>
+    
+    <?php if ($h2_count >= 3) : ?>
+    // Defines the Responsive Article Body Ad Slot above the third h2 heading for wider screens            
+    googletag.defineSlot('/23317265155/Geotour_Article_Body2_banner', [[980, 120], [960, 90], [970, 90], [728, 90], [750, 200], [970, 250], [950, 90], [750, 100], [750, 300], [930, 180]], 'div-gpt-ad-1760784178571-0').addService(googletag.pubads());
+    <?php endif; ?>
+    
+    <?php if ($h2_count >= 5) : ?>
+    // Defines the Responsive Article Body Ad Slot above the fifth h2 heading for wider screens (Body3a)
+    googletag.defineSlot('/23317265155/Geotour_Article_Body3a_banner', [300, 250], 'div-gpt-ad-23318416161-0').addService(googletag.pubads());
+    // Defines the Responsive Article Body Ad Slot above the fifth h2 heading for wider screens (Body3b)
+    googletag.defineSlot('/23317265155/Geotour_Article_Body3b_banner', [300, 250], 'div-gpt-ad-23318416257-0').addService(googletag.pubads());
+    <?php endif; ?>
+    
+    <?php if ($h2_count >= 7) : ?>
+    // Defines the Responsive Article Body Ad Slot above the seventh h2 heading for wider screens
+    googletag.defineSlot('/23317265155/Geotour_Article_Body4_banner', [728, 90], 'div-gpt-ad-1758981672253-0').addService(googletag.pubads());
+    <?php endif; ?>
+    <?php endif; // End DESKTOP ONLY ?>
+
+    <?php if ( wp_is_mobile() ) : // MOBILE ONLY ADS ?>
+    // Defines the Under-Hero Mobile Ad Slot
+    googletag.defineSlot('/23317265155/Geotour_Listing_UnderHero_Mobile_Box', [[336, 280], [300, 250]], 'div-gpt-ad-1758916182848-0').addService(googletag.pubads());
+    
+    <?php if ($h2_count >= 1) : ?>
     // Defines the Responsive Article Body Ad Slot above the first h2 heading for narrower screens
     googletag.defineSlot('/23317265155/mobile_in_content_one', [300, 75], 'div-gpt-ad-1758969680865-0').addService(googletag.pubads());
-    // Defines the Responsive Article Body Ad Slot above the second h2 heading for wider screens            
-    googletag.defineSlot('/23317265155/Geotour_Article_Body2_banner', [[980, 120], [960, 90], [970, 90], [728, 90], [750, 200], [970, 250], [950, 90], [750, 100], [750, 300], [930, 180]], 'div-gpt-ad-1760784178571-0').addService(googletag.pubads());
+    <?php endif; ?>
     
-    
-    //mobile 2
+    <?php if ($h2_count >= 3) : ?>
+    // mobile 2 - above the third h2 heading
     googletag.defineSlot('/23317265155/mobile_Geotour_Article_Body2_banner', [[300, 75], [300, 100], [300, 250]], 'div-gpt-ad-1759346647953-0').addService(googletag.pubads());
+    <?php endif; ?>
     
-    // Defines the Responsive Article Body Ad Slot above the fourth h2 heading for wider screens
-    googletag.defineSlot('/23317265155/Geotour_Article_Body4_banner', [728, 90], 'div-gpt-ad-1758981672253-0').addService(googletag.pubads());
-    // Defines the Responsive Article Body Ad Slot above the fourth h2 heading for narrower screens
+    <?php if ($h2_count >= 5) : ?>
+    // Defines the Responsive Article Body Ad Slot above the fifth h2 heading for narrower screens (mobile Body3)
+    googletag.defineSlot('/23317265155/Geotour_Article_Body3_banner', [728, 90], 'div-gpt-ad-23319041497-0').addService(googletag.pubads());
+    <?php endif; ?>
+    
+    <?php if ($h2_count >= 7) : ?>
+    // Defines the Responsive Article Body Ad Slot above the seventh h2 heading for narrower screens
     googletag.defineSlot('/23317265155/mobile_Geotour_Article_Body4_banner', [[300, 100], [300, 250], [300, 75]], 'div-gpt-ad-1758987927787-0').addService(googletag.pubads());
+    <?php endif; ?>
+    <?php endif; // End MOBILE ONLY ?>
 
     // --- Global settings for all ads on the page (defined only once) ---
     googletag.pubads().enableSingleRequest();

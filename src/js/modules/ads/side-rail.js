@@ -9,37 +9,55 @@
 
 export function initializeSideRailAds() {
     // === CONFIGURATION ===
-    // Set how many pixels to scroll before the ads fade in.
-    const scrollTriggerPoint = 600; // Change this value to match your site
+    const adTopOffset = 100; // Must match the 'top: 100px' in your CSS
+    const adHeight = 600;    // The height of your ad unit
     // =====================
 
+    // Find all the key elements on the page
     const leftAd = document.querySelector('.side-rail-left');
     const rightAd = document.querySelector('.side-rail-right');
+    const content = document.getElementById('main-content');
+    const footer = document.querySelector('footer');
 
-    if (!leftAd || !rightAd) {
-        console.log('Side rail ads not found on this page');
-        return; // No ads to animate
+    // If any element is missing, do nothing.
+    if (!leftAd || !rightAd || !content || !footer) {
+        console.log('Side rail ads: Missing a required element (ad, content, or footer).');
+        return;
     }
 
     console.log('Side rail ads initialized');
 
     function handleScroll() {
+        // Get the scroll position
         const scrollY = window.pageYOffset || document.documentElement.scrollTop;
 
-        if (scrollY > scrollTriggerPoint) {
-            // We've scrolled past the trigger point, fade the ads IN
+        // 1. Calculate START point
+        //    We start when the ad's 'top: 100px' is aligned with the
+        //    top of the main content area.
+        const triggerPointStart = content.offsetTop - adTopOffset;
+
+        // 2. Calculate END point
+        //    We stop when the BOTTOM of the ad (scroll position + offset + height)
+        //    is about to hit the TOP of the footer.
+        const triggerPointEnd = footer.offsetTop - adHeight - adTopOffset - 20; // 20px buffer
+
+        // 3. The Logic
+        //    Check if we are *between* the start and end points.
+        if (scrollY > triggerPointStart && scrollY < triggerPointEnd) {
+            // We are inside the content, fade the ads IN
             leftAd.classList.add('is-visible');
             rightAd.classList.add('is-visible');
         } else {
-            // We're back at the top, fade the ads OUT
+            // We are above the content or overlapping the footer, fade OUT
             leftAd.classList.remove('is-visible');
             rightAd.classList.remove('is-visible');
         }
     }
 
-    // Listen for the 'scroll' event with passive option for better performance
+    // Listen for scroll and resize (in case window size changes)
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
     
-    // Run it once on load to set initial state
+    // Run once on load to set initial state
     handleScroll();
 }

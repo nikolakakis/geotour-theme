@@ -37,11 +37,17 @@
   transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 
   /**
-   * 4. This is the breakpoint (1861px+).
-   * On wide screens, the ad element now exists in the DOM,
-   * is fixed, but is still invisible (opacity: 0).
+   * 4. This is the new breakpoint.
+   * MATH:
+   * 1600px (Your content)
+   * 160px (Left ad)
+   * 160px (Right ad)
+   * 40px (A 20px "safety" padding on the far edges)
+   * = 1960px TOTAL
+   *
+   * We set the breakpoint to 1961px.
    */
-  @media (min-width: 1861px) {
+  @media (min-width: 1919px) {
     display: block;
     position: fixed;
     top: 100px;   /* Adjust: 100px from the top of the window */
@@ -60,10 +66,20 @@
   transform: scale(1);
 }
 
+/**
+ * 6. Positioning logic - centered in the gutter.
+ * This positions the ads in the center of the empty space
+ * that the main content leaves on wide screens.
+ * 
+ * FORMULA for centered in gutter:
+ * (50% - 800px) = Width of one gutter
+ * / 2 = Center of the gutter
+ * - 80px = Half of the ad width (160px / 2)
+ */
 .side-rail-left {
-  left: 20px;
+  left: calc((50% - 800px) / 2 - 80px);
 }
 
 .side-rail-right {
-  right: 20px;
+  right: calc((50% - 800px) / 2 - 80px);
 }
