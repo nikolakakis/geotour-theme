@@ -6,7 +6,7 @@
  */
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class('content-article archive-item listing-archive'); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class('content-article archive-item listing-archive'); ?> data-no-auto-ads="true">
     
     <?php if (has_post_thumbnail()) : ?>
         <div class="post-thumbnail">

@@ -136,7 +136,7 @@ $has_additional_info = $has_access_info || $has_contact_info || !empty($archaeol
 $section_class = $has_additional_info ? 'has-additional-info' : 'weather-only';
 ?>
  <?php if ($has_additional_info) : ?>
-    <section class="listing-details-full-section <?php echo esc_attr($section_class); ?>" id="details">
+    <section class="listing-details-full-section <?php echo esc_attr($section_class); ?>" id="details" data-no-auto-ads="true">
         <div class="listing-details-container">
             
            

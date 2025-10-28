@@ -10,7 +10,7 @@ $current_lang = function_exists('pll_current_language') ? pll_current_language()
 $is_english = ($current_lang === 'en');
 ?>
 
-<footer class="site-footer">
+<footer class="site-footer" data-no-auto-ads="true">
     <div class="footer-container">
         <div class="footer-top">
             <div class="footer-column">

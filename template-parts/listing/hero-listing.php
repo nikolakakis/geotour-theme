@@ -37,7 +37,7 @@ if ($regions && !is_wp_error($regions)) {
 }
 ?>
 
-<section class="hero-section listing-hero-section">
+<section class="hero-section listing-hero-section" data-no-auto-ads="true">
     
     <?php if ($hero_image) : ?>
         <img src="<?php echo esc_url($hero_image); ?>" 

@@ -83,7 +83,7 @@
 
 <div id="page" class="site">
     <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e('Skip to content', 'geotour'); ?></a>    <!-- New Main Header -->
-    <header class="main-header">
+    <header class="main-header" data-no-auto-ads="true">
         <div class="header-container">            <!-- Left Section: Social Icons -->
             
 
@@ -107,7 +107,7 @@
         </button>
     </div>
     <!-- Full Screen Menu -->
-    <nav id="fullscreen-menu" class="fullscreen-menu" aria-hidden="true">
+    <nav id="fullscreen-menu" class="fullscreen-menu" aria-hidden="true" data-no-auto-ads="true">
         <?php
         // Optional: Branding inside the menu (Example)
         if (get_bloginfo('name')) :

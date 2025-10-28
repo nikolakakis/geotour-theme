@@ -6,7 +6,7 @@
  */
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class('search-result search-result-post'); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class('search-result search-result-post'); ?> data-no-auto-ads="true">
     
     <?php if (has_post_thumbnail()) : ?>
         <div class="search-result-thumbnail">

@@ -57,7 +57,7 @@ $menu_items = [
     ],
 ];
 ?>
-<nav class="listing-inpage-menu" id="listing-inpage-menu">
+<nav class="listing-inpage-menu" id="listing-inpage-menu" data-no-auto-ads="true">
     <ul>
         <?php foreach ($menu_items as $item) : if (!$item['show']) continue; ?>
             <li>

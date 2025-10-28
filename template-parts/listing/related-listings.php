@@ -38,7 +38,7 @@ $related_query = new WP_Query($related_args);
 
 if ($related_query->have_posts()) :
 ?>
-<section class="related-listings-section">
+<section class="related-listings-section" data-no-auto-ads="true"
     <h3><?php _e('Related Listings', 'geotour'); ?></h3>
     <div class="related-listings-grid">
         <?php while ($related_query->have_posts()) : $related_query->the_post(); ?>

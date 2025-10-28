@@ -52,7 +52,7 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                 if (empty($viator_keywords)) $viator_keywords = "Crete";
                 // Only display if we have coordinates and keywords
                 ?>
-                <section class="viator-activities-full-section" id="viator-activities-container">
+                <section class="viator-activities-full-section" id="viator-activities-container" data-no-auto-ads="true">
                     <?php echo do_shortcode('[viator_activities count="24" lat="' . $viator_lat . '" lng="' . $viator_lng . '" keyword="' . esc_attr($viator_keywords) . '" min_rating="3"]'); ?>
                 </section>                
                     
@@ -60,7 +60,7 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                 <?php
                 $vtour_link = get_field('vtour_link');
                 if ($vtour_link) : ?>
-                    <section class="virtual-tour-full-section">
+                    <section class="virtual-tour-full-section" data-no-auto-ads="true">
                         <?php if (!wp_is_mobile()) : ?>
                         <!-- Desktop Virtual Tour -->
                         <div id="geotour-overlay" class="desktop-vtour">
@@ -94,11 +94,11 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                 <?php endif; ?>
                 
                 <!-- Nearest listings grid shortcode (100vw) -->
-                <section class="nearest-listings-full-section" id="nearby">
+                <section class="nearest-listings-full-section" id="nearby" data-no-auto-ads="true">
                     <?php echo do_shortcode('[listings-grid type="nearest" limit="12"]'); ?>
                 </section>
                 
-                <footer class="entry-footer">
+                <footer class="entry-footer" data-no-auto-ads="true">
                     <?php
                     // Display listing tags
                     $tags = get_the_terms(get_the_ID(), 'listing-tag');
@@ -142,7 +142,7 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
 
             <div class="listing-sidebar">                
                   <!-- Festive Dates -->
-                <div id="festivedates"></div>
+                <div id="festivedates" data-no-auto-ads="true"></div>
                 
                 <!-- Related News Posts with fallback -->
                 <?php
@@ -269,10 +269,10 @@ $layout_class = $hide_sidebar ? 'content-no-sidebar' : 'content-with-sidebar';
                 <?php echo do_shortcode('[related-photos]'); ?>
                 
                 <!-- Search Culture Title -->
-                <div id="searchculturetitle"></div>
+                <div id="searchculturetitle" data-no-auto-ads="true"></div>
                 
                 <!-- Search Culture -->
-                <div id="searchculture"></div>
+                <div id="searchculture" data-no-auto-ads="true"></div>
                 
                 <!-- Geotour Ferry Hopper Widget -->
                 <?php echo do_shortcode('[geotour_ferryhopper_widget]'); ?>
