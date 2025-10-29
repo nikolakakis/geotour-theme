@@ -93,7 +93,7 @@ if (!empty($adtype)) :
 
         <?php else : // MOBILE ONLY ADS ?>
 
-            googletag.defineSlot('/23317265155/Geotour_Listing_UnderHero_Mobile_Box', [[336, 280], [300, 250]], 'div-gpt-ad-1758916182848-0').addService(googletag.pubads());
+            googletag.defineSlot('/23317265155/Geotour_Listing_UnderHero_Mobile_Box', [[336, 280], [320, 50], [320, 100], [300, 250]], 'div-gpt-ad-1761686117928-0').addService(googletag.pubads());
             
             <?php // Content ads based on H2 count
             if ($h2_count >= 1) : ?>
