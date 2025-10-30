@@ -37,7 +37,7 @@ if (!empty($adtype)) :
 
     // --- 3. CONSOLIDATED GOOGLE AD MANAGER SCRIPT ---
     // Check if ANY GAM ad type is selected
-    if (in_array('728_header_ad', $adtype) || in_array('listing-gam-01', $adtype)) :
+    if (in_array('728_header_ad', $adtype) || in_array('listing-gam-01', $adtype) || in_array('listing-gam-anchor-bottom', $adtype)) :
 
         // Count H2 tags in post content (only if needed for the listing-gam-01 type)
         global $post;
@@ -114,6 +114,16 @@ if (!empty($adtype)) :
 
         <?php endif; // End mobile/desktop check ?>
     <?php endif; // End listing-gam-01 check ?>
+
+    <?php // Anchor Ad (Bottom Sticky)
+    if (in_array('listing-gam-anchor-bottom', $adtype)) : ?>
+        <?php if ( ! wp_is_mobile() ) : // Desktop Anchor Ad ?>
+        googletag.defineSlot('/23317265155/Geotour_tour_Anchor_Ad_desktop', [[728, 90], [970, 90]], 'div-gpt-ad-1761765099446-0').addService(googletag.pubads());
+        <?php else : // Mobile Anchor Ad ?>
+        googletag.defineSlot('/23317265155/Geotour_tour_Anchor_Ad_mobile', [[320, 100], [320, 50]], 'div-gpt-ad-1761765177186-0').addService(googletag.pubads());
+        <?php endif; ?>
+    <?php endif; ?>
+
     /* --- END: Slot Definitions --- */
 
 

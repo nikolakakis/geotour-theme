@@ -15,6 +15,11 @@ $is_map_page = is_page_template('page-listing.php');
     <?php get_template_part('template-parts/footer/modern'); ?>
 <?php endif; ?>
 
+<?php
+// Include anchor ad if enabled
+get_template_part('template-parts/ads/anchor-ad');
+?>
+
 </div><!-- #page -->
 
 <?php wp_footer(); ?>

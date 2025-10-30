@@ -83,3 +83,70 @@
 .side-rail-right {
   right: calc((50% - 800px) / 2 - 80px);
 }
+
+// ==========================================================================
+// ANCHOR AD STYLES (BOTTOM STICKY AD)
+// ==========================================================================
+
+/* Custom CSS for the sliding transition */
+#anchor-ad-wrapper {
+  transition: transform 500ms ease-in-out;
+  
+  /* This class is added by JavaScript */
+  &.is-closed {
+    /* 100% of its own height. This will slide it completely off-screen. */
+    transform: translateY(100%);
+  }
+
+  &.is-unfilled {
+    display: none;
+  }
+}
+
+#toggle-btn {
+  /* Add transitions for size, position, and arrow rotation */
+  transition: top 300ms ease-in-out, 
+              height 300ms ease-in-out, 
+              width 300ms ease-in-out, 
+              padding 300ms ease-in-out;
+}
+
+#toggle-arrow {
+  transition: transform 300ms ease-in-out, 
+              height 300ms ease-in-out, 
+              width 300ms ease-in-out;
+  
+  /* This class is also added by JavaScript */
+  &.is-closed {
+    transform: rotate(180deg);
+  }
+}
+
+/* This new rule shrinks the button when the wrapper is closed */
+#anchor-ad-wrapper.is-closed #toggle-btn {
+  height: 1.25rem; /* h-5 (20px) */
+  width: 3rem;     /* w-12 (48px) */
+  top: -1.25rem;   /* -top-5 (positions it at the bottom, 20px high) */
+  padding: 0.125rem; /* p-0.5 */
+}
+
+/* This new rule shrinks the arrow icon inside the smaller button */
+#anchor-ad-wrapper.is-closed #toggle-arrow {
+  height: 1rem; /* h-4 (16px) */
+  width: 1rem;  /* w-4 (16px) */
+}
+
+/* Utility class to disable transitions during initial page load */
+.no-transition {
+  transition: none !important;
+}
+
+/* Helper text styles */
+.ad-slot-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+}

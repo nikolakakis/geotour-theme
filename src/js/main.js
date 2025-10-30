@@ -13,6 +13,7 @@ import { HeroParallax } from './modules/hero/parallax.js';
 import { initializeListingInpageMenu } from './modules/listing/inpage-menu.js';
 import { initializeCretanHistoryBreadcrumbs } from './modules/cretan-history/breadcrumb.js';
 import { initializeSideRailAds } from './modules/ads/side-rail.js';
+import { initializeAnchorAd } from './modules/ads/anchor-ad.js';
 
 // Import accessibility improvements
 import './accessibility.js';
@@ -50,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeListingInpageMenu(); // Only runs if menu exists
     initializeCretanHistoryBreadcrumbs(); // Initialize Cretan History breadcrumbs
     initializeSideRailAds(); // Initialize side rail ads scroll behavior
+    initializeAnchorAd(); // Initialize anchor ad toggle functionality
     
     console.log('Modules initialized.');
 });
