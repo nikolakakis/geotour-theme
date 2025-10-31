@@ -25,7 +25,7 @@ if (!in_array('listing-gam-anchor-bottom', $adtype)) {
     <div style="position: relative; background-color: white; border-radius: 0.5rem 0.5rem 0 0; box-shadow: 0 -4px 10px -5px rgba(0,0,0,0.1);">
         
         <!-- Toggle Button -->
-        <button id="toggle-btn" title="Toggle Ad" style="position: absolute; top: -2rem; left: 50%; transform: translateX(-50%); height: 2rem; width: 3rem; padding: 0.25rem; display: flex; align-items: center; justify-content: center; background-color: white; border-radius: 0.5rem 0.5rem 0 0; box-shadow: 0 -2px 5px -2px rgba(0,0,0,0.1); border: none; cursor: pointer;">
+        <button id="toggle-btn" title="Toggle Ad" style="position: absolute; top: -2rem; left: 50%; transform: translateX(-50%); height: 2rem; width: 3rem; padding: 0rem; display: flex; align-items: center; justify-content: center; background-color: white; border-radius: 0.5rem 0.5rem 0 0; box-shadow: 0 -2px 5px -2px rgba(0,0,0,0.1); border: none; cursor: pointer;">
             <svg id="toggle-arrow" xmlns="http://www.w3.org/2000/svg" style="height: 1.5rem; width: 1.5rem; color: #4b5563;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
