@@ -89,6 +89,113 @@ function geotour_listings_list_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'geotour_listings_list_enqueue_assets' );
 
 /**
+ * Get listing categories that have map icons
+ * 
+ * @return array Array of category term objects that have category_map_icon set
+ */
+function geotour_get_categories_with_icons() {
+    $categories = get_terms( array(
+        'taxonomy' => 'listing-category',
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC'
+    ) );
+
+    if ( is_wp_error( $categories ) || empty( $categories ) ) {
+        return array();
+    }
+
+    $categories_with_icons = array();
+
+    foreach ( $categories as $category ) {
+        // Check if ACF field exists and has a value
+        $icon = get_field( 'category_map_icon', 'listing-category_' . $category->term_id );
+        
+        if ( ! empty( $icon ) && is_array( $icon ) && isset( $icon['url'] ) ) {
+            $category->icon_url = $icon['url'];
+            $category->icon_alt = isset( $icon['alt'] ) ? $icon['alt'] : $category->name;
+            $categories_with_icons[] = $category;
+        }
+    }
+
+    return $categories_with_icons;
+}
+
+/**
+ * Get hierarchical listing regions for dropdown
+ * 
+ * @return array Hierarchical array of region terms
+ */
+function geotour_get_hierarchical_regions() {
+    $regions = get_terms( array(
+        'taxonomy' => 'listing-region',
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC',
+        'parent' => 0 // Get top-level terms first
+    ) );
+
+    if ( is_wp_error( $regions ) || empty( $regions ) ) {
+        return array();
+    }
+
+    $hierarchical = array();
+
+    foreach ( $regions as $region ) {
+        $hierarchical[] = array(
+            'term' => $region,
+            'level' => 0
+        );
+        
+        // Get children recursively
+        $children = geotour_get_region_children( $region->term_id, 1 );
+        if ( ! empty( $children ) ) {
+            $hierarchical = array_merge( $hierarchical, $children );
+        }
+    }
+
+    return $hierarchical;
+}
+
+/**
+ * Get children of a region term recursively
+ * 
+ * @param int $parent_id Parent term ID
+ * @param int $level Depth level for indentation
+ * @return array Array of child terms with level
+ */
+function geotour_get_region_children( $parent_id, $level ) {
+    $children = get_terms( array(
+        'taxonomy' => 'listing-region',
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC',
+        'parent' => $parent_id
+    ) );
+
+    if ( is_wp_error( $children ) || empty( $children ) ) {
+        return array();
+    }
+
+    $result = array();
+
+    foreach ( $children as $child ) {
+        $result[] = array(
+            'term' => $child,
+            'level' => $level
+        );
+
+        // Get grandchildren
+        $grandchildren = geotour_get_region_children( $child->term_id, $level + 1 );
+        if ( ! empty( $grandchildren ) ) {
+            $result = array_merge( $result, $grandchildren );
+        }
+    }
+
+    return $result;
+}
+
+/**
  * Calculate which page a specific listing is on
  * 
  * @param int $post_id The post ID to find
@@ -202,6 +309,9 @@ function geotour_listings_list_shortcode( $atts ) {
         $atts['posts_per_page'] = absint( $_GET['listing_per_page'] );
     }
 
+    // Get text search parameter
+    $search_query = isset( $_GET['listing_search'] ) ? sanitize_text_field( $_GET['listing_search'] ) : '';
+
     // Get highlight post ID from URL (for scroll-to functionality)
     $highlight_id = isset( $_GET['highlight_post'] ) ? absint( $_GET['highlight_post'] ) : 0;
 
@@ -224,6 +334,11 @@ function geotour_listings_list_shortcode( $atts ) {
         'order' => sanitize_text_field( $atts['order'] ),
         'post_status' => 'publish',
     );
+
+    // Add text search if provided
+    if ( ! empty( $search_query ) ) {
+        $query_args['s'] = $search_query;
+    }
 
     // Add tax query if filters are set
     $tax_query = array();
@@ -266,9 +381,14 @@ function geotour_listings_list_shortcode( $atts ) {
     // Start output buffering
     ob_start();
 
-    if ( $listings_query->have_posts() ) {
+    ?>
+    <div class="listings-list-container">
+        <?php 
+        // Render filter/sort header
+        geotour_render_listings_filter_header( $atts, $search_query, $listings_query->found_posts ); 
         ?>
-        <div class="listings-list-container">
+
+        <?php if ( $listings_query->have_posts() ) : ?>
             <div class="listings-list" data-highlight-id="<?php echo esc_attr( $highlight_id ); ?>">
                 <?php
                 while ( $listings_query->have_posts() ) {
@@ -282,15 +402,11 @@ function geotour_listings_list_shortcode( $atts ) {
             // Render pagination
             geotour_render_listings_pagination( $listings_query, $paged, $atts );
             ?>
-        </div>
-        <?php
-    } else {
-        ?>
-        <div class="listings-list-container">
+        <?php else : ?>
             <p class="listings-list-no-results"><?php esc_html_e( 'No listings found.', 'geotour' ); ?></p>
-        </div>
-        <?php
-    }
+        <?php endif; ?>
+    </div>
+    <?php
 
     wp_reset_postdata();
 
@@ -420,6 +536,171 @@ function geotour_render_listing_item( $post_id, $highlight_id = 0 ) {
         </div>
 
     </article>
+    <?php
+}
+
+/**
+ * Render the filter and sort header
+ * 
+ * @param array $atts Shortcode attributes
+ * @param string $search_query Current search query
+ * @param int $found_posts Number of found posts
+ */
+function geotour_render_listings_filter_header( $atts, $search_query, $found_posts ) {
+    
+    // Get categories with icons
+    $categories = geotour_get_categories_with_icons();
+    
+    // Get hierarchical regions
+    $regions = geotour_get_hierarchical_regions();
+    
+    // Get current filters from URL
+    $current_categories = isset( $_GET['listing_category'] ) ? explode( ',', sanitize_text_field( $_GET['listing_category'] ) ) : array();
+    $current_region = isset( $_GET['listing_region'] ) ? sanitize_text_field( $_GET['listing_region'] ) : '';
+    $current_orderby = isset( $_GET['listing_orderby'] ) ? sanitize_text_field( $_GET['listing_orderby'] ) : 'date';
+    $current_order = isset( $_GET['listing_order'] ) ? sanitize_text_field( $_GET['listing_order'] ) : 'DESC';
+    
+    ?>
+    <div class="listings-filter-header">
+        <div class="listings-filter-header__inner">
+            
+            <!-- Results count -->
+            <div class="listings-filter-header__count">
+                <span class="count-number"><?php echo esc_html( number_format_i18n( $found_posts ) ); ?></span>
+                <span class="count-label">
+                    <?php 
+                    echo esc_html( _n( 'listing found', 'listings found', $found_posts, 'geotour' ) ); 
+                    ?>
+                </span>
+            </div>
+
+            <!-- Search box -->
+            <div class="listings-filter-search">
+                <label for="listing-search-input" class="screen-reader-text"><?php esc_html_e( 'Search listings', 'geotour' ); ?></label>
+                <input 
+                    type="text" 
+                    id="listing-search-input" 
+                    class="listings-filter-search__input" 
+                    placeholder="<?php esc_attr_e( 'Search listings...', 'geotour' ); ?>"
+                    value="<?php echo esc_attr( $search_query ); ?>"
+                    name="listing_search"
+                >
+                <button type="button" class="listings-filter-search__button" aria-label="<?php esc_attr_e( 'Search', 'geotour' ); ?>">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Sort options -->
+            <div class="listings-filter-sort">
+                <label for="listing-sort-select" class="listings-filter-sort__label">
+                    <?php esc_html_e( 'Sort by:', 'geotour' ); ?>
+                </label>
+                <select id="listing-sort-select" class="listings-filter-sort__select" name="listing_orderby">
+                    <option value="date" <?php selected( $current_orderby === 'date' && $current_order === 'DESC' ); ?>>
+                        <?php esc_html_e( 'Newest First', 'geotour' ); ?>
+                    </option>
+                    <option value="date-asc" <?php selected( $current_orderby === 'date' && $current_order === 'ASC' ); ?>>
+                        <?php esc_html_e( 'Oldest First', 'geotour' ); ?>
+                    </option>
+                    <option value="title" <?php selected( $current_orderby === 'title' && $current_order === 'ASC' ); ?>>
+                        <?php esc_html_e( 'Name (A-Z)', 'geotour' ); ?>
+                    </option>
+                    <option value="title-desc" <?php selected( $current_orderby === 'title' && $current_order === 'DESC' ); ?>>
+                        <?php esc_html_e( 'Name (Z-A)', 'geotour' ); ?>
+                    </option>
+                    <option value="modified" <?php selected( $current_orderby === 'modified' && $current_order === 'DESC' ); ?>>
+                        <?php esc_html_e( 'Recently Updated', 'geotour' ); ?>
+                    </option>
+                </select>
+            </div>
+
+            <!-- Filter toggle button (mobile) -->
+            <button type="button" class="listings-filter-toggle" aria-expanded="false" aria-controls="listings-filters-panel">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 5H18M5 10H15M8 15H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span><?php esc_html_e( 'Filters', 'geotour' ); ?></span>
+            </button>
+        </div>
+
+        <!-- Filters panel -->
+        <div id="listings-filters-panel" class="listings-filters-panel" hidden>
+            
+            <!-- Category filters (icons) -->
+            <?php if ( ! empty( $categories ) ) : ?>
+                <div class="listings-filter-group">
+                    <h3 class="listings-filter-group__title"><?php esc_html_e( 'Categories', 'geotour' ); ?></h3>
+                    <div class="listings-filter-categories">
+                        <?php foreach ( $categories as $category ) : 
+                            $is_active = in_array( $category->slug, $current_categories );
+                            $active_class = $is_active ? ' is-active' : '';
+                        ?>
+                            <button 
+                                type="button" 
+                                class="listings-filter-category<?php echo esc_attr( $active_class ); ?>" 
+                                data-slug="<?php echo esc_attr( $category->slug ); ?>"
+                                data-name="<?php echo esc_attr( $category->name ); ?>"
+                                aria-pressed="<?php echo $is_active ? 'true' : 'false'; ?>"
+                                title="<?php echo esc_attr( $category->name ); ?>"
+                            >
+                                <img 
+                                    src="<?php echo esc_url( $category->icon_url ); ?>" 
+                                    alt="<?php echo esc_attr( $category->icon_alt ); ?>"
+                                    class="listings-filter-category__icon"
+                                >
+                                <span class="listings-filter-category__name"><?php echo esc_html( $category->name ); ?></span>
+                                <span class="listings-filter-category__checkmark" aria-hidden="true">✓</span>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <!-- Region filter (dropdown) -->
+            <?php if ( ! empty( $regions ) ) : ?>
+                <div class="listings-filter-group">
+                    <label for="listing-region-select" class="listings-filter-group__title">
+                        <?php esc_html_e( 'Region', 'geotour' ); ?>
+                    </label>
+                    <select id="listing-region-select" class="listings-filter-region__select" name="listing_region">
+                        <option value=""><?php esc_html_e( 'All Regions', 'geotour' ); ?></option>
+                        <?php foreach ( $regions as $region_data ) : 
+                            $region = $region_data['term'];
+                            $level = $region_data['level'];
+                            $indent = str_repeat( '— ', $level );
+                        ?>
+                            <option 
+                                value="<?php echo esc_attr( $region->slug ); ?>"
+                                <?php selected( $current_region, $region->slug ); ?>
+                                data-level="<?php echo esc_attr( $level ); ?>"
+                            >
+                                <?php echo esc_html( $indent . $region->name ); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            <?php endif; ?>
+
+            <!-- Active filters display -->
+            <div class="listings-active-filters" hidden>
+                <span class="listings-active-filters__label"><?php esc_html_e( 'Active filters:', 'geotour' ); ?></span>
+                <div class="listings-active-filters__tags"></div>
+            </div>
+
+            <!-- Apply/Clear buttons -->
+            <div class="listings-filter-actions">
+                <button type="button" class="listings-filter-apply">
+                    <?php esc_html_e( 'Apply Filters', 'geotour' ); ?>
+                </button>
+                <button type="button" class="listings-filter-clear">
+                    <?php esc_html_e( 'Clear All', 'geotour' ); ?>
+                </button>
+            </div>
+        </div>
+    </div>
     <?php
 }
 
