@@ -51,6 +51,7 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       input: {
         main: './src/js/main.js', // Your main JavaScript file
+        'listings-list': './src/js/listings-list.js', // Listings list shortcode
         // You can add more entry points here if needed, e.g., for an admin script.
         // admin: './src/js/admin.js',
       },

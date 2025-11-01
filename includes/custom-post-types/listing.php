@@ -68,6 +68,23 @@ if ( ! function_exists( 'bt_create_listing' ) ) {
             ) 
         );
 
+        register_taxonomy( 
+            'listing-content-type', 
+            'listing', 
+            array( 
+                'hierarchical' => true, 
+                'label' => __( 'Content Types', 'geotour' ),
+                'singular_name' => __( 'Content Type', 'geotour' ),
+                'show_admin_column' => true,
+                'rewrite' => array( 'slug' => 'listing-content-type' ),
+                'show_in_rest' => true,
+                'public' => true,
+                'show_ui' => true,
+                'show_in_nav_menus' => true,
+                'show_tagcloud' => false
+            ) 
+        );
+
         // Note: The RWMB_Core related class extension is specific to MetaBox plugin.
         // If MetaBox is not a planned part of this theme, this part might be irrelevant
         // or need to be adapted if using a different custom fields solution like ACF.
