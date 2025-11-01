@@ -469,7 +469,8 @@ function geotour_render_listing_item( $post_id, $highlight_id = 0 ) {
                     if ( has_post_thumbnail( $post_id ) ) {
                         echo get_the_post_thumbnail( $post_id, 'medium', array( 'class' => 'listing-item__thumbnail' ) );
                     } else {
-                        echo '<div class="listing-item__thumbnail listing-item__thumbnail--placeholder"></div>';
+                        $fallback_image_url = home_url( '/wp-content/uploads/2024/04/no-image-bello.jpg' );
+                        echo '<img src="' . esc_url( $fallback_image_url ) . '" alt="' . esc_attr( get_the_title( $post_id ) ) . '" class="listing-item__thumbnail listing-item__thumbnail--fallback" />';
                     }
                     ?>
                 </a>
@@ -478,7 +479,8 @@ function geotour_render_listing_item( $post_id, $highlight_id = 0 ) {
                 if ( has_post_thumbnail( $post_id ) ) {
                     echo get_the_post_thumbnail( $post_id, 'medium', array( 'class' => 'listing-item__thumbnail' ) );
                 } else {
-                    echo '<div class="listing-item__thumbnail listing-item__thumbnail--placeholder"></div>';
+                    $fallback_image_url = home_url( '/wp-content/uploads/2024/04/no-image-bello.jpg' );
+                    echo '<img src="' . esc_url( $fallback_image_url ) . '" alt="' . esc_attr( get_the_title( $post_id ) ) . '" class="listing-item__thumbnail listing-item__thumbnail--fallback" />';
                 }
                 ?>
             <?php endif; ?>

@@ -152,7 +152,12 @@ $color-highlight-flash: #fde047;
         transform: scale(1.08);
     }
 
-    // Placeholder for listings without images
+    // Fallback image styling
+    &--fallback {
+        opacity: 0.95;
+    }
+
+    // Placeholder for listings without images (legacy - keeping for backward compatibility)
     &--placeholder {
         background: linear-gradient(135deg, $color-bg-light 0%, color.adjust($color-bg-light, $lightness: -5%) 100%);
         display: flex;
