@@ -222,6 +222,11 @@ class ListingsFilterManager {
 
         this.filtersPanel = document.getElementById('listings-filters-panel');
         
+        // Start with filters collapsed (hidden) by default
+        if (this.filtersPanel) {
+            this.filtersPanel.setAttribute('hidden', '');
+        }
+        
         // Setup all controls
         this.setupFilterToggle();
         this.setupCategoryFilters();

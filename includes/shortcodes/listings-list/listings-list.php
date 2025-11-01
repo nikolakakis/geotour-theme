@@ -217,30 +217,39 @@ function geotour_calculate_listing_page( $post_id, $atts ) {
     // Add tax query if filters are set
     $tax_query = array();
 
+    // Categories: OR relation (match ANY category)
     if ( ! empty( $atts['category'] ) ) {
+        $categories = explode( ',', sanitize_text_field( $atts['category'] ) );
         $tax_query[] = array(
             'taxonomy' => 'listing-category',
-            'field' => 'slug',
-            'terms' => explode( ',', sanitize_text_field( $atts['category'] ) ),
+            'field'    => 'slug',
+            'terms'    => $categories,
+            'operator' => 'IN', // OR - listing can be in any of these categories
         );
     }
 
+    // Region: AND relation with categories
     if ( ! empty( $atts['region'] ) ) {
         $tax_query[] = array(
             'taxonomy' => 'listing-region',
-            'field' => 'slug',
-            'terms' => explode( ',', sanitize_text_field( $atts['region'] ) ),
+            'field'    => 'slug',
+            'terms'    => explode( ',', sanitize_text_field( $atts['region'] ) ),
+            'operator' => 'IN',
         );
     }
 
+    // Content Type: AND relation with other filters
     if ( ! empty( $atts['content_type'] ) ) {
         $tax_query[] = array(
             'taxonomy' => 'listing-content-type',
-            'field' => 'slug',
-            'terms' => explode( ',', sanitize_text_field( $atts['content_type'] ) ),
+            'field'    => 'slug',
+            'terms'    => explode( ',', sanitize_text_field( $atts['content_type'] ) ),
+            'operator' => 'IN',
         );
     }
 
+    // Set relation to AND for multiple taxonomy conditions
+    // This means: (Category1 OR Category2 OR Category3) AND (Region) AND (ContentType)
     if ( count( $tax_query ) > 1 ) {
         $tax_query['relation'] = 'AND';
     }
@@ -343,30 +352,39 @@ function geotour_listings_list_shortcode( $atts ) {
     // Add tax query if filters are set
     $tax_query = array();
 
+    // Categories: OR relation (match ANY category)
     if ( ! empty( $atts['category'] ) ) {
+        $categories = explode( ',', sanitize_text_field( $atts['category'] ) );
         $tax_query[] = array(
             'taxonomy' => 'listing-category',
-            'field' => 'slug',
-            'terms' => explode( ',', sanitize_text_field( $atts['category'] ) ),
+            'field'    => 'slug',
+            'terms'    => $categories,
+            'operator' => 'IN', // OR - listing can be in any of these categories
         );
     }
 
+    // Region: AND relation with categories
     if ( ! empty( $atts['region'] ) ) {
         $tax_query[] = array(
             'taxonomy' => 'listing-region',
-            'field' => 'slug',
-            'terms' => explode( ',', sanitize_text_field( $atts['region'] ) ),
+            'field'    => 'slug',
+            'terms'    => explode( ',', sanitize_text_field( $atts['region'] ) ),
+            'operator' => 'IN',
         );
     }
 
+    // Content Type: AND relation with other filters
     if ( ! empty( $atts['content_type'] ) ) {
         $tax_query[] = array(
             'taxonomy' => 'listing-content-type',
-            'field' => 'slug',
-            'terms' => explode( ',', sanitize_text_field( $atts['content_type'] ) ),
+            'field'    => 'slug',
+            'terms'    => explode( ',', sanitize_text_field( $atts['content_type'] ) ),
+            'operator' => 'IN',
         );
     }
 
+    // Set relation to AND for multiple taxonomy conditions
+    // This means: (Category1 OR Category2 OR Category3) AND (Region) AND (ContentType)
     if ( count( $tax_query ) > 1 ) {
         $tax_query['relation'] = 'AND';
     }
@@ -617,12 +635,13 @@ function geotour_render_listings_filter_header( $atts, $search_query, $found_pos
                 </select>
             </div>
 
-            <!-- Filter toggle button (mobile) -->
+            <!-- Filter toggle button -->
             <button type="button" class="listings-filter-toggle" aria-expanded="false" aria-controls="listings-filters-panel">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2 5H18M5 10H15M8 15H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span><?php esc_html_e( 'Filters', 'geotour' ); ?></span>
+                <span><?php esc_html_e( 'Filter Options', 'geotour' ); ?></span>
+                <span class="filter-toggle-icon">▼</span>
             </button>
         </div>
 

@@ -652,11 +652,12 @@ $color-highlight-flash: #fde047;
 }
 
 /**
- * Filter toggle button (mobile)
+ * Filter toggle button
  */
 .listings-filter-toggle {
-    display: none;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem 1.25rem;
     background: $color-primary;
@@ -666,11 +667,7 @@ $color-highlight-flash: #fde047;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.25s ease;
-
-    @media (max-width: $breakpoint-tablet) {
-        display: flex;
-        justify-content: center;
-    }
+    width: auto;
 
     &:hover {
         background: color.adjust($color-primary, $lightness: -10%);
@@ -680,6 +677,16 @@ $color-highlight-flash: #fde047;
 
     &[aria-expanded="true"] {
         background: color.adjust($color-primary, $lightness: -10%);
+    }
+
+    // Icon rotation when expanded
+    &[aria-expanded="true"] .filter-toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    .filter-toggle-icon {
+        transition: transform 0.3s ease;
+        font-size: 0.875rem;
     }
 }
 
@@ -691,6 +698,7 @@ $color-highlight-flash: #fde047;
     padding-top: 1.5rem;
     border-top: 2px solid $color-border;
 
+    // Hidden by default (collapsed state)
     &[hidden] {
         display: none;
     }
