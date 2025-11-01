@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Redirect listing taxonomy archives to the big map with filters
+ * Redirect listing taxonomy archives to the listings list page with filters
  */
 function geotour_redirect_taxonomy_to_listing_map() {
     if (is_tax(['listing-category', 'listing-region', 'listing-tag'])) {
@@ -20,13 +20,13 @@ function geotour_redirect_taxonomy_to_listing_map() {
             
             // Map taxonomy name to URL parameter
             $param_map = [
-                'listing-category' => 'listing-category',
-                'listing-region' => 'listing-region', 
-                'listing-tag' => 'listing-tag'
+                'listing-category' => 'listing_category',
+                'listing-region' => 'listing_region', 
+                'listing-tag' => 'listing_tag'
             ];
             
             if (isset($param_map[$taxonomy])) {
-                $listing_url = home_url('/listing/?' . $param_map[$taxonomy] . '=' . $slug);
+                $listing_url = home_url('/listings-list/?' . $param_map[$taxonomy] . '=' . $slug);
                 wp_redirect($listing_url, 301);
                 exit;
             }
@@ -36,20 +36,47 @@ function geotour_redirect_taxonomy_to_listing_map() {
 add_action('template_redirect', 'geotour_redirect_taxonomy_to_listing_map');
 
 /**
- * Generate listing map filter URL for taxonomy terms
+ * Redirect simple listings to the listings-list page with highlighting
+ */
+function geotour_redirect_simple_listings() {
+    // Only run on single listing pages
+    if (!is_singular('listing')) {
+        return;
+    }
+    
+    $post_id = get_the_ID();
+    
+    // Check if this listing has listing-content-type = simple
+    $content_types = get_the_terms($post_id, 'listing-content-type');
+    
+    if ($content_types && !is_wp_error($content_types)) {
+        foreach ($content_types as $content_type) {
+            if ($content_type->slug === 'simple') {
+                // This is a simple listing, redirect to listings-list with highlight
+                $listings_list_url = home_url('/listings-list/?highlight_post=' . $post_id);
+                wp_redirect($listings_list_url, 302); // 302 temporary redirect
+                exit;
+            }
+        }
+    }
+}
+add_action('template_redirect', 'geotour_redirect_simple_listings', 5); // Priority 5 to run before other redirects
+
+/**
+ * Generate listings list filter URL for taxonomy terms
  */
 function geotour_get_taxonomy_listing_url($taxonomy, $slug) {
     $param_map = [
-        'listing-category' => 'listing-category',
-        'listing-region' => 'listing-region',
-        'listing-tag' => 'listing-tag'
+        'listing-category' => 'listing_category',
+        'listing-region' => 'listing_region',
+        'listing-tag' => 'listing_tag'
     ];
     
     if (isset($param_map[$taxonomy])) {
-        return home_url('/listing/?' . $param_map[$taxonomy] . '=' . $slug);
+        return home_url('/listings-list/?' . $param_map[$taxonomy] . '=' . $slug);
     }
     
-    return home_url('/listing/');
+    return home_url('/listings-list/');
 }
 
 /**
