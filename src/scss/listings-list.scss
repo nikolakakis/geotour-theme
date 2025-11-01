@@ -44,7 +44,7 @@ $color-highlight-flash: #fde047;
 .listings-list {
     display: flex;
     flex-direction: column;
-    gap: $listing-item-gap;
+    gap: 1.5rem;
     margin-bottom: 3rem;
 }
 
@@ -59,11 +59,32 @@ $color-highlight-flash: #fde047;
     background: #fff;
     border: 1px solid $color-border;
     border-radius: $listing-border-radius;
-    transition: $listing-transition;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: $color-primary;
+        transform: scaleY(0);
+        transform-origin: bottom;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
     &:hover {
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        transform: translateY(-3px);
+        border-color: color.adjust($color-primary, $lightness: 40%);
+
+        &::before {
+            transform: scaleY(1);
+            transform-origin: top;
+        }
     }
 
     // Highlighted state (when scrolled to from URL parameter)
@@ -101,6 +122,22 @@ $color-highlight-flash: #fde047;
     line-height: 0;
     overflow: hidden;
     border-radius: $listing-border-radius;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0);
+        transition: background 0.3s ease;
+    }
+
+    &:hover::after {
+        background: rgba(0, 0, 0, 0.1);
+    }
 }
 
 .listing-item__thumbnail {
@@ -109,15 +146,15 @@ $color-highlight-flash: #fde047;
     aspect-ratio: 4/3;
     object-fit: cover;
     border-radius: $listing-border-radius;
-    transition: $listing-transition;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-    &:hover {
-        transform: scale(1.05);
+    .listing-item__image-link:hover & {
+        transform: scale(1.08);
     }
 
     // Placeholder for listings without images
     &--placeholder {
-        background: $color-bg-light;
+        background: linear-gradient(135deg, $color-bg-light 0%, color.adjust($color-bg-light, $lightness: -5%) 100%);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -137,14 +174,14 @@ $color-highlight-flash: #fde047;
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .listing-item__title {
-    margin: 0;
+    margin: 0 0 0.5rem 0;
     font-size: 1.5rem;
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.25;
     color: $color-text;
 
     @media (max-width: $breakpoint-mobile) {
@@ -155,10 +192,27 @@ $color-highlight-flash: #fde047;
 .listing-item__title-link {
     color: $color-text;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.25s ease;
+    display: inline-block;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: $color-primary;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
     &:hover {
         color: $color-primary;
+
+        &::after {
+            width: 100%;
+        }
     }
 }
 
@@ -168,9 +222,10 @@ $color-highlight-flash: #fde047;
 .listing-item__meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 1rem;
+    gap: 0.5rem 1.25rem;
     font-size: 0.875rem;
     color: $color-text-light;
+    margin-bottom: 0.5rem;
 }
 
 .listing-item__categories,
@@ -178,7 +233,7 @@ $color-highlight-flash: #fde047;
 .listing-item__content-types {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.35rem;
 }
 
 .listing-item__meta-label {
@@ -191,9 +246,9 @@ $color-highlight-flash: #fde047;
  */
 .listing-item__excerpt {
     font-size: 0.9375rem;
-    line-height: 1.6;
-    color: $color-text;
-    margin: 0.5rem 0;
+    line-height: 1.65;
+    color: color.adjust($color-text, $lightness: 15%);
+    margin: 0.5rem 0 0.75rem 0;
 
     p {
         margin: 0;
@@ -205,26 +260,59 @@ $color-highlight-flash: #fde047;
  */
 .listing-item__actions {
     margin-top: auto;
+    padding-top: 0.5rem;
 }
+#main .main-content .listings-list-container {
+    .listing-item__read-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: $color-primary;
+        color: #fff;
+        text-decoration: none;
+        border-radius: $listing-border-radius;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-.listing-item__read-more {
-    display: inline-block;
-    padding: 0.625rem 1.25rem;
-    background: $color-primary;
-    color: #fff;
-    text-decoration: none;
-    border-radius: $listing-border-radius;
-    font-weight: 600;
-    font-size: 0.875rem;
-    transition: $listing-transition;
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
 
-    &:hover {
-        background: color.adjust($color-primary, $lightness: -10%);
-        transform: translateY(-1px);
-    }
+        &::after {
+            content: '→';
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    &:active {
-        transform: translateY(0);
+        &:hover {
+            background: color.adjust($color-primary, $lightness: -10%);
+            transform: translateX(3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+            &::before {
+                left: 100%;
+            }
+
+            &::after {
+                transform: translateX(4px);
+            }
+        }
+
+        &:active {
+            transform: translateX(1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
     }
 }
 
@@ -241,13 +329,14 @@ $color-highlight-flash: #fde047;
 /**
  * Pagination
  */
-.listings-pagination {
+#main .main-content .listings-pagination {
     display: flex;
     justify-content: center;
-    margin: 2rem 0;
+    margin: 3rem 0;
+    padding: 1.5rem 0;
 }
 
-.listings-pagination__list {
+#main .main-content .listings-pagination__list {
     display: flex;
     list-style: none;
     padding: 0;
@@ -255,59 +344,126 @@ $color-highlight-flash: #fde047;
     gap: 0.5rem;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
 }
 
-.listings-pagination__link {
+#main .main-content  .listings-pagination .listings-pagination__link {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 2.5rem;
-    height: 2.5rem;
-    padding: 0 0.75rem;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    padding: 0 0.875rem;
     background: #fff;
-    border: 1px solid $color-border;
+    border: 2px solid $color-border;
     border-radius: $listing-border-radius;
     color: $color-text;
     text-decoration: none;
-    font-weight: 500;
-    transition: $listing-transition;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 
-    &:hover {
-        background: $color-bg-light;
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        //background: color.adjust($color-primary, $lightness: 45%);
+        background: transparent;
+        transform: translate(-50%, -50%);
+        transition: width 0.3s ease, height 0.3s ease;
+    }
+
+    span {
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover:not(&--current) {
+        background: color.adjust($color-primary, $lightness: 48%);
         border-color: $color-primary;
-        color: $color-primary;
+        color: color.adjust($color-primary, $lightness: 5%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        &::before {
+            width: 100%;
+            height: 100%;
+        }
     }
 
     &--current {
-        background: $color-primary;
+        background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: -10%) 100%);
         border-color: $color-primary;
         color: #fff;
         cursor: default;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: scale(1.05);
 
         &:hover {
-            background: $color-primary;
+            background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: -10%) 100%);
             border-color: $color-primary;
             color: #fff;
+            transform: scale(1.05);
         }
     }
 }
 
-.listings-pagination__item--active {
-    .listings-pagination__link {
-        background: $color-primary;
-        border-color: $color-primary;
-        color: #fff;
-        cursor: default;
+#main .main-content .listings-pagination .listings-pagination__item {
+    &--prev,
+    &--next {
+        .listings-pagination__link {
+            padding: 0 1.25rem;
+            font-weight: 700;
+            background: $color-primary;
+            color: #fff;
+            border-color: $color-primary;
+
+            &:hover {
+                background: color.adjust($color-primary, $lightness: -10%);
+                border-color: color.adjust($color-primary, $lightness: -10%);
+                color: #fff;
+                transform: translateY(-2px);
+            }
+        }
+    }
+    &:before {
+        background: none;
+    }
+
+    &--prev .listings-pagination__link:hover {
+        transform: translateX(-3px) translateY(-2px);
+    }
+
+    &--next .listings-pagination__link:hover {
+        transform: translateX(3px) translateY(-2px);
     }
 }
 
-.listings-pagination__ellipsis {
+#main .main-content .listings-pagination .listings-pagination__item--active {
+    .listings-pagination__link {
+        background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: -10%) 100%);
+        border-color: $color-primary;
+        color: #fff;
+        cursor: default;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: scale(1.05);
+    }
+}
+
+#main .main-content .listings-pagination .listings-pagination__ellipsis {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 2.5rem;
-    height: 2.5rem;
+    min-width: 2.75rem;
+    height: 2.75rem;
     color: $color-text-light;
+    font-weight: 700;
 }
 
 /**
