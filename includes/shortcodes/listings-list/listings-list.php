@@ -643,6 +643,15 @@ function geotour_render_listings_filter_header( $atts, $search_query, $found_pos
                 <span><?php esc_html_e( 'Filter Options', 'geotour' ); ?></span>
                 <span class="filter-toggle-icon">▼</span>
             </button>
+
+            <!-- View on Map button -->
+            <button type="button" class="listings-view-map-btn" id="listings-view-map-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 6V19L7 16L13 19L19 16V3L13 6L7 3L1 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7 3V16M13 6V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span><?php esc_html_e( 'View on Map', 'geotour' ); ?></span>
+            </button>
         </div>
 
         <!-- Filters panel -->

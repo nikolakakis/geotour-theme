@@ -691,6 +691,39 @@ $color-highlight-flash: #fde047;
 }
 
 /**
+ * View on Map button
+ */
+.listings-view-map-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: #28a745; // Green color for map action
+    color: #fff;
+    border: none;
+    border-radius: $listing-border-radius;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    width: auto;
+
+    &:hover {
+        background: color.adjust(#28a745, $lightness: -10%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    svg {
+        flex-shrink: 0;
+    }
+}
+
+/**
  * Filters panel
  */
 .listings-filters-panel {

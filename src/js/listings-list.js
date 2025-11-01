@@ -234,6 +234,7 @@ class ListingsFilterManager {
         this.setupSortSelect();
         this.setupSearchBox();
         this.setupActionButtons();
+        this.setupViewMapButton();
         this.updateActiveFilters();
         
         console.log('Listings filters initialized');
@@ -537,6 +538,56 @@ class ListingsFilterManager {
 
         // Navigate to clean URL
         window.location.href = window.location.pathname;
+    }
+
+    /**
+     * Setup View on Map button
+     */
+    setupViewMapButton() {
+        const mapButton = document.getElementById('listings-view-map-btn');
+        
+        if (!mapButton) {
+            return;
+        }
+
+        mapButton.addEventListener('click', () => {
+            this.redirectToMap();
+        });
+    }
+
+    /**
+     * Build map URL with current filters and redirect
+     */
+    redirectToMap() {
+        const url = new URL(window.location.origin + '/listing/');
+        const params = new URLSearchParams();
+
+        // Add categories (comma-separated if multiple)
+        if (this.selectedCategories.size > 0) {
+            const categories = Array.from(this.selectedCategories).join(',');
+            params.set('listing-category', categories);
+        }
+
+        // Add region
+        const regionSelect = document.getElementById('listing-region-select');
+        if (regionSelect && regionSelect.value) {
+            params.set('listing-region', regionSelect.value);
+        }
+
+        // Add search query
+        const searchInput = document.getElementById('listing-search-input');
+        if (searchInput && searchInput.value.trim()) {
+            params.set('search', searchInput.value.trim());
+        }
+
+        // Build final URL
+        const queryString = params.toString();
+        if (queryString) {
+            url.search = '?' + queryString;
+        }
+
+        // Redirect to map
+        window.location.href = url.toString();
     }
 
     /**
