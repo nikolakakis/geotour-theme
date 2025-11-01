@@ -75,7 +75,7 @@ This will display all published listings with default settings (10 per page).
 
 ## URL Parameters
 
-The shortcode supports URL parameters for pagination and highlighting:
+The shortcode supports URL parameters for pagination, highlighting, and filtering. This allows for deep linking and dynamic list control.
 
 ### Pagination Parameter
 
@@ -85,9 +85,48 @@ The shortcode supports URL parameters for pagination and highlighting:
 ### Highlight Parameter
 
 - `highlight_post`: The post ID to scroll to and highlight
-- Example: `https://yoursite.com/listings/?listing_page=3&highlight_post=123`
+- Example: `https://yoursite.com/listings/?highlight_post=123`
 
-This is useful for linking to a specific listing within the list. The page will automatically scroll to the listing and highlight it.
+**Important**: When using `highlight_post`, the system automatically calculates which page the listing is on based on current filters and sorting. You don't need to manually specify the page number!
+
+### Filter Parameters (Override Shortcode Attributes)
+
+These URL parameters will override the shortcode's default attributes:
+
+- `listing_category`: Filter by category slug(s), comma-separated
+  - Example: `?listing_category=museums,beaches`
+
+- `listing_region`: Filter by region slug(s), comma-separated
+  - Example: `?listing_region=heraklion`
+
+- `listing_content_type`: Filter by content type slug(s)
+  - Example: `?listing_content_type=simple`
+
+- `listing_orderby`: Sort field (date, title, modified, etc.)
+  - Example: `?listing_orderby=title`
+
+- `listing_order`: Sort direction (ASC or DESC)
+  - Example: `?listing_order=ASC`
+
+- `listing_per_page`: Items per page
+  - Example: `?listing_per_page=20`
+
+### Combined Example
+
+Navigate to a specific listing with filters applied:
+
+```
+https://yoursite.com/listings/?highlight_post=123&listing_category=museums&listing_region=heraklion&listing_orderby=title&listing_order=ASC
+```
+
+The system will:
+1. Apply the category and region filters
+2. Sort by title ascending
+3. Find which page listing #123 is on
+4. Navigate to that page
+5. Scroll to and highlight listing #123
+
+This works even as you add or remove listings, because the page is calculated dynamically!
 
 ## Features
 
@@ -199,22 +238,98 @@ Edit `src/js/listings-list.js` to:
    [listings_list posts_per_page="20"]
    ```
 3. Publish the page
+4. Note the page URL (e.g., `/all-listings/`)
 
-### Linking to a Specific Listing
+### Linking to a Specific Listing from Single Listing Pages
 
-To link to a specific listing within the list:
+Use the built-in helper functions to create "View in List" links:
+
+#### Method 1: Using the Helper Function (Recommended)
+
+```php
+<?php
+// In your single-listing.php template or anywhere
+$listing_id = get_the_ID();
+$list_page_url = home_url('/all-listings/'); // Your listings page URL
+
+// Basic link
+geotour_the_listing_in_list_link( $listing_id, $list_page_url );
+
+// With custom text and class
+geotour_the_listing_in_list_link( 
+    $listing_id, 
+    $list_page_url, 
+    array(), // No filters
+    'Back to Listings', // Custom text
+    'btn btn-secondary' // CSS classes
+);
+
+// With filters applied
+geotour_the_listing_in_list_link( 
+    $listing_id, 
+    $list_page_url, 
+    array(
+        'category' => 'museums',
+        'region' => 'heraklion',
+        'orderby' => 'title',
+        'order' => 'ASC'
+    ),
+    'View in Museums List'
+);
+?>
+```
+
+#### Method 2: Building the URL Manually
+
+```php
+<?php
+$listing_id = get_the_ID();
+$list_page_url = home_url('/all-listings/');
+
+// Get the URL
+$url = geotour_get_listing_in_list_url( $listing_id, $list_page_url );
+
+// Or with filters
+$url = geotour_get_listing_in_list_url( 
+    $listing_id, 
+    $list_page_url, 
+    array(
+        'category' => 'beaches',
+        'orderby' => 'title',
+        'order' => 'ASC'
+    )
+);
+?>
+
+<a href="<?php echo esc_url($url); ?>" class="view-in-list-btn">
+    View in Full Listings
+</a>
+```
+
+#### Method 3: Manual URL Construction (Not Recommended)
 
 ```php
 <?php
 $listing_id = 123;
 $listings_page_url = home_url('/all-listings/');
-$page_number = 1; // Calculate which page the listing is on
 
-// Build the URL
+// Build the URL with just the highlight parameter
+// The system will auto-calculate the page
 $link = add_query_arg(
     array(
-        'listing_page' => $page_number,
         'highlight_post' => $listing_id
+    ),
+    $listings_page_url
+);
+
+// With filters
+$link = add_query_arg(
+    array(
+        'highlight_post' => $listing_id,
+        'listing_category' => 'museums',
+        'listing_region' => 'heraklion',
+        'listing_orderby' => 'title',
+        'listing_order' => 'ASC'
     ),
     $listings_page_url
 );
@@ -222,6 +337,51 @@ $link = add_query_arg(
 
 <a href="<?php echo esc_url($link); ?>">View in List</a>
 ```
+
+### Creating Filter Links
+
+You can create links that filter the listings without highlighting a specific post:
+
+```php
+<?php
+$list_page_url = home_url('/all-listings/');
+
+// Filter by category
+$museums_url = add_query_arg('listing_category', 'museums', $list_page_url);
+
+// Multiple filters
+$filtered_url = add_query_arg(
+    array(
+        'listing_category' => 'beaches',
+        'listing_region' => 'chania',
+        'listing_order' => 'ASC'
+    ),
+    $list_page_url
+);
+?>
+
+<a href="<?php echo esc_url($museums_url); ?>">View Museums</a>
+<a href="<?php echo esc_url($filtered_url); ?>">Chania Beaches</a>
+```
+
+### How It Works
+
+When a user clicks a link with `highlight_post`:
+
+1. The shortcode receives the post ID
+2. It builds a query with all current filters from URL parameters
+3. It executes the query to get all matching post IDs
+4. It finds the position of the target post in the results
+5. It calculates which page that post is on
+6. It displays that page with the post highlighted
+7. JavaScript scrolls to the highlighted post
+
+This means:
+- ✅ Works with any combination of filters
+- ✅ Works with any sorting method
+- ✅ Automatically adjusts if posts are added/removed
+- ✅ Respects posts per page settings
+- ✅ Deep linkable and shareable URLs
 
 ## Future Enhancements
 

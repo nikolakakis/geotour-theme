@@ -208,7 +208,7 @@ add_action('wp_enqueue_scripts', 'geotour_enqueue_theme_assets');
 
 // Add type="module" and defer to the main Vite-generated JavaScript file
 function geotour_add_type_module_to_script($tag, $handle, $src) {
-    $module_handles = ['geotour-vite-main-js', 'geotour-main-js']; 
+    $module_handles = ['geotour-vite-main-js', 'geotour-main-js', 'geotour-listings-list']; 
 
     if (in_array($handle, $module_handles)) {
         // If type="module" is already correctly set, do nothing for type.

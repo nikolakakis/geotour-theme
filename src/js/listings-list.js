@@ -34,11 +34,14 @@ class ListingsList {
         this.container = document.querySelector('.listings-list');
         
         if (!this.container) {
+            console.warn('Listings list container not found');
             return;
         }
 
         // Get highlight ID from data attribute
         this.highlightId = this.container.dataset.highlightId;
+
+        console.log('Listings list initialized, highlight ID:', this.highlightId);
 
         // If there's a highlight ID, scroll to it
         if (this.highlightId && this.highlightId !== '0') {
@@ -56,15 +59,20 @@ class ListingsList {
         const targetItem = document.getElementById(`listing-${this.highlightId}`);
         
         if (!targetItem) {
+            console.warn(`Target listing #listing-${this.highlightId} not found`);
             return;
         }
 
-        // Wait a moment for page to fully render
-        setTimeout(() => {
+        console.log('Scrolling to listing:', this.highlightId);
+
+        // Use multiple timing strategies to ensure scroll happens
+        const attemptScroll = () => {
             // Calculate offset (accounting for fixed headers if any)
             const headerOffset = this.getHeaderOffset();
             const elementPosition = targetItem.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            console.log('Scroll position calculated:', offsetPosition);
 
             // Smooth scroll to position
             window.scrollTo({
@@ -78,8 +86,19 @@ class ListingsList {
             setTimeout(() => {
                 targetItem.classList.remove('listing-item--flash');
             }, 2000);
+        };
 
-        }, 300);
+        // Try scrolling after different delays to catch various load states
+        setTimeout(attemptScroll, 100);  // Quick attempt
+        setTimeout(attemptScroll, 300);  // After initial render
+        setTimeout(attemptScroll, 600);  // After images might load
+        
+        // Also scroll on window load (for slower connections)
+        if (document.readyState !== 'complete') {
+            window.addEventListener('load', () => {
+                setTimeout(attemptScroll, 100);
+            }, { once: true });
+        }
     }
 
     /**
