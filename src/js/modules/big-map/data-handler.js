@@ -49,6 +49,9 @@ export class BigMapDataHandler {
                 name: this._formatSlugAsName(slug.trim())
             })) : [];
 
+            // Pass through content_types if present from v3 API
+            const content_types = item.content_types || [];
+
             // Return the v2-compatible structure
             return {
                 id: item.source_id, // Map source_id to id
@@ -63,6 +66,7 @@ export class BigMapDataHandler {
                 categories: categories,
                 regions: regions,
                 tags: tags,
+                content_types: content_types,
                 featured_image: item.image_url,
                 featured_image_medium: item.image_url, // Use same image for both sizes
                 // Add route_order property if it exists

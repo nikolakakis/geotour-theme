@@ -279,6 +279,7 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
                 $categories = get_the_terms($post_id, 'listing-category');
                 $regions = get_the_terms($post_id, 'listing-region');
                 $tags = get_the_terms($post_id, 'listing-tag');
+                $content_types = get_the_terms($post_id, 'listing-content-type');
                 
                 // Get Yoast meta description
                 $meta_description = '';
@@ -301,6 +302,7 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
                     'categories' => [],
                     'regions' => [],
                     'tags' => [],
+                    'content_types' => [],
                     'featured_image' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
                     'featured_image_medium' => get_the_post_thumbnail_url($post_id, 'medium'),
                 ];
@@ -332,6 +334,16 @@ function geotour_get_spatial_info_v2(WP_REST_Request $request) {
                             'id' => $tag->term_id,
                             'name' => $tag->name,
                             'slug' => $tag->slug
+                        ];
+                    }
+                }
+                
+                if (!empty($content_types) && !is_wp_error($content_types)) {
+                    foreach ($content_types as $content_type) {
+                        $item['content_types'][] = [
+                            'id' => $content_type->term_id,
+                            'name' => $content_type->name,
+                            'slug' => $content_type->slug
                         ];
                     }
                 }

@@ -211,13 +211,18 @@ export class BigMapMarkers {
             `;
         }
         
+        // Check if this is a simple listing
+        const isSimpleListing = listing.content_types && 
+                                listing.content_types.some(ct => ct.slug === 'simple');
+        const linkText = isSimpleListing ? 'Open in List' : 'View Details';
+        
         return `
             <div class="map-popup">
                 <h4>${listing.title}</h4>
                 ${listing.featured_image_medium ? `<img src="${listing.featured_image_medium}" alt="${listing.title}" class="popup-image">` : ''}
                 <p>${listing.meta_description || listing.excerpt}</p>
                 ${routeSection}
-                <a href="${listing.permalink}" class="popup-link">View Details</a>
+                <a href="${listing.permalink}" class="popup-link">${linkText}</a>
             </div>
         `;
     }
