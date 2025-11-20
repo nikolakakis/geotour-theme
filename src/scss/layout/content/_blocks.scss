@@ -1,0 +1,16 @@
+// ==========================================================================
+// Cusrtom SCSS for content blocks
+// ==========================================================================
+
+
+@use '../../base/variables' as vars;
+@use 'sass:color';
+
+
+.photo-group {
+    padding: 20px;
+    border-radius: 12px;
+    background: color.change(vars.$background-color, $alpha: 0.5);
+    box-shadow: 0 2px 8px color.change(vars.$primary-color, $alpha: 0.1);
+    margin: 20px 0px;
+}

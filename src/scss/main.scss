@@ -11,6 +11,7 @@
 @use 'layout/header/main' as header; // Include the new header styles
 @use 'layout/content/main' as content-layout; // Main content layout styles
 @use 'layout/content/sidebar'; // Content with sidebar layout system
+@use 'layout/content/blocks';  
 @use 'layout/listing/overthecontent'; // Listing over-the-content area styles
 @use 'layout/footer/footer-modern';
 
