@@ -24,6 +24,9 @@ export class BigMapMarkers {
         // Clear existing supplementary markers
         this.supplementaryMarkers.forEach(marker => {
             map.removeLayer(marker);
+            if (marker._satelliteLine) {
+                map.removeLayer(marker._satelliteLine);
+            }
         });
         this.supplementaryMarkers = [];
         
@@ -84,9 +87,25 @@ export class BigMapMarkers {
 
     renderSupplementaryGroup(map, group) {
         const { lat, lng, items } = group;
-        const count = items.length;
+        
+        // Split items into people (orbiting) and others (static)
+        const peopleItems = items.filter(item => item.source_type === 'people');
+        const otherItems = items.filter(item => item.source_type !== 'people');
+
+        // 1. Render static items (non-people) - just place them at the location
+        otherItems.forEach(item => {
+            const marker = this.createSupplementaryMarker(item);
+            this.supplementaryMarkers.push(marker);
+            marker.addTo(map);
+        });
+
+        // 2. Render orbiting items (people)
+        if (peopleItems.length === 0) return;
+
+        const count = peopleItems.length;
         const maxVisible = 5;
         const radiusPixels = 60; // Distance from center in pixels
+        const orbitCenterOffset = [0, -16]; // Move center up 16px to match visual center of main pin
         
         // Determine how many items to show (including the "More" button if needed)
         const showMoreButton = count > maxVisible;
@@ -98,7 +117,7 @@ export class BigMapMarkers {
 
         // Render visible items
         for (let i = 0; i < visibleItemsCount; i++) {
-            const item = items[i];
+            const item = peopleItems[i];
             const angleDeg = -90 + (i * angleStep);
             const angleRad = angleDeg * (Math.PI / 180);
 
@@ -108,8 +127,19 @@ export class BigMapMarkers {
                 centerLat: lat,
                 centerLng: lng,
                 angleRad: angleRad,
-                radiusPixels: radiusPixels
+                radiusPixels: radiusPixels,
+                offsetY: orbitCenterOffset[1]
             };
+
+            // Create connecting line
+            const line = L.polyline([], {
+                color: '#333',
+                weight: 1,
+                opacity: 0.6,
+                dashArray: '3, 3'
+            });
+            marker._satelliteLine = line;
+            line.addTo(map);
 
             this.updateSingleSatellitePosition(map, marker);
             this.supplementaryMarkers.push(marker);
@@ -135,8 +165,19 @@ export class BigMapMarkers {
                 centerLat: lat,
                 centerLng: lng,
                 angleRad: angleRad,
-                radiusPixels: radiusPixels
+                radiusPixels: radiusPixels,
+                offsetY: orbitCenterOffset[1]
             };
+
+            // Create connecting line for "More" button
+            const line = L.polyline([], {
+                color: '#333',
+                weight: 1,
+                opacity: 0.6,
+                dashArray: '3, 3'
+            });
+            moreMarker._satelliteLine = line;
+            line.addTo(map);
 
             this.updateSingleSatellitePosition(map, moreMarker);
             this.supplementaryMarkers.push(moreMarker);
@@ -145,8 +186,8 @@ export class BigMapMarkers {
             // Add click handler for "More" button
             moreMarker.on('click', () => {
                 // For now, just log. Ideally, open a list popup.
-                console.log('Show more items:', items.slice(maxVisible));
-                this.showMoreItemsPopup(map, moreMarker, items.slice(maxVisible));
+                console.log('Show more items:', peopleItems.slice(maxVisible));
+                this.showMoreItemsPopup(map, moreMarker, peopleItems.slice(maxVisible));
             });
         }
     }
@@ -175,17 +216,31 @@ export class BigMapMarkers {
         // Convert center lat/lng to container point (pixels)
         const centerPoint = map.latLngToContainerPoint([data.centerLat, data.centerLng]);
         
+        // Apply vertical offset if defined (to match visual center of parent marker)
+        const visualCenterY = centerPoint.y + (data.offsetY || 0);
+
         // Calculate offset in pixels
         const offsetX = Math.cos(data.angleRad) * data.radiusPixels;
         const offsetY = Math.sin(data.angleRad) * data.radiusPixels;
         
         // New pixel position
-        const newPoint = L.point(centerPoint.x + offsetX, centerPoint.y + offsetY);
+        const newPoint = L.point(centerPoint.x + offsetX, visualCenterY + offsetY);
         
         // Convert back to lat/lng
         const newLatLng = map.containerPointToLatLng(newPoint);
         
         marker.setLatLng(newLatLng);
+
+        // Update connecting line
+        if (marker._satelliteLine) {
+            // The line should connect to the visual center, not the anchor point
+            const visualCenterLatLng = map.containerPointToLatLng(L.point(centerPoint.x, visualCenterY));
+            
+            marker._satelliteLine.setLatLngs([
+                visualCenterLatLng,
+                newLatLng
+            ]);
+        }
     }
     
     createMarker(listing) {
@@ -248,19 +303,30 @@ export class BigMapMarkers {
         
         // Use specific icon for panoramas, fallback to API icon for others
         let iconUrl = item.map_icon_url;
-        let iconSize = [24, 24]; // Default size for other supplementary items
-        
-        if (item.source_type === 'panorama') {
+        let iconSize = [32, 32]; // Default size
+        let htmlContent = '';
+
+        if (item.source_type === 'people' && item.image_url) {
+            // Use featured image for people
+            iconUrl = item.image_url;
+            iconSize = [40, 40]; // Slightly larger for people images
+            htmlContent = `<div class="person-marker-wrapper">
+                <img src="${iconUrl}" alt="${item.title}" class="person-pin-image" onerror="this.src='${window.geotourBigMap.defaultIconUrl || '/wp-content/themes/geotour-theme/assets/map-pins/default.svg'}'">
+            </div>`;
+        } else if (item.source_type === 'panorama') {
             iconUrl = '/wp-content/themes/geotour-theme/assets/graphics/map-pins/panoramas.svg';
-            iconSize = [30, 30]; // Bigger size for panoramas to make them more visible
+            iconSize = [30, 30];
+            htmlContent = `<img src="${iconUrl}" alt="${item.title}" class="supplementary-pin" style="width: ${iconSize[0]}px; height: ${iconSize[1]}px;" onerror="this.src='${window.geotourBigMap.defaultIconUrl || '/wp-content/themes/geotour-theme/assets/map-pins/default.svg'}'">`;
+        } else {
+            htmlContent = `<img src="${iconUrl}" alt="${item.title}" class="supplementary-pin" style="width: ${iconSize[0]}px; height: ${iconSize[1]}px;" onerror="this.src='${window.geotourBigMap.defaultIconUrl || '/wp-content/themes/geotour-theme/assets/map-pins/default.svg'}'">`;
         }
         
         const icon = L.divIcon({
             className: iconClass,
-            html: `<img src="${iconUrl}" alt="${item.title}" class="supplementary-pin" style="width: ${iconSize[0]}px; height: ${iconSize[1]}px;" onerror="this.src='${window.geotourBigMap.defaultIconUrl || '/wp-content/themes/geotour-theme/assets/map-pins/default.svg'}'">`,
+            html: htmlContent,
             iconSize: iconSize,
-            iconAnchor: [iconSize[0]/2, iconSize[1]],
-            popupAnchor: [0, -iconSize[1]]
+            iconAnchor: [iconSize[0]/2, iconSize[1]/2], // Center anchor for circular images
+            popupAnchor: [0, -iconSize[1]/2]
         });
         
         const marker = L.marker([item.latitude, item.longitude], { icon });
