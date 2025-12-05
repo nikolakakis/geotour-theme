@@ -107,10 +107,36 @@ export class BigMapUI {
         const mapContainer = document.getElementById('big-map');
         if (!mapContainer) return;
         
+        // Check for URL parameters for initial view
+        const urlParams = new URLSearchParams(window.location.search);
+        const lat = parseFloat(urlParams.get('lat'));
+        const lng = parseFloat(urlParams.get('lon') || urlParams.get('lng')); // Support both lon and lng
+        const zoom = parseInt(urlParams.get('zoom'));
+        
+        let center = window.geotourBigMap.defaultCenter;
+        let zoomLevel = window.geotourBigMap.defaultZoom;
+        let hasUrlParams = false;
+        
+        if (!isNaN(lat) && !isNaN(lng)) {
+            center = [lat, lng];
+            hasUrlParams = true;
+        }
+        
+        if (!isNaN(zoom)) {
+            zoomLevel = zoom;
+            hasUrlParams = true;
+        }
+
+        // If URL params are present, prevent auto-fitting bounds
+        if (hasUrlParams) {
+            this.markersHandler.initialBoundsFit = true;
+            this.hasUrlParams = true; // Store for loadInitialData
+        }
+
         // Initialize Leaflet map
         this.map = L.map('big-map', {
-            center: window.geotourBigMap.defaultCenter,
-            zoom: window.geotourBigMap.defaultZoom,
+            center: center,
+            zoom: zoomLevel,
             zoomControl: false // We'll add custom controls
         });
         
@@ -163,8 +189,9 @@ export class BigMapUI {
             this.toolbar.updateToolbar(listings);
             
             // Auto-zoom to route extent if route stops exist (like clicking "Zoom to Route" button)
+            // But ONLY if we didn't load from specific URL parameters
             const routeListings = listings.filter(listing => listing.route_order);
-            if (routeListings.length > 0) {
+            if (routeListings.length > 0 && !this.hasUrlParams) {
                 // Add small delay to ensure map and markers are fully rendered
                 setTimeout(() => {
                     this.toolbar.zoomToRoute();
@@ -179,6 +206,9 @@ export class BigMapUI {
     }
     
     async onMapMoveEnd() {
+        // Update URL with current map state
+        this.updateUrlState();
+
         if (this.loadingStates.getLoadingState()) return;
         
         try {
@@ -192,6 +222,23 @@ export class BigMapUI {
             this.loadingStates.showError('Error loading listings. Please try again.');
             this.loadingStates.hideLoading();
         }
+    }
+
+    updateUrlState() {
+        if (!this.map) return;
+        
+        const center = this.map.getCenter();
+        const zoom = this.map.getZoom();
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Update parameters
+        urlParams.set('lat', center.lat.toFixed(6));
+        urlParams.set('lon', center.lng.toFixed(6));
+        urlParams.set('zoom', zoom);
+        
+        // Update URL without reloading
+        const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+        window.history.replaceState({ path: newUrl }, '', newUrl);
     }
     
     updateMapAndSidebar(data) {
