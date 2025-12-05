@@ -9,43 +9,43 @@
 // Map controls
 .map-controls {
     position: absolute;
-    top: 70px; // Moved down from 20px to avoid zoom controls
-    right: 20px;
+    top: 100px; // Moved down to avoid overlap with top-right zoom controls
+    right: 10px; // Aligned with zoom controls (usually have 10px margin)
     z-index: 1200;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 4px; // Reduced gap for tighter spacing
     
     @media (max-width: 768px) {
-        top: 60px; // Moved down from 10px
+        top: 90px; 
         right: 10px;
     }
 }
 
 .map-control-btn {
-    width: 44px;
-    height: 44px;
+    width: 34px; // Match standard Leaflet control size (usually 30-34px)
+    height: 34px;
     background: white;
-    border: 1px solid color.change(vars.$primary-color, $alpha: 0.2);
-    border-radius: 8px;
-    color: vars.$primary-color;
+    border: 2px solid rgba(0,0,0,0.2); // Match Leaflet border style
+    border-radius: 4px; // Match Leaflet border radius
+    color: #333;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px color.change(vars.$primary-color, $alpha: 0.1);
+    transition: all 0.2s ease;
+    box-shadow: none; // Leaflet controls usually don't have shadow by default, or very subtle
+    padding: 0;
     
     &:hover {
-        background: vars.$primary-color;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px color.change(vars.$primary-color, $alpha: 0.3);
+        background: #f4f4f4;
+        color: black;
+        transform: none; // Remove transform to match native feel
     }
     
     svg {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
         fill: currentColor;
     }
 }

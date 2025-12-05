@@ -74,6 +74,19 @@ export class BigMapUI {
         document.getElementById('reset-view')?.addEventListener('click', () => {
             this.resetView();
         });
+
+        // 3D Map Button
+        document.getElementById('open-3d-map')?.addEventListener('click', () => {
+            if (this.map) {
+                const center = this.map.getCenter();
+                // Construct URL with current map center
+                const url = `/vt/3dmap/?lon=${center.lng}&lat=${center.lat}&heading=0.0&pitch=-45`;
+                
+                console.log('Redirecting to 3D Map:', url);
+                // Open in the same tab
+                window.location.href = url;
+            }
+        });
         
         // Window resize handler for map
         window.addEventListener('resize', () => {
