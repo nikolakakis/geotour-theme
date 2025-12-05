@@ -181,7 +181,15 @@ export class BigMapUI {
         
         try {
             const currentZoom = this.map ? this.map.getZoom() : window.geotourBigMap.defaultZoom;
-            const data = await this.dataHandler.fetchListings(null, currentZoom);
+            
+            // Calculate bbox if map is available to ensure supplementary data is fetched if zoom is high enough
+            let bbox = null;
+            if (this.map) {
+                const bounds = this.map.getBounds();
+                bbox = `${bounds.getWest().toFixed(6)},${bounds.getSouth().toFixed(6)},${bounds.getEast().toFixed(6)},${bounds.getNorth().toFixed(6)}`;
+            }
+
+            const data = await this.dataHandler.fetchListings(bbox, currentZoom);
             this.updateMapAndSidebar(data);
             
             // Initialize toolbar visibility on first load

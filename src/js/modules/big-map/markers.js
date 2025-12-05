@@ -36,13 +36,12 @@ export class BigMapMarkers {
             }
         });
 
-        // Add supplementary markers (panoramas, people, etc.)
-        supplementaryData.forEach(item => {
-            if (item.latitude && item.longitude) {
-                const marker = this.createSupplementaryMarker(item);
-                this.supplementaryMarkers.push(marker);
-                marker.addTo(map);
-            }
+        // Group supplementary markers by location (to associate with listings)
+        const groupedSupplementary = this.groupSupplementaryByLocation(supplementaryData);
+
+        // Render supplementary markers (orbiting if multiple)
+        Object.values(groupedSupplementary).forEach(group => {
+            this.renderSupplementaryGroup(map, group);
         });
         
         // Only fit bounds on initial load, not on every pan/zoom
@@ -51,6 +50,142 @@ export class BigMapMarkers {
             map.fitBounds(group.getBounds().pad(0.1));
             this.initialBoundsFit = true;
         }
+
+        // Update satellite positions on zoom
+        map.off('zoomend', this.updateSatellitePositions); // Remove old listener
+        this.updateSatellitePositions = () => {
+             this.supplementaryMarkers.forEach(marker => {
+                 if (marker._satelliteData) {
+                     this.updateSingleSatellitePosition(map, marker);
+                 }
+             });
+        };
+        map.on('zoomend', this.updateSatellitePositions);
+    }
+
+    groupSupplementaryByLocation(data) {
+        const groups = {};
+        data.forEach(item => {
+            if (item.latitude && item.longitude) {
+                // Create a key based on coordinates (rounded to avoid float precision issues)
+                const key = `${item.latitude.toFixed(5)},${item.longitude.toFixed(5)}`;
+                if (!groups[key]) {
+                    groups[key] = {
+                        lat: item.latitude,
+                        lng: item.longitude,
+                        items: []
+                    };
+                }
+                groups[key].items.push(item);
+            }
+        });
+        return groups;
+    }
+
+    renderSupplementaryGroup(map, group) {
+        const { lat, lng, items } = group;
+        const count = items.length;
+        const maxVisible = 5;
+        const radiusPixels = 60; // Distance from center in pixels
+        
+        // Determine how many items to show (including the "More" button if needed)
+        const showMoreButton = count > maxVisible;
+        const visibleItemsCount = showMoreButton ? maxVisible : count;
+        const totalSlots = showMoreButton ? maxVisible + 1 : count; // +1 for the "More" button
+
+        // Distribute angles
+        const angleStep = 360 / totalSlots;
+
+        // Render visible items
+        for (let i = 0; i < visibleItemsCount; i++) {
+            const item = items[i];
+            const angleDeg = -90 + (i * angleStep);
+            const angleRad = angleDeg * (Math.PI / 180);
+
+            const marker = this.createSupplementaryMarker(item);
+            
+            marker._satelliteData = {
+                centerLat: lat,
+                centerLng: lng,
+                angleRad: angleRad,
+                radiusPixels: radiusPixels
+            };
+
+            this.updateSingleSatellitePosition(map, marker);
+            this.supplementaryMarkers.push(marker);
+            marker.addTo(map);
+        }
+
+        // Render "More" button if needed
+        if (showMoreButton) {
+            const remainingCount = count - maxVisible;
+            const angleDeg = -90 + (visibleItemsCount * angleStep);
+            const angleRad = angleDeg * (Math.PI / 180);
+
+            const moreIcon = L.divIcon({
+                className: 'supplementary-marker marker-more',
+                html: `<div class="more-count">+${remainingCount}</div>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+
+            const moreMarker = L.marker([lat, lng], { icon: moreIcon });
+            
+            moreMarker._satelliteData = {
+                centerLat: lat,
+                centerLng: lng,
+                angleRad: angleRad,
+                radiusPixels: radiusPixels
+            };
+
+            this.updateSingleSatellitePosition(map, moreMarker);
+            this.supplementaryMarkers.push(moreMarker);
+            moreMarker.addTo(map);
+
+            // Add click handler for "More" button
+            moreMarker.on('click', () => {
+                // For now, just log. Ideally, open a list popup.
+                console.log('Show more items:', items.slice(maxVisible));
+                this.showMoreItemsPopup(map, moreMarker, items.slice(maxVisible));
+            });
+        }
+    }
+
+    showMoreItemsPopup(map, marker, items) {
+        let content = '<div class="more-items-list"><h5>More Items</h5><ul>';
+        items.forEach(item => {
+            content += `<li>
+                <a href="${item.item_url}" target="_blank">
+                    ${item.title} (${item.source_type})
+                </a>
+            </li>`;
+        });
+        content += '</ul></div>';
+
+        L.popup()
+            .setLatLng(marker.getLatLng())
+            .setContent(content)
+            .openOn(map);
+    }
+
+    updateSingleSatellitePosition(map, marker) {
+        const data = marker._satelliteData;
+        if (!data) return;
+
+        // Convert center lat/lng to container point (pixels)
+        const centerPoint = map.latLngToContainerPoint([data.centerLat, data.centerLng]);
+        
+        // Calculate offset in pixels
+        const offsetX = Math.cos(data.angleRad) * data.radiusPixels;
+        const offsetY = Math.sin(data.angleRad) * data.radiusPixels;
+        
+        // New pixel position
+        const newPoint = L.point(centerPoint.x + offsetX, centerPoint.y + offsetY);
+        
+        // Convert back to lat/lng
+        const newLatLng = map.containerPointToLatLng(newPoint);
+        
+        marker.setLatLng(newLatLng);
     }
     
     createMarker(listing) {
